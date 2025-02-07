@@ -20,7 +20,7 @@ services:
       - 8443:443
     volumes:
       - ./docker/php/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./docker/php/default-ssl.conf:/etc/apache2/sites-enabled/000-default-ssl.conf
+      - ./docker/php/apache/default-ssl.conf:/etc/apache2/sites-enabled/000-default-ssl.conf
       - ./etc/ssl:/etc/ssl
       - ./app:/var/www
     depends_on:
