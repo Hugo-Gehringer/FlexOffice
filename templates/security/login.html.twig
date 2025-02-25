@@ -48,6 +48,9 @@
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"
                         >
                         {% include "elements/button.html.twig" with {"type" : "submit", "text":"Log in"} %}
+                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                            Don’t have an account yet? <a href="{{path('app_register')}}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+                        </p>
                     </form>
                 </div>
             </div>

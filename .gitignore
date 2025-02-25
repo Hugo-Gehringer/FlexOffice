@@ -3,7 +3,7 @@
 /app/.env.local
 /app/.env.local.php
 /app/.env.*.local
-/app/config/secrets/prod/prod.decrypt.private.php
+/config/secrets/prod/prod.decrypt.private.php
 /app/app/public/bundles/
 /app/var/
 /app/vendor/
@@ -19,11 +19,13 @@ app/phpunit.xml
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/asset-mapper ###
-/app/public/assets/
-/app/assets/vendor/
+/public/assets/
+/assets/vendor/
 ###< symfony/asset-mapper ###
 ### docker ###
-/db
-/etc
-/app/composer.lock
-app/node_modules
+/.docker/db
+/.docker/etc
+/composer.lock
+/node_modules
+/var
+/vendor

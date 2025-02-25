@@ -10,21 +10,21 @@ services:
     ports:
       - '4306:3306'
     volumes:
-      - ./db:/var/lib/mysql
+      - ./.docker/db:/var/lib/mysql©
     networks:
       - app-network
 
   php:
     container_name: php
     build:
-      context: docker/php
+      context: .docker/php
     ports:
       - "8080:80"
       - "8443:443"
     volumes:
-      - ./docker/php/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./etc/ssl:/etc/ssl
-      - ./app:/var/www
+      - ./.docker/php/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./.docker/etc/ssl:/etc/ssl
+      - ./:/var/www
     depends_on:
       - database
     networks:

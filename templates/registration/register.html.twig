@@ -20,6 +20,14 @@
                     <div>
                         {% include 'elements/form/input.html.twig' with { 'element': registrationForm.email, 'label':'Email'} %}
                     </div>
+                    <div class="flex space-x-4">
+                        <div class="w-1/2">
+                            {% include 'elements/form/input.html.twig' with { 'element': registrationForm.firstname, 'label':'Firstname'} %}
+                        </div>
+                        <div class="w-1/2">
+                            {% include 'elements/form/input.html.twig' with { 'element': registrationForm.lastname, 'label':'Lastname'} %}
+                        </div>
+                    </div>
                     <div>
                         {% include 'elements/form/input.html.twig' with {'element': registrationForm.plainPassword, 'label': 'Password'} %}
                     </div>
