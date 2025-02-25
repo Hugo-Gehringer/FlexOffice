@@ -1,7 +1,12 @@
-<div class="antialiased bg-gray-50 dark:bg-gray-900">
-    {% include 'components/header.html.twig' %}
-    {% include 'components/sidebar.html.twig' %}
-    <main class="p-4 md:ml-64 min-h-screen pt-20 bg-gray-100 dark:bg-gray-900">
-        {% block body %}{% endblock %}
-    </main>
-</div>
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+        {% include 'components/header.html.twig' %}
+        {% include 'components/sidebar.html.twig' %}
+    </div>
+
+     <main class="p-4 md:ml-64 min-h-screen pt-20 bg-gray-100 dark:bg-gray-900">
+        {% block main %}
+        {% endblock%}
+     </main>
+{% endblock %}
