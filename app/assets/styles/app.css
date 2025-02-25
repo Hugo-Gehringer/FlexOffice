@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --border-color: #d1d5db;
+}
+
+html.dark {
+    --bg-color: #1f2937;
+    --text-color: #f3f4f6;
+    --border-color: #4b5563;
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.border {
+    border-color: var(--border-color);
+}
+
+.input-field {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }

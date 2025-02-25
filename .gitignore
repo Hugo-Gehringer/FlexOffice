@@ -26,3 +26,4 @@ app/phpunit.xml
 /db
 /etc
 /app/composer.lock
+app/node_modules
