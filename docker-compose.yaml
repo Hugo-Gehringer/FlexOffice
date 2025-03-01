@@ -1,7 +1,7 @@
 services:
   database:
     container_name: database
-    image: mariadb:10.11.2
+    image: yobasystems/alpine-mariadb:10.11.2-aarch64
     environment:
       MYSQL_ROOT_PASSWORD: pwd
       MYSQL_DATABASE: flexoffice
@@ -10,7 +10,7 @@ services:
     ports:
       - '4306:3306'
     volumes:
-      - ./.docker/db:/var/lib/mysql©
+      - ./.docker/db:/var/lib/mysql
     networks:
       - app-network
 
@@ -31,7 +31,7 @@ services:
       - app-network
 
   phpma:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:fpm-alpine
     container_name: phpmyadmin
     environment:
       PMA_ARBITRARY: 1
@@ -45,14 +45,16 @@ services:
       - app-network
 
   mailhog:
-    image: mailhog/mailhog
-    logging:
-      driver: 'none'
+    build:
+      context: .docker/mailhog
+    container_name: mailhog
+    restart: unless-stopped
     ports:
-      - "1025:1025" #SMTP
-      - "8025:8025" #Boite mail
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
     networks:
       - app-network
+
 
 networks:
   app-network:
