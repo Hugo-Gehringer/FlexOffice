@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -41,6 +43,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 50)]
     private ?string $lastname = null;
+
+    /**
+     * @var Collection<int, Space>
+     */
+    #[ORM\OneToMany(targetEntity: Space::class, mappedBy: 'host')]
+    private Collection $spacesHosted;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'guest')]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->spacesHosted = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -149,6 +169,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Space>
+     */
+    public function getSpacesHosted(): Collection
+    {
+        return $this->spacesHosted;
+    }
+
+    public function addSpacesHosted(Space $spacesHosted): static
+    {
+        if (!$this->spacesHosted->contains($spacesHosted)) {
+            $this->spacesHosted->add($spacesHosted);
+            $spacesHosted->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpacesHosted(Space $spacesHosted): static
+    {
+        if ($this->spacesHosted->removeElement($spacesHosted)) {
+            // set the owning side to null (unless already changed)
+            if ($spacesHosted->getHost() === $this) {
+                $spacesHosted->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setGuest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getGuest() === $this) {
+                $reservation->setGuest(null);
+            }
+        }
 
         return $this;
     }
