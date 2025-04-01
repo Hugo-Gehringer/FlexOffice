@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AddressRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
@@ -30,6 +32,17 @@ class Address
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $longitude = null;
+
+    /**
+     * @var Collection<int, Space>
+     */
+    #[ORM\OneToMany(targetEntity: Space::class, mappedBy: 'address')]
+    private Collection $spaces;
+
+    public function __construct()
+    {
+        $this->spaces = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +117,36 @@ class Address
     public function setLongitude(?string $longitude): static
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Space>
+     */
+    public function getSpaces(): Collection
+    {
+        return $this->spaces;
+    }
+
+    public function addSpace(Space $space): static
+    {
+        if (!$this->spaces->contains($space)) {
+            $this->spaces->add($space);
+            $space->setAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpace(Space $space): static
+    {
+        if ($this->spaces->removeElement($space)) {
+            // set the owning side to null (unless already changed)
+            if ($space->getAddress() === $this) {
+                $space->setAddress(null);
+            }
+        }
 
         return $this;
     }
