@@ -31,7 +31,7 @@ services:
       - app-network
 
   phpma:
-    image: phpmyadmin:fpm-alpine
+    image: phpmyadmin
     container_name: phpmyadmin
     environment:
       PMA_ARBITRARY: 1
