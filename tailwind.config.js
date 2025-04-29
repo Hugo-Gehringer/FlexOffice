@@ -5,15 +5,14 @@ module.exports = {
     "./assets/**/*.js",
     "./templates/**/*.html.twig",
   ],
-  darkMode: 'class', // or 'media' or 'class'
+  darkMode: 'class',
   theme: {
     extend: {
-      colors:{
-        background: 'var(--bg-color)',
-        text: 'var(--text-color)',
+      colors: {
         primary: {
-          600: '#1D4ED8', // Define your primary-600 color here
-        },
+          DEFAULT: '#1D4ED8', // This makes `bg-primary` work
+          600: '#1D4ED8',     // This makes `bg-primary-600` work
+        }
       }
     },
   },

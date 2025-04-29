@@ -48,9 +48,13 @@
                 </button>
                 <!-- Dropdown menu -->
                 <button type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown-profile"
-                        class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+                        class="flex mx-3 text-sm md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-full">
                     <span class="sr-only">Open user menu</span>
-                    <img class="w-8 h-8 rounded-full" alt="user photo" src="https://ui-avatars.com/api/?rounded=true&background=random&name={{ currentUser.firstname }}+{{ currentUser.lastname }}"/>
+                    <div class="relative w-8 h-8 overflow-hidden bg-primary rounded-full">  <!-- Using bg-primary -->
+                        <div class="flex w-full h-full items-center justify-center text-white font-medium text-sm rounded-full">
+                            {{ currentUser.firstname|slice(0,1)|upper }}{{ currentUser.lastname|slice(0,1)|upper }}
+                        </div>
+                    </div>
                 </button>
                 <!-- Dropdown menu -->
                 <div id="dropdown-profile" class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl">
@@ -60,7 +64,11 @@
                     </div>
                     <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                         <li>
-                            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My profile</a>
+                            <button class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
+                                    data-modal-target="profileModal"
+                                    data-modal-toggle="profileModal">
+                                Edit Profile
+                            </button>
                         </li>
                         <li>
                             <a href="#" class="block py-2 px-4 text-sm hover:bg hover:text dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</a>
@@ -98,3 +106,5 @@
 {#        }#}
 {#    });#}
 {#</script>#}
+
+{{ component('profile_modal') }}
