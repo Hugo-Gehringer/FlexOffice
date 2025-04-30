@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+imports:
+    - { resource: services/*.yaml }
+
 services:
     Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator:
         alias: security.authenticator.form_login.main

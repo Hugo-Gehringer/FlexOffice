@@ -13,6 +13,24 @@
         {% endblock %}
     </head>
     <body data-controller="flowbite">
-        {% block body %}{% endblock %}
+        {% block body %}
+            <div class="antialiased bg-gray-50 dark:bg-gray-900">
+                {% include 'components/header.html.twig' %}
+                {% include 'components/sidebar.html.twig' %}
+                <main class="p-4 md:ml-64 min-h-screen pt-20 bg-gray-100 dark:bg-gray-900">
+                    <div id="flash-messages" class="flex flex-col items-end w-full mb-4">
+                        {% for type, messages in app.flashes %}
+                            {% for message in messages %}
+                                {% include 'components/_flash_message.html.twig' with {
+                                    message: message,
+                                    type: type
+                                } %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+        {% endblock %}
     </body>
 </html>

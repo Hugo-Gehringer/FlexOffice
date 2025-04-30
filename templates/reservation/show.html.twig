@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation Details{% endblock %}
+
+{% block content %}
+            <div class="container mx-auto max-w-2xl">
+                <div class="mb-6">
+                    <a href="{{ path('app_reservation_index') }}" class="text-blue-600 hover:underline flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to My Reservations
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Reservation Details</h1>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Space Information</h2>
+                                <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ reservation.desk.space.name }}</p>
+                                    <p class="text-gray-700 dark:text-gray-300 mt-1">{{ reservation.desk.space.address.street }}, {{ reservation.desk.space.address.city }}</p>
+                                    <p class="text-gray-700 dark:text-gray-300 mt-1">Host: {{ reservation.desk.space.host.firstname }} {{ reservation.desk.space.host.lastname }}</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Desk Information</h2>
+                                <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ reservation.desk.name }}</p>
+                                    <p class="text-gray-700 dark:text-gray-300 mt-1">{{ reservation.desk.description }}</p>
+                                    <div class="flex flex-wrap gap-2 mt-3">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded dark:bg-blue-900 dark:text-blue-300">
+                                            Capacity: {{ reservation.desk.capacity }}
+                                        </span>
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded dark:bg-green-900 dark:text-green-300">
+                                            {{ reservation.desk.pricePerDay }}€ / day
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Reservation Information</h2>
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Reservation Date</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ reservation.reservationDate ? reservation.reservationDate|date('Y-m-d H:i') : 'N/A' }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Status</p>
+                                        <div>
+                                            {% if reservation.status == 0 %}
+                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded dark:bg-yellow-900 dark:text-yellow-300">
+                                                    Pending
+                                                </span>
+                                            {% elseif reservation.status == 1 %}
+                                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded dark:bg-green-900 dark:text-green-300">
+                                                    Confirmed
+                                                </span>
+                                            {% elseif reservation.status == 2 %}
+                                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded dark:bg-red-900 dark:text-red-300">
+                                                    Cancelled
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if reservation.status != 2 %}
+                            <div class="flex justify-end">
+                                <a href="{{ path('app_reservation_cancel', {'id': reservation.id}) }}" class="px-5 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                    Cancel Reservation
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+{% endblock %}
