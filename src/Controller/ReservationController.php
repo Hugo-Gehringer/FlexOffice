@@ -7,6 +7,7 @@ use App\Entity\Reservation;
 use App\Form\ReservationFormType;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Flasher\Prime\FlasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +19,9 @@ class ReservationController extends AbstractController
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {
-        // Ensure user is authenticated
+        // Ensure user is authenticated and has GUEST role
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_GUEST', null, 'You must be a guest to view reservations');
 
         $user = $this->getUser();
 
@@ -32,8 +34,9 @@ class ReservationController extends AbstractController
     #[Route('/new/{id}', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Desk $desk, EntityManagerInterface $entityManager): Response
     {
-        // Ensure user is authenticated
+        // Ensure user is authenticated and has GUEST role
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_GUEST', null, 'You must be a guest to make reservations');
 
         $user = $this->getUser();
         $reservation = new Reservation();
@@ -48,7 +51,7 @@ class ReservationController extends AbstractController
             $entityManager->persist($reservation);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Your reservation has been created successfully!');
+            flash()->success('Your reservation has been created successfully!');
 
             return $this->redirectToRoute('app_reservation_index');
         }
@@ -95,7 +98,7 @@ class ReservationController extends AbstractController
         $reservation->setStatus(2); // 2 = cancelled
         $entityManager->flush();
 
-        $this->addFlash('success', 'Your reservation has been cancelled successfully!');
+        flash()->success('Your reservation has been cancelled successfully!');
 
         return $this->redirectToRoute('app_reservation_index', [
             'currentUser' => $user,

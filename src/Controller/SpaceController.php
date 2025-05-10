@@ -7,6 +7,7 @@ use App\Entity\Space;
 use App\Form\SpaceFormType;
 use App\Repository\SpaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Flasher\Prime\FlasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,8 +31,9 @@ class SpaceController extends AbstractController
     #[Route('/new', name: 'app_space_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Ensure user is authenticated
+        // Ensure user is authenticated and has HOST role
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_HOST', null, 'You must be a host to create spaces');
 
         $user = $this->getUser();
         $space = new Space();
@@ -54,7 +56,7 @@ class SpaceController extends AbstractController
             $entityManager->persist($space);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Your space has been created successfully!');
+            flash()->success('Your space has been created successfully!');
 
             if ($request->headers->get('Accept') === 'text/vnd.turbo-stream.html') {
                 // Handle Turbo Drive request
@@ -70,12 +72,27 @@ class SpaceController extends AbstractController
         ]);
     }
 
+    #[Route('/my-spaces', name: 'app_my_spaces', methods: ['GET'])]
+    public function mySpaces(SpaceRepository $spaceRepository): Response
+    {
+        // Ensure user is authenticated and has HOST role
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_HOST', null, 'You must be a host to view your spaces');
+
+        $user = $this->getUser();
+
+        return $this->render('space/my_spaces.html.twig', [
+            'spaces' => $spaceRepository->findByHost($user),
+            'currentUser' => $user,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_space_show', methods: ['GET'])]
     public function show(Space $space): Response
     {
         // Ensure user is authenticated
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
+        flash()->success('Your space has been created successfully!');
         return $this->render('space/show.html.twig', [
             'space' => $space,
             'desks' => $space->getDesks(),

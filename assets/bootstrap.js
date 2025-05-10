@@ -1,6 +1,8 @@
 
 import { startStimulusApp } from '@symfony/stimulus-bundle';
-import FlashMessagesController from './controllers/flash_messages_controller.js';
+import DeskModalController from './controllers/desk_modal_controller.js';
+import DeskFormController from './controllers/desk_form_controller.js';
 
 const app = startStimulusApp();
-app.register('flash-messages', FlashMessagesController);
+app.register('desk-modal', DeskModalController);
+app.register('desk-form', DeskFormController);

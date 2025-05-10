@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Form\ProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Flasher\Prime\FlasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,12 +33,12 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            
+
             if ($request->headers->get('Accept') === 'text/vnd.turbo-stream.html') {
                 return $this->render('profile/_success_turbo_stream.html.twig');
             }
 
-            $this->addFlash('success', 'Profile updated successfully!');
+            flash()->success('Profile updated successfully!');
             return $this->redirectToRoute('app_homepage');
         }
 

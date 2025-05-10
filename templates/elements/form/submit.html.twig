@@ -1,6 +1,7 @@
-<button 
-    type="submit" 
-    class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+<button
+    type="submit"
+    class="px-5 py-2.5 {% if variant is defined %}{% if variant == 'success' %}bg-green-600 hover:bg-green-700 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800{% else %}bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800{% endif %}{% else %}bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800{% endif %} text-white rounded-lg transition-colors focus:ring-4 focus:outline-none font-medium"
+    {% if attributes is defined %}{{ attributes|raw }}{% endif %}
 >
     {{ text|default('Submit') }}
 </button>
