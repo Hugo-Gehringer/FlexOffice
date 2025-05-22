@@ -35,9 +35,8 @@ class RegistrationFormType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'choices' => [
-                    'Reserve spaces (Guest)' => 'ROLE_GUEST',
-                    'Create and manage spaces (Host)' => 'ROLE_HOST',
-                    'Administer the entire application (Admin)' => 'ROLE_ADMIN',
+                    ' Guest' => 'ROLE_GUEST',
+                    '  Host' => 'ROLE_HOST',
                 ],
                 'data' => 'ROLE_GUEST', // Default selection
             ])

@@ -1,114 +1,61 @@
 {% extends 'base.html.twig' %}
+{% import 'components/day_availabilty_selector.html.twig' as day_availabilty_selector %}
 
 {% block title %}Add New Space{% endblock %}
 
 {% block content %}
-            <div class="container mx-auto max-w-3xl">
-                <div class="mb-6">
-                    <a href="{{ path('app_space_index') }}" class="text-blue-600 hover:underline flex items-center">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div class="space-container">
+                <div>
+                    <a href="{{ path('app_space_index') }}" class="space-back-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
                         Back to Spaces
                     </a>
                 </div>
 
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                    <div class="p-6">
-                        <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Add New Space</h1>
+                <div class="form-container">
+                        <h1 class="space-title">Add New Space</h1>
 
                         {{ form_start(space_form, {
                             'attr': {
-                                'class': 'space-y-6',
+                                'class': 'space-form',
                                 'data-turbo': true
                             },
                             'method': 'POST'
                         }) }}
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="md:col-span-2">
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.name, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.name, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                            <div class="space-form-grid">
+                                <div class="space-form-full-width">
+                                    <div class="space-form-group">
+                                        {{ form_label(space_form.name, null, {'label_attr': {'class': 'space-form-label'}}) }}
+                                        <div class="input-container">
+                                            {{ form_widget(space_form.name, {'attr': {'class': 'space-form-input'}}) }}
+                                        </div>
+                                        {{ form_errors(space_form.name, {'attr': {'class': 'space-form-error'}}) }}
                                     </div>
                                 </div>
-
-                                <div class="md:col-span-2">
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.description, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.description, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', 'rows': 4}}) }}
-                                        {{ form_errors(space_form.description, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                                <div class="space-form-full-width">
+                                    <div class="space-form-group">
+                                        {{ form_label(space_form.description, null, {'label_attr': {'class': 'space-form-label'}}) }}
+                                        <div class="input-container">
+                                            {{ form_widget(space_form.description, {'attr': {'class': 'space-form-textarea', 'rows': 4}}) }}
+                                        </div>
+                                        {{ form_errors(space_form.description, {'attr': {'class': 'space-form-error'}}) }}
                                     </div>
                                 </div>
-
-                                <div class="md:col-span-2">
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.plan, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.plan, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.plan, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
-                                </div>
-
-                                <div class="md:col-span-2">
-                                    <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Address Information</h2>
-                                </div>
-
-                                <div class="md:col-span-2">
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.address.street, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.address.street, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.address.street, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.address.city, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.address.city, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.address.city, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.address.postalCode, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.address.postalCode, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.address.postalCode, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.address.country, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.address.country, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.address.country, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.address.latitude, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.address.latitude, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.address.latitude, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="mb-4">
-                                        {{ form_label(space_form.address.longitude, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                                        {{ form_widget(space_form.address.longitude, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}}) }}
-                                        {{ form_errors(space_form.address.longitude, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                                    </div>
+                                {% include 'adress/address_form.html.twig' with {'address': space_form.address} %}
+                                <div class="space-form-full-width space-availability">
+                                    {{ day_availabilty_selector.render_day_availabilty_selector(space_form.availability, 'Disponibilité de l\'espace') }}
                                 </div>
                             </div>
-
-                            <div class="flex justify-end">
-                                <button type="submit" class="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors font-medium shadow-md border border-green-700 dark:border-green-600">
+                            <div class="space-form-actions">
+                                <a href="{{ path('app_space_index') }}" class="space-btn-secondary">Cancel</a>
+                                <button type="submit" class="space-btn-primary space-btn-create">
                                     Create Space
                                 </button>
                             </div>
+                        {{ form_errors(space_form) }}
                         {{ form_end(space_form) }}
-                    </div>
                 </div>
             </div>
 {% endblock %}

@@ -1,20 +1,20 @@
 {% if label is defined %}
-    {{ form_label(element, label, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+    {{ form_label(element, label, {'label_attr': {'class': 'form-label'}}) }}
 {% else %}
-    {{ form_label(element, null, {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+    {{ form_label(element, null, {'label_attr': {'class': 'form-label'}}) }}
 {% endif %}
-<div class="flex space-x-6">
+<div class="form-radio-container">
     {% for child in element %}
-        <div class="flex items-center">
+        <div class="form-radio-item">
             <div class="flex items-center h-5">
                 {{ form_widget(child, {'attr': {
-                    'class': 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                    'class': 'form-radio-input'
                 }}) }}
             </div>
-            <div class="ml-2 text-sm">
-                {{ form_label(child, null, {'label_attr': {'class': 'font-medium text-gray-900 dark:text-gray-300'}}) }}
+            <div class="form-radio-label">
+                {{ form_label(child, null, {'label_attr': {'class': 'font-medium'}}) }}
             </div>
         </div>
     {% endfor %}
 </div>
-{{ form_errors(element, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+{{ form_errors(element, {'attr': {'class': 'form-error'}}) }}

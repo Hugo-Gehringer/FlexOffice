@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Address;
+use App\Entity\Availability;
 use App\Entity\Space;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -46,13 +47,15 @@ class SpaceFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plan', TextType::class, [
-                'label' => 'Floor Plan (optional)',
-                'required' => false,
-            ])
+
             ->add('address', AddressFormType::class, [
                 'label' => false,
                 'required' => true,
+                'by_reference' => false,
+            ])
+            ->add('availability', AvailabilityFormType::class, [
+                'label' => 'Disponibilité de l\'espace',
+                'required' => false,
                 'by_reference' => false,
             ]);
     }

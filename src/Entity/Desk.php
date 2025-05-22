@@ -50,10 +50,13 @@ class Desk
     #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'desks')]
     private Collection $equipments;
 
+
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
         $this->equipments = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -197,5 +200,13 @@ class Desk
         $this->equipments->removeElement($equipment);
 
         return $this;
+    }
+
+    /**
+     * Get the availability from the parent space
+     */
+    public function getAvailability(): ?Availability
+    {
+        return $this->space ? $this->space->getAvailability() : null;
     }
 }

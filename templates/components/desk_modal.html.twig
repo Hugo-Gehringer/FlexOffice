@@ -71,6 +71,18 @@
                                 </div>
                             </div>
 
+                            <div class="md:col-span-2 mt-4">
+                                <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                        </svg>
+                                        <span class="font-medium">Information</span>
+                                    </div>
+                                    <div class="mt-2">Ce bureau suivra automatiquement les disponibilités de l'espace auquel il appartient.</div>
+                                </div>
+                            </div>
+
                             {# Equipment section removed to make the modal more compact #}
                             {{ form_widget(desk_form.equipments, {'attr': {'class': 'hidden'}}) }}
                         </div>

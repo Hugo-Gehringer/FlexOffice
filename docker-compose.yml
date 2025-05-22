@@ -1,0 +1,61 @@
+services:
+  database:
+    container_name: database
+    image: yobasystems/alpine-mariadb:10.11.2-aarch64
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+      MYSQL_DATABASE: flexoffice
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - '4306:3306'
+    volumes:
+      - ./.docker/db:/var/lib/mysql
+    networks:
+      - app-network
+
+  php:
+    container_name: php
+    build:
+      context: .docker/php
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./.docker/php/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./.docker/etc/ssl:/etc/ssl
+      - ./:/var/www
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  phpma:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: database
+      PMA_USER: root
+      PMA_PASSWORD: pwd
+      UPLOAD_LIMIT: 20M
+    ports:
+      - "8899:80"
+    networks:
+      - app-network
+
+  mailhog:
+    build:
+      context: .docker/mailhog
+    container_name: mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge

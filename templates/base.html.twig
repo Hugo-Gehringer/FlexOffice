@@ -10,6 +10,14 @@
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Initialize Flowbite
+                    if (typeof window.initFlowbite === 'function') {
+                        window.initFlowbite();
+                    }
+                });
+            </script>
         {% endblock %}
     </head>
     <body data-controller="flowbite">

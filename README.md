@@ -4,6 +4,178 @@
 
 FlexOffice est une application de gestion d'espaces de travail flexibles permettant aux utilisateurs de réserver des bureaux dans différents espaces. L'application propose différentes fonctionnalités selon le rôle de l'utilisateur.
 
+## Installation et Commandes
+
+### Prérequis
+
+- Docker et Docker Compose
+- Git
+- Make (optionnel, pour utiliser les commandes du Makefile)
+
+### Installation
+
+1. **Cloner le dépôt**
+
+```bash
+git clone <url-du-dépôt>
+cd FlexOffice
+```
+
+2. **Démarrer les conteneurs Docker**
+
+```bash
+docker-compose up -d
+```
+
+3. **Installer les dépendances**
+
+```bash
+# Avec Make
+make composer-install
+make npm-install
+
+# Sans Make
+docker-compose exec php composer install
+docker-compose exec php npm install
+```
+
+4. **Configurer la base de données**
+
+```bash
+# Avec Make
+make db-migrate
+make db-load-fixtures
+
+# Sans Make
+docker-compose exec php php bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec php php bin/console doctrine:fixtures:load --no-interaction
+```
+
+5. **Compiler les assets**
+
+```bash
+# Avec Make
+make npm-build
+
+# Sans Make
+docker-compose exec php npm run build
+docker-compose exec php php bin/console asset-map:compile
+```
+
+### Accès à l'application
+
+Après l'installation, l'application sera disponible aux adresses suivantes :
+
+- Application web : http://localhost:8080
+- PHPMyAdmin : http://localhost:8899 (Utilisateur : root, Mot de passe : pwd)
+- MailHog (pour tester les emails) : http://localhost:8025
+
+### Commandes de développement
+
+#### Commandes Docker
+
+```bash
+# Démarrer les conteneurs
+docker-compose up -d
+
+# Arrêter les conteneurs
+docker-compose down
+
+# Voir les logs
+docker-compose logs -f
+```
+
+#### Commandes Symfony
+
+```bash
+# Avec Make
+make sf cmd="cache:clear"
+make sf cmd="debug:router"
+make sf cmd="make:entity"
+make sf cmd="make:controller"
+make sf cmd="make:migration"
+make sf cmd="make:form"
+
+# Sans Make
+docker-compose exec php php bin/console cache:clear
+docker-compose exec php php bin/console debug:router
+docker-compose exec php php bin/console make:entity
+docker-compose exec php php bin/console make:controller
+docker-compose exec php php bin/console make:migration
+docker-compose exec php php bin/console make:form
+```
+
+#### Commandes de base de données
+
+```bash
+# Créer une migration
+make db-make-migration
+# ou
+docker-compose exec php php bin/console make:migration
+
+# Exécuter les migrations
+make db-migrate
+# ou
+docker-compose exec php php bin/console doctrine:migrations:migrate
+
+# Générer un diff de migration
+make db-diff
+# ou
+docker-compose exec php php bin/console doctrine:migrations:diff
+
+# Charger les fixtures
+make db-load-fixtures
+# ou
+docker-compose exec php php bin/console doctrine:fixtures:load
+```
+
+#### Commandes de cache
+
+```bash
+# Vider le cache
+make cache-clear
+# ou
+docker-compose exec php php bin/console cache:clear
+```
+
+#### Commandes Composer
+
+```bash
+# Installer les dépendances
+make composer-install
+# ou
+docker-compose exec php composer install
+
+# Mettre à jour les dépendances
+make composer-update
+# ou
+docker-compose exec php composer update
+```
+
+#### Commandes NPM
+
+```bash
+# Installer les dépendances NPM
+make npm-install
+# ou
+docker-compose exec php npm install
+
+# Compiler les assets
+make npm-build
+# ou
+docker-compose exec php npm run build
+```
+
+#### Commandes d'assets
+
+```bash
+# Compiler les assets
+docker-compose exec php php bin/console asset-map:compile
+
+# Supprimer les assets compilés et recompiler
+docker-compose exec php rm -rf public/assets && php bin/console asset-map:compile
+```
+
 ## Rôles Utilisateurs
 
 L'application dispose de trois rôles principaux :

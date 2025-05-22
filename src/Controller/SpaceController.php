@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Address;
+use App\Entity\Availability;
 use App\Entity\Space;
+use App\Form\AvailabilityFormType;
 use App\Form\SpaceFormType;
+use App\Repository\AvailabilityRepository;
 use App\Repository\SpaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Flasher\Prime\FlasherInterface;
@@ -50,6 +53,9 @@ class SpaceController extends AbstractController
             // Make sure the address is properly linked to the space
             $address = $space->getAddress();
 
+            // L'availability est maintenant gérée automatiquement par le formulaire
+            // grâce au by_reference = false
+
             // Persist the address first
             $entityManager->persist($address);
             // Then persist the space
@@ -88,14 +94,18 @@ class SpaceController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_space_show', methods: ['GET'])]
-    public function show(Space $space): Response
+    public function show(Space $space, AvailabilityRepository $availabilityRepository): Response
     {
         // Ensure user is authenticated
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        flash()->success('Your space has been created successfully!');
+
+        // Get availability for this space
+        $availability = $space->getAvailability();
+
         return $this->render('space/show.html.twig', [
             'space' => $space,
             'desks' => $space->getDesks(),
+            'availability' => $availability,
             'currentUser' => $this->getUser(),
         ]);
     }

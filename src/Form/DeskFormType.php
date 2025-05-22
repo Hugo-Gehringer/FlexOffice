@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Availability;
 use App\Entity\Desk;
 use App\Entity\Equipment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -51,7 +52,7 @@ class DeskFormType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Length([
                         'min' => 1,
@@ -100,6 +101,7 @@ class DeskFormType extends AbstractType
                 'expanded' => true,
                 'required' => false,
             ]);
+            // Removed availability field as desks now use their parent space's availability
     }
 
     public function configureOptions(OptionsResolver $resolver): void

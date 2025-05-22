@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Availability;
 use App\Entity\Desk;
 use App\Entity\Space;
+use App\Form\AvailabilityFormType;
 use App\Form\DeskFormType;
+use App\Repository\AvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Flasher\Prime\FlasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,6 +44,9 @@ class DeskController extends AbstractController
 
             if ($form->isValid()) {
                 flash()->info('Form is valid');
+
+                // Desks now use the availability of their parent space
+                // No need to set availability for desks
 
                 // Form is valid, save the desk
                 $entityManager->persist($desk);

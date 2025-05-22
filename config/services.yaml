@@ -9,6 +9,9 @@ imports:
     - { resource: services/*.yaml }
 
 services:
+    App\Security\CustomAuthenticationSuccessHandler:
+        arguments:
+            $router: '@router'
     Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator:
         alias: security.authenticator.form_login.main
     # default configuration for services in *this* file
