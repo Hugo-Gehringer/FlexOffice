@@ -2,14 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Availability;
 use App\Entity\Desk;
 use App\Entity\Space;
-use App\Form\AvailabilityFormType;
 use App\Form\DeskFormType;
-use App\Repository\AvailabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Flasher\Prime\FlasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +14,19 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/desk')]
 class DeskController extends AbstractController
 {
+    #[Route('/{id}', name: 'app_desk_show', methods: ['GET'])]
+    public function show(Request $request, Desk $desk): Response
+    {
+        // Ensure user is authenticated
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render('desk/show.html.twig', [
+            'desk' => $desk,
+            'space' => $desk->getSpace(),
+            'currentUser' => $this->getUser(),
+        ]);
+    }
+
     #[Route('/new/{id}', name: 'app_desk_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Space $space, EntityManagerInterface $entityManager): Response
     {

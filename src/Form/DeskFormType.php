@@ -10,7 +10,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,13 +41,7 @@ class DeskFormType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'label' => 'Desk Type',
                 'required' => true,
-                'choices' => [
-                    'Standard Desk' => 0,
-                    'Standing Desk' => 1,
-                    'Private Office' => 2,
-                    'Meeting Room' => 3,
-                    'Conference Room' => 4,
-                ],
+                'choices' => array_flip(Desk::DESK_TYPES),
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',

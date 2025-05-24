@@ -24,6 +24,7 @@ services:
     volumes:
       - ./.docker/php/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./.docker/etc/ssl:/etc/ssl
+      - ./assets:/app/assets
       - ./:/var/www
     depends_on:
       - database
