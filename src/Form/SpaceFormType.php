@@ -54,7 +54,7 @@ class SpaceFormType extends AbstractType
                 'by_reference' => false,
             ])
             ->add('availability', AvailabilityFormType::class, [
-                'label' => 'Disponibilité de l\'espace',
+                'label' => ' ',
                 'required' => false,
                 'by_reference' => false,
             ]);

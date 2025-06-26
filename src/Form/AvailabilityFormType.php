@@ -56,22 +56,6 @@ class AvailabilityFormType extends AbstractType
                 'required' => false,
                 'label_attr' => ['class' => 'sr-only'],
                 'attr' => ['class' => 'hidden peer'],
-            ])
-            ->add('openingTime', TimeType::class, [
-                'label' => 'Heure d\'ouverture',
-                'widget' => 'single_text',
-                'input' => 'datetime',
-                'required' => false,
-                'label_attr' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
-                'attr' => ['class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'],
-            ])
-            ->add('closingTime', TimeType::class, [
-                'label' => 'Heure de fermeture',
-                'widget' => 'single_text',
-                'input' => 'datetime',
-                'required' => false,
-                'label_attr' => ['class' => 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'],
-                'attr' => ['class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'],
             ]);
     }
 
