@@ -18,18 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
-      id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.5.0
-        with:
-          cosign-release: 'v2.2.4'
 
       - name: Log in to Docker Hub
         if: github.event_name != 'pull_request'
@@ -47,19 +39,12 @@ jobs:
       - name: Build with Docker Compose
         run: docker compose -f docker-compose.yml build
 
-      - name: Tag image
-        run: |
-          IMAGE_ID=$(docker compose -f docker-compose.yml images -q)
-          docker tag $IMAGE_ID ${{ steps.meta.outputs.tags }}
-
-      - name: Push Docker image
+      - name: Tag and push image
         if: github.event_name != 'pull_request'
-        run: docker push ${{ steps.meta.outputs.tags }}
-
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
         run: |
-          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ steps.meta.outputs.tags }} | cut -d'@' -f2)
-          echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${IMAGE_DIGEST}
+          SERVICE_NAME=$(docker compose -f docker-compose.yml config --services | head -n1)
+          IMAGE_ID=$(docker compose -f docker-compose.yml images -q $SERVICE_NAME)
+          echo "${{ steps.meta.outputs.tags }}" | while read tag; do
+            docker tag $IMAGE_ID $tag
+            docker push $tag
+          done
