@@ -47,6 +47,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: Build image with Docker Compose
+        run: docker compose -f docker-compose.yml build
+
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
