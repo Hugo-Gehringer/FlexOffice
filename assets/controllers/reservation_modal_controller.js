@@ -1,5 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { initFlowbite } from 'flowbite';
+import {Datepicker } from 'flowbite-datepicker';
+
 
 export default class extends Controller {
     static values = { bookedDates: Array }
@@ -14,6 +16,17 @@ export default class extends Controller {
             this.form.addEventListener('submit', this.handleFormSubmit.bind(this));
         } else {
             console.error('Form not found in modal');
+        }
+
+        const datepickerEl = document.getElementById(`datepicker-inline-${this.deskId}`);
+        if (datepickerEl) {
+            datepickerEl.innerHTML = '';
+            new Datepicker(datepickerEl, {
+                format: 'yyyy-mm-dd',
+                datesDisabled: this.bookedDatesValue || [],
+                daysOfWeekDisabled: [0, 6],
+                weekStart: 1,
+            });
         }
     }
 
@@ -69,20 +82,20 @@ export default class extends Controller {
         };
 
         // Initialize flatpickr
-        calendarContainer.innerHTML = `<div id="flatpickr-calendar-${this.deskId}"></div>`;
-        flatpickr(`#flatpickr-calendar-${this.deskId}`, {
-            dateFormat: 'Y-m-d',
-            minDate: 'today',
-            inline: true,
-            static: true,
-            disableMobile: true,
-            enableTime: false,
-            time_24hr: false,
-            disable: [isDateDisabled],
-            onChange: (selectedDates, dateStr, instance) => {
-                // Ensure we use the dateStr directly to avoid timezone issues
-                dateInput.value = dateStr;
-            }
-        });
+        // calendarContainer.innerHTML = `<div id="flatpickr-calendar-${this.deskId}"></div>`;
+        // flatpickr(`#flatpickr-calendar-${this.deskId}`, {
+        //     dateFormat: 'Y-m-d',
+        //     minDate: 'today',
+        //     inline: true,
+        //     static: true,
+        //     disableMobile: true,
+        //     enableTime: false,
+        //     time_24hr: false,
+        //     disable: [isDateDisabled],
+        //     onChange: (selectedDates, dateStr, instance) => {
+        //         // Ensure we use the dateStr directly to avoid timezone issues
+        //         dateInput.value = dateStr;
+        //     }
+        // });
     }
 }

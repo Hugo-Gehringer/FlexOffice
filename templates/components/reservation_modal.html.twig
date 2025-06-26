@@ -25,16 +25,17 @@
                         <input type="hidden" name="turbo" value="1">
                         <div class="mb-4">
                             <label for="reservation_date_{{ desk.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionnez une date</label>
-                            <div id="calendar-container-{{ desk.id }}" class="mb-4"></div>
-                            <input type="hidden" id="reservation_date_{{ desk.id }}" name="reservation_form[reservationDate]"
-                                   data-monday="{{ desk.space.availability.isMonday ? '1' : '0' }}"
-                                   data-tuesday="{{ desk.space.availability.isTuesday ? '1' : '0' }}"
-                                   data-wednesday="{{ desk.space.availability.isWednesday ? '1' : '0' }}"
-                                   data-thursday="{{ desk.space.availability.isThursday ? '1' : '0' }}"
-                                   data-friday="{{ desk.space.availability.isFriday ? '1' : '0' }}"
-                                   data-saturday="{{ desk.space.availability.isSaturday ? '1' : '0' }}"
-                                   data-sunday="{{ desk.space.availability.isSunday ? '1' : '0' }}"
-                                   required>
+{#                            <div id="calendar-container-{{ desk.id }}" class="mb-4"></div>#}
+{#                            <input type="hidden" id="reservation_date_{{ desk.id }}" name="reservation_form[reservationDate]"#}
+{#                                   data-monday="{{ desk.space.availability.isMonday ? '1' : '0' }}"#}
+{#                                   data-tuesday="{{ desk.space.availability.isTuesday ? '1' : '0' }}"#}
+{#                                   data-wednesday="{{ desk.space.availability.isWednesday ? '1' : '0' }}"#}
+{#                                   data-thursday="{{ desk.space.availability.isThursday ? '1' : '0' }}"#}
+{#                                   data-friday="{{ desk.space.availability.isFriday ? '1' : '0' }}"#}
+{#                                   data-saturday="{{ desk.space.availability.isSaturday ? '1' : '0' }}"#}
+{#                                   data-sunday="{{ desk.space.availability.isSunday ? '1' : '0' }}"#}
+{#                                   required>#}
+                            <div id="datepicker-inline-{{ desk.id }}" inline-datepicker data-date="2025-05-24"></div>
                         </div>
                         <div class="flex justify-end items-center pt-4 pb-3 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-600">
                             <button type="button" class="text-gray-500 bg-white hover:bg-gray-100 rounded-lg border text-sm font-medium px-5 py-2.5" data-modal-hide="reservationModal-{{ desk.id }}">Annuler</button>
