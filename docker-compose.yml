@@ -18,6 +18,7 @@ services:
     container_name: php
     build:
       context: .docker/php
+    image: ${DOCKERHUB_USERNAME}/flexoffice-php:latest
     ports:
       - "8080:80"
       - "8443:443"
@@ -48,14 +49,14 @@ services:
   mailhog:
     build:
       context: .docker/mailhog
+    image: ${DOCKERHUB_USERNAME}/flexoffice-mailhog:latest
     container_name: mailhog
     restart: unless-stopped
     ports:
-      - "1025:1025" # SMTP
-      - "8025:8025" # Web UI
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - app-network
-
 
 networks:
   app-network:

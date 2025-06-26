@@ -29,9 +29,9 @@ jobs:
 
       - name: Build with Docker Compose
         run: |
-          docker compose build
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} docker compose build
 
       - name: Push images with Docker Compose
         if: github.event_name != 'pull_request'
         run: |
-          docker-compose push
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} docker compose push
