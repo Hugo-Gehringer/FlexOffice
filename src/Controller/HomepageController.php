@@ -20,9 +20,16 @@ final class HomepageController extends AbstractController
     #[Route('/', name: 'app_homepage')]
     public function index(): Response
     {
+        $user = $this->getUser();
+
+        // If the user is an admin, redirect to the admin dashboard
+        if ($user && $this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin_dashboard');
+        }
+
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
-            'currentUser' => $this->getUser(),
+            'currentUser' => $user,
         ]);
     }
 }

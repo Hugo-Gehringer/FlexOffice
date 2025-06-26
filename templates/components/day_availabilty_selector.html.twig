@@ -1,0 +1,101 @@
+{#
+   Composant Twig réutilisable pour le sélecteur de jours
+
+   Ce composant permet d'afficher un sélecteur de jours de la semaine
+   pour les formulaires de disponibilité.
+
+   Utilisation:
+   {% import 'components/day_selector.html.twig' as day_selector %}
+   {{ day_selector.render_day_selector(form.availability) }}
+#}
+
+{% macro render_day_availabilty_selector(form, title) %}
+    <div class="availability-widget" id="availability-widget-{{ form.vars.id }}">
+        <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">{{ title|default('Disponibilité') }}</h4>
+
+        {# Jours de la semaine #}
+        <div class="grid grid-cols-7 gap-3 mb-4">
+            {% set days = {
+                'monday': 'Lun',
+                'tuesday': 'Mar',
+                'wednesday': 'Mer',
+                'thursday': 'Jeu',
+                'friday': 'Ven',
+                'saturday': 'Sam',
+                'sunday': 'Dim'
+            } %}
+
+
+            {% for day_key, day_label in days %}
+                {% set field = attribute(form, day_key) %}
+                <div class="day-selector-item">
+                    <input type="checkbox" id="{{ field.vars.id }}" name="{{ field.vars.full_name }}"
+                           value="1" {% if field.vars.checked %}checked="checked"{% endif %} class="hidden peer">
+                    <label for="{{ field.vars.id }}" class="flex flex-col items-center w-full cursor-pointer">
+                        <div class="flex items-center justify-center w-12 h-12 mb-1 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 peer-checked:bg-blue-100 peer-checked:text-blue-600 dark:peer-checked:bg-blue-900 dark:peer-checked:text-blue-500 hover:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 transition-all duration-200 shadow-sm hover:shadow font-medium text-lg">
+                            {{ day_label|slice(0, 1) }}
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 peer-checked:text-blue-600 dark:peer-checked:text-blue-300">{{ day_label }}</span>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# Heures d'ouverture et de fermeture #}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                {{ form_label(form.openingTime, 'Heure d\'ouverture', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                {{ form_widget(form.openingTime, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', 'value': form.vars.value ? form.vars.value.openingTime ? form.vars.value.openingTime|date('H:i') : '09:00' : '09:00'}}) }}
+            </div>
+            <div>
+                {{ form_label(form.closingTime, 'Heure de fermeture', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                {{ form_widget(form.closingTime, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', 'value': form.vars.value ? form.vars.value.closingTime ? form.vars.value.closingTime|date('H:i') : '18:00' : '18:00'}}) }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('availability-widget-{{ form.vars.id }}');
+            if (!container) return;
+
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+
+            checkboxes.forEach(checkbox => {
+                // Appliquer les styles initiaux
+                updateLabelStyle(checkbox);
+
+                // Ajouter un écouteur d'événement pour les changements
+                checkbox.addEventListener('change', function() {
+                    updateLabelStyle(this);
+                });
+            });
+
+            function updateLabelStyle(checkbox) {
+                const label = document.querySelector(`label[for="${checkbox.id}"]`);
+                if (!label) return;
+
+                const dayCircle = label.querySelector('div');
+                const dayText = label.querySelector('span');
+
+                if (checkbox.checked) {
+                    // Mettre à jour le cercle du jour
+                    dayCircle.classList.add('bg-blue-100', 'text-blue-600', 'border-blue-600', 'font-bold');
+                    dayCircle.classList.remove('bg-white', 'text-gray-500', 'border-gray-200');
+
+                    // Mettre à jour le texte du jour
+                    dayText.classList.add('text-blue-600', 'font-medium');
+                    dayText.classList.remove('text-gray-500');
+                } else {
+                    // Réinitialiser le cercle du jour
+                    dayCircle.classList.remove('bg-blue-100', 'text-blue-600', 'border-blue-600', 'font-bold');
+                    dayCircle.classList.add('bg-white', 'text-gray-500', 'border-gray-200');
+
+                    // Réinitialiser le texte du jour
+                    dayText.classList.remove('text-blue-600', 'font-medium');
+                    dayText.classList.add('text-gray-500');
+                }
+            }
+        });
+    </script>
+{% endmacro %}

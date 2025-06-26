@@ -1,5 +1,5 @@
 <aside
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-9 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidenav"
         id="drawer-navigation"
 >
@@ -33,9 +33,86 @@
             </div>
         </form>
         <ul class="space-y-2">
+            {% if is_admin() %}
+                <li>
+                    <a
+                            href="{% if is_admin() %}{{ path('app_admin_dashboard') }}{% else %}{{ path('app_homepage') }}{% endif %}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                            <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                        </svg>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if is_guest() %}
+                <li>
+                    <a
+                            href="{{ path('app_space_index') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">Spaces</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if is_host() %}
+                <li>
+                    <a
+                            href="{{ path('app_my_spaces') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            id="my-spaces-link"
+                    >
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">My Spaces</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                            href="{{ path('app_space_new') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">Create Space</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if is_guest() %}
             <li>
                 <a
-                        href="#"
+                        href="{{ path('app_reservation_index') }}"
                         class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
                     <svg
@@ -45,50 +122,61 @@
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="ml-3">Overview</span>
+                    <span class="ml-3">My Reservations</span>
                 </a>
             </li>
+            {% endif %}
+            {% if is_admin() %}
             <li>
-                <button
-                        type="button"
-                        class="flex items-center p-2 w-full text-base font-medium  rounded-lg transition duration-75 group hover:bg-gray-100  dark:hover:bg-gray-700"
-                        aria-controls="dropdown-pages"
-                        data-collapse-toggle="dropdown-pages"
+                <a
+                        href="{{ path('app_admin_users') }}"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
                     <svg
                             aria-hidden="true"
-                            class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path
-                                fill-rule="evenodd"
-                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                                clip-rule="evenodd"
-                        ></path>
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="flex-1 ml-3 text-left whitespace-nowrap"
-                    >Pages</span
-                    >
+                    <span class="ml-3">All Users</span>
+                </a>
+            </li>
+            <li>
+                <a
+                        href="{{ path('app_admin_reservations') }}"
+                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                >
                     <svg
                             aria-hidden="true"
-                            class="w-6 h-6"
+                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path
-                                fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                        ></path>
+                        <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clip-rule="evenodd"></path>
                     </svg>
-                </button>
+                    <span class="ml-3">All Reservations</span>
+                </a>
             </li>
+
+            {% endif %}
         </ul>
     </div>
 </aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mySpacesLink = document.getElementById('my-spaces-link');
+        if (mySpacesLink) {
+            mySpacesLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = '{{ path('app_my_spaces') }}';
+            });
+        }
+    });
+</script>

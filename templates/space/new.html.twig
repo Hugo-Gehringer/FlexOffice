@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% import 'components/day_availabilty_selector.html.twig' as day_availabilty_selector %}
+
+{% block title %}Add New Space{% endblock %}
+
+{% block content %}
+            <div class="space-container">
+                <div>
+                    <a href="{{ path('app_space_index') }}" class="space-back-link">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to Spaces
+                    </a>
+                </div>
+
+                <div class="form-container">
+                        <h1 class="space-title">Add New Space</h1>
+
+                        {{ form_start(space_form, {
+                            'attr': {
+                                'class': 'space-form',
+                                'data-turbo': true
+                            },
+                            'method': 'POST'
+                        }) }}
+                            <div class="space-form-grid">
+                                <div class="space-form-full-width">
+                                    <div class="space-form-group">
+                                        {{ form_label(space_form.name, null, {'label_attr': {'class': 'space-form-label'}}) }}
+                                        <div class="input-container">
+                                            {{ form_widget(space_form.name, {'attr': {'class': 'space-form-input'}}) }}
+                                        </div>
+                                        {{ form_errors(space_form.name, {'attr': {'class': 'space-form-error'}}) }}
+                                    </div>
+                                </div>
+                                <div class="space-form-full-width">
+                                    <div class="space-form-group">
+                                        {{ form_label(space_form.description, null, {'label_attr': {'class': 'space-form-label'}}) }}
+                                        <div class="input-container">
+                                            {{ form_widget(space_form.description, {'attr': {'class': 'space-form-textarea', 'rows': 4}}) }}
+                                        </div>
+                                        {{ form_errors(space_form.description, {'attr': {'class': 'space-form-error'}}) }}
+                                    </div>
+                                </div>
+                                {% include 'adress/address_form.html.twig' with {'address': space_form.address} %}
+                                <div class="space-form-full-width space-availability">
+                                    {{ day_availabilty_selector.render_day_availabilty_selector(space_form.availability, 'Disponibilité de l\'espace') }}
+                                </div>
+                            </div>
+                            <div class="space-form-actions">
+                                <a href="{{ path('app_space_index') }}" class="space-btn-secondary">Cancel</a>
+                                <button type="submit" class="space-btn-primary space-btn-create">
+                                    Create Space
+                                </button>
+                            </div>
+                        {{ form_errors(space_form) }}
+                        {{ form_end(space_form) }}
+                </div>
+            </div>
+{% endblock %}

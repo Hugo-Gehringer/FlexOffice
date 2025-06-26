@@ -19,9 +19,6 @@ class Space
     #[ORM\Column(length: 60)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $plan = null;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
@@ -39,9 +36,16 @@ class Space
     #[ORM\OneToMany(targetEntity: Desk::class, mappedBy: 'space')]
     private Collection $desks;
 
+    /**
+     * @var Availability|null
+     */
+    #[ORM\OneToOne(mappedBy: 'space', targetEntity: Availability::class, cascade: ['persist', 'remove'])]
+    private ?Availability $availability = null;
+
     public function __construct()
     {
         $this->desks = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -57,18 +61,6 @@ class Space
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPlan(): ?string
-    {
-        return $this->plan;
-    }
-
-    public function setPlan(?string $plan): static
-    {
-        $this->plan = $plan;
 
         return $this;
     }
@@ -135,6 +127,28 @@ class Space
                 $desk->setSpace(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvailability(): ?Availability
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(?Availability $availability): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($availability === null && $this->availability !== null) {
+            $this->availability->setSpace(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($availability !== null && $availability->getSpace() !== $this) {
+            $availability->setSpace($this);
+        }
+
+        $this->availability = $availability;
 
         return $this;
     }

@@ -1,0 +1,320 @@
+# FlexOffice - Documentation des Fonctionnalités
+
+## Vue d'ensemble
+
+FlexOffice est une application de gestion d'espaces de travail flexibles permettant aux utilisateurs de réserver des bureaux dans différents espaces. L'application propose différentes fonctionnalités selon le rôle de l'utilisateur.
+
+## Installation et Commandes
+
+### Prérequis
+
+- Docker et Docker Compose
+- Git
+- Make (optionnel, pour utiliser les commandes du Makefile)
+
+### Installation
+
+1. **Cloner le dépôt**
+
+```bash
+git clone <url-du-dépôt>
+cd FlexOffice
+```
+
+2. **Démarrer les conteneurs Docker**
+
+```bash
+docker-compose up -d
+```
+
+3. **Installer les dépendances**
+
+```bash
+# Avec Make
+make composer-install
+make npm-install
+
+# Sans Make
+docker-compose exec php composer install
+docker-compose exec php npm install
+```
+
+4. **Configurer la base de données**
+
+```bash
+# Avec Make
+make db-migrate
+make db-load-fixtures
+
+# Sans Make
+docker-compose exec php php bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec php php bin/console doctrine:fixtures:load --no-interaction
+```
+
+5. **Compiler les assets**
+
+```bash
+# Avec Make
+make npm-build
+
+# Sans Make
+docker-compose exec php npm run build
+docker-compose exec php php bin/console asset-map:compile
+```
+
+### Accès à l'application
+
+Après l'installation, l'application sera disponible aux adresses suivantes :
+
+- Application web : http://localhost:8080
+- PHPMyAdmin : http://localhost:8899 (Utilisateur : root, Mot de passe : pwd)
+- MailHog (pour tester les emails) : http://localhost:8025
+
+### Commandes de développement
+
+#### Commandes Docker
+
+```bash
+# Démarrer les conteneurs
+docker-compose up -d
+
+# Arrêter les conteneurs
+docker-compose down
+
+# Voir les logs
+docker-compose logs -f
+```
+
+#### Commandes Symfony
+
+```bash
+# Avec Make
+make sf cmd="cache:clear"
+make sf cmd="debug:router"
+make sf cmd="make:entity"
+make sf cmd="make:controller"
+make sf cmd="make:migration"
+make sf cmd="make:form"
+
+# Sans Make
+docker-compose exec php php bin/console cache:clear
+docker-compose exec php php bin/console debug:router
+docker-compose exec php php bin/console make:entity
+docker-compose exec php php bin/console make:controller
+docker-compose exec php php bin/console make:migration
+docker-compose exec php php bin/console make:form
+```
+
+#### Commandes de base de données
+
+```bash
+# Créer une migration
+make db-make-migration
+# ou
+docker-compose exec php php bin/console make:migration
+
+# Exécuter les migrations
+make db-migrate
+# ou
+docker-compose exec php php bin/console doctrine:migrations:migrate
+
+# Générer un diff de migration
+make db-diff
+# ou
+docker-compose exec php php bin/console doctrine:migrations:diff
+
+# Charger les fixtures
+make db-load-fixtures
+# ou
+docker-compose exec php php bin/console doctrine:fixtures:load
+```
+
+#### Commandes de cache
+
+```bash
+# Vider le cache
+make cache-clear
+# ou
+docker-compose exec php php bin/console cache:clear
+```
+
+#### Commandes Composer
+
+```bash
+# Installer les dépendances
+make composer-install
+# ou
+docker-compose exec php composer install
+
+# Mettre à jour les dépendances
+make composer-update
+# ou
+docker-compose exec php composer update
+```
+
+#### Commandes NPM
+
+```bash
+# Installer les dépendances NPM
+make npm-install
+# ou
+docker-compose exec php npm install
+
+# Compiler les assets
+make npm-build
+# ou
+docker-compose exec php npm run build
+```
+
+#### Commandes d'assets
+
+```bash
+# Compiler les assets
+docker-compose exec php php bin/console asset-map:compile
+
+# Supprimer les assets compilés et recompiler
+docker-compose exec php rm -rf public/assets && php bin/console asset-map:compile
+```
+
+## Rôles Utilisateurs
+
+L'application dispose de trois rôles principaux :
+
+1. **Invité (Guest)** - Peut réserver des espaces
+2. **Hôte (Host)** - Peut créer et gérer des espaces
+3. **Administrateur (Admin)** - A accès à toutes les pages et opérations CRUD
+
+## Fonctionnalités par Rôle
+
+### Invité (Guest)
+
+Les utilisateurs avec le rôle "Guest" peuvent :
+
+- **Consulter les espaces disponibles**
+  - Voir la liste de tous les espaces disponibles
+  - Consulter les détails d'un espace spécifique
+  - Voir les bureaux disponibles dans chaque espace
+
+- **Gérer les réservations**
+  - Réserver un bureau disponible
+  - Consulter leurs réservations actuelles
+  - Annuler leurs réservations existantes
+  - Voir l'historique de leurs réservations
+
+- **Gérer leur profil**
+  - Modifier leurs informations personnelles
+  - Consulter leur tableau de bord personnel
+
+### Hôte (Host)
+
+Les utilisateurs avec le rôle "Host" disposent de toutes les fonctionnalités des invités, plus :
+
+- **Créer et gérer des espaces**
+  - Créer de nouveaux espaces de travail
+  - Ajouter des informations détaillées (nom, description, adresse)
+  - Modifier les informations des espaces existants
+  - Consulter la liste de leurs espaces
+
+- **Gérer les bureaux**
+  - Ajouter des bureaux à leurs espaces
+  - Définir les caractéristiques des bureaux (type, capacité, description)
+  - Modifier les informations des bureaux existants
+  - Supprimer des bureaux
+
+- **Suivre les réservations**
+  - Voir les réservations pour leurs espaces
+  - Consulter les statistiques d'occupation
+
+### Administrateur (Admin)
+
+Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités de l'application, y compris :
+
+- **Gestion complète des utilisateurs**
+  - Voir tous les utilisateurs enregistrés
+  - Modifier les informations des utilisateurs
+  - Changer les rôles des utilisateurs
+  - Désactiver/activer des comptes
+
+- **Gestion complète des espaces**
+  - Accéder à tous les espaces, quel que soit le propriétaire
+  - Modifier ou supprimer n'importe quel espace
+  - Approuver les nouveaux espaces (si nécessaire)
+
+- **Gestion complète des réservations**
+  - Voir toutes les réservations
+  - Modifier ou annuler n'importe quelle réservation
+  - Générer des rapports sur l'utilisation
+
+- **Tableau de bord administrateur**
+  - Voir les statistiques globales (nombre d'utilisateurs, d'espaces, de réservations)
+  - Accéder aux journaux d'activité
+  - Gérer les paramètres de l'application
+
+## Fonctionnalités Techniques
+
+### Interface Utilisateur
+
+- **Design Responsive**
+  - Interface adaptée aux mobiles, tablettes et ordinateurs
+  - Utilisation de Flowbite comme bibliothèque de composants
+
+- **Thème Sombre/Clair**
+  - Support du mode sombre pour une meilleure expérience utilisateur
+
+- **Notifications**
+  - Système de notifications flash pour informer l'utilisateur
+  - Messages de succès, d'erreur, d'avertissement et d'information
+
+### Formulaires et Modales
+
+- **Formulaires Interactifs**
+  - Validation côté client et serveur
+  - Feedback instantané sur les erreurs
+
+- **Modales Turbo**
+  - Utilisation de modales pour les formulaires (création d'espace, ajout de bureau)
+  - Expérience utilisateur fluide sans rechargement de page
+
+### Sécurité
+
+- **Authentification**
+  - Système de connexion sécurisé
+  - Vérification d'email
+  - Protection CSRF
+
+- **Contrôle d'Accès**
+  - Restrictions basées sur les rôles
+  - Protection des routes sensibles
+
+## Architecture Technique
+
+- **Framework**
+  - Symfony 7.2
+  - PHP 8.2+
+
+- **Frontend**
+  - Twig pour les templates
+  - Stimulus pour les interactions JavaScript
+  - Turbo pour les mises à jour partielles de page
+  - Tailwind CSS pour le style
+
+- **Base de Données**
+  - Doctrine ORM
+  - Migrations pour la gestion des schémas
+
+- **Autres Fonctionnalités**
+  - Système de notifications avec php-flasher/flasher-symfony
+  - Composants réutilisables avec Twig Components
+  - Intégration de Flowbite pour les composants UI
+
+## Entités Principales
+
+1. **User** - Informations sur les utilisateurs et leurs rôles
+2. **Space** - Espaces de travail disponibles à la réservation
+3. **Desk** - Bureaux individuels dans les espaces
+4. **Address** - Adresses associées aux espaces
+5. **Reservation** - Réservations des bureaux par les utilisateurs
+
+## Conclusion
+
+FlexOffice offre une solution complète pour la gestion d'espaces de travail flexibles, avec des fonctionnalités adaptées à chaque type d'utilisateur. L'architecture technique moderne permet une expérience utilisateur fluide et réactive, tout en maintenant un haut niveau de sécurité et de performance.

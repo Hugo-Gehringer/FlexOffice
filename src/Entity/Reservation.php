@@ -9,6 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
+    const STATUS_PENDING = 0;
+    const STATUS_CONFIRMED = 1;
+    const STATUS_CANCELLED = 2;
+
+    const RESERVATION_STATUSES = [
+        Reservation::STATUS_PENDING => ' Pending',
+        Reservation::STATUS_CONFIRMED => ' Confirmed',
+        Reservation::STATUS_CANCELLED => ' Canceled',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

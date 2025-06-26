@@ -11,6 +11,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: DeskRepository::class)]
 class Desk
 {
+    const DESK_TYPE_STANDARD = 0;
+    const DESK_TYPE_PRIVATE_OFFICE = 1;
+    const DESK_TYPE_MEETING_ROOM = 2;
+    const DESK_TYPE_CONFERENCE_ROOM = 3;
+
+    const DESK_TYPES = [
+        Desk::DESK_TYPE_STANDARD => 'Standard Desk',
+        Desk::DESK_TYPE_PRIVATE_OFFICE => 'Private Office',
+        Desk::DESK_TYPE_MEETING_ROOM => 'Meeting Room',
+        Desk::DESK_TYPE_CONFERENCE_ROOM => 'Conference Room',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -50,10 +62,13 @@ class Desk
     #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'desks')]
     private Collection $equipments;
 
+
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
         $this->equipments = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -197,5 +212,13 @@ class Desk
         $this->equipments->removeElement($equipment);
 
         return $this;
+    }
+
+    /**
+     * Get the availability from the parent space
+     */
+    public function getAvailability(): ?Availability
+    {
+        return $this->space ? $this->space->getAvailability() : null;
     }
 }

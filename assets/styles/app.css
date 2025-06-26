@@ -23,8 +23,268 @@ body {
     border-color: var(--border-color);
 }
 
-/* Remove any .bg-primary-600 custom definitions */
-
+/* Form styles */
 .input-field {
     @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.form-group {
+    @apply mb-4;
+}
+
+.form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+}
+
+.form-error {
+    @apply text-red-500 text-sm mt-1;
+}
+
+.form-radio-container {
+    @apply flex justify-center space-x-6 py-2;
+}
+
+.form-radio-item {
+    @apply flex items-center;
+}
+
+.form-radio-input {
+    @apply w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+}
+
+.form-radio-label {
+    @apply ml-2 text-sm font-medium text-gray-900 dark:text-gray-300;
+}
+
+/* Flasher container styles */
+.flasher-container {
+    position: fixed;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    max-width: 20rem;
+}
+
+/* Position the container below the header */
+.flasher-container.flasher-top-right {
+    top: 6rem; /* 24px in rem units */
+    right: 1rem;
+}
+
+/* Animation for notifications */
+.flasher-notification {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.flasher-notification.flasher-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.flasher-notification.flasher-hide {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+/* Progress bar animation */
+@keyframes flasher-progress {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+
+.flasher-notification-progress {
+    animation-name: flasher-progress;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+/* Space styles */
+.space-container {
+    @apply container mx-auto max-w-3xl;
+}
+
+.space-back-link {
+    @apply text-blue-600 hover:underline flex items-center mb-6;
+}
+
+.space-back-link svg {
+    @apply w-4 h-4 mr-1;
+}
+
+.space-title {
+    @apply text-2xl font-bold mb-6 text-gray-900 dark:text-white;
+}
+
+.space-form {
+    @apply space-y-6;
+}
+
+.space-form-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+.space-form-full-width {
+    @apply md:col-span-2;
+}
+
+.space-form-group {
+    @apply mb-4;
+}
+
+.space-form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+}
+
+.space-form-input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.space-form-textarea {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.space-form-error {
+    @apply text-red-500 text-sm mt-1;
+}
+
+.space-form-actions {
+    @apply flex justify-end space-x-4 mt-6;
+}
+
+.space-btn-primary {
+    @apply text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
+}
+
+.space-btn-secondary {
+    @apply py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700;
+}
+
+.space-btn-create {
+    @apply bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 border border-green-700 dark:border-green-600;
+}
+
+.space-availability {
+    @apply mt-6;
+}
+
+/* Address styles */
+.address-container {
+    @apply md:col-span-2;
+}
+
+.address-title {
+    @apply text-xl font-semibold mb-4 text-gray-900 dark:text-white;
+}
+
+.address-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-2;
+}
+
+.address-form-group {
+    @apply mb-4;
+}
+
+.address-form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+}
+
+.address-form-input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.address-form-error {
+    @apply text-red-500 text-sm mt-1;
+}
+
+.address-coordinates-container {
+    @apply mt-4;
+}
+
+.address-coordinates-title {
+    @apply text-sm font-medium text-gray-700 dark:text-gray-300 mb-2;
+}
+
+/* Header styles */
+.header-container {
+    @apply bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-10;
+}
+
+.header-content {
+    @apply flex flex-wrap justify-between items-center;
+}
+
+.header-left {
+    @apply flex justify-start items-center;
+}
+
+.header-right {
+    @apply flex items-center lg:order-2;
+}
+
+.header-logo {
+    @apply self-center text-2xl font-semibold whitespace-nowrap w-56;
+}
+
+.header-search-form {
+    @apply hidden md:block md:pl-2;
+}
+
+.header-search-container {
+    @apply relative md:w-64 md:w-96;
+}
+
+.header-search-icon {
+    @apply flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none;
+}
+
+.header-search-input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500;
+}
+
+.header-toggle-sidebar {
+    @apply p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white;
+}
+
+.header-toggle-search {
+    @apply p-2 mr-1 text-gray-500 rounded-lg md:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600;
+}
+
+.header-user-menu {
+    @apply flex mx-3 text-sm md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-full;
+}
+
+.header-user-avatar {
+    @apply relative w-8 h-8 overflow-hidden bg-primary-600 rounded-full;
+}
+
+.header-user-initials {
+    @apply flex w-full h-full items-center justify-center text-white font-medium text-sm rounded-full;
+}
+
+.header-user-dropdown {
+    @apply hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl absolute right-0;
+}
+
+.header-user-info {
+    @apply py-3 px-4;
+}
+
+.header-user-name {
+    @apply block text-sm font-semibold text-gray-900 dark:text-white;
+}
+
+.header-user-email {
+    @apply block text-sm text-gray-900 dark:text-gray-300 truncate;
+}
+
+.header-user-menu-item {
+    @apply block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white;
 }

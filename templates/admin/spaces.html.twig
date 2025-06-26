@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Spaces{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Space Management</h1>
+            <a href="{{ path('app_admin_dashboard') }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">ID</th>
+                            <th scope="col" class="px-6 py-3">Name</th>
+                            <th scope="col" class="px-6 py-3">Host</th>
+                            <th scope="col" class="px-6 py-3">Address</th>
+                            <th scope="col" class="px-6 py-3">Desks</th>
+                            <th scope="col" class="px-6 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for space in spaces %}
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4">{{ space.id }}</td>
+                                <td class="px-6 py-4">{{ space.name }}</td>
+                                <td class="px-6 py-4">{{ space.host.firstname }} {{ space.host.lastname }}</td>
+                                <td class="px-6 py-4">
+                                    {% if space.address %}
+                                        {{ space.address.street }}, {{ space.address.city }}
+                                    {% else %}
+                                        No address
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">{{ space.desks|length }}</td>
+                                <td class="px-6 py-4">
+                                    <a href="{{ path('app_space_show', {'id': space.id}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">View</a>
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">Edit</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

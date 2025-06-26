@@ -26,6 +26,9 @@
             "migrations/.gitignore"
         ]
     },
+    "php-flasher/flasher-symfony": {
+        "version": "v2.1.6"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
@@ -50,7 +53,7 @@
         },
         "files": [
             "assets/app.js",
-            "assets/styles/app.css",
+            "assets/styles/app.scss",
             "config/packages/asset_mapper.yaml",
             "importmap.php"
         ]

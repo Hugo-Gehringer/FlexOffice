@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Spaces{% endblock %}
+
+{% block content %}
+            <div class="container mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Available Spaces</h1>
+                    {% if is_host() %}
+                    <a href="{{ path('app_space_new') }}" class="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors flex items-center font-medium shadow-md">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add New Space
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for space in spaces %}
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <div class="p-5">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ space.name }}</h2>
+                                <p class="text-gray-700 dark:text-gray-300 mb-4">{{ space.description|slice(0, 100) }}{% if space.description|length > 100 %}...{% endif %}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">
+                                        Hosted by: {{ space.host.firstname }} {{ space.host.lastname }}
+                                    </span>
+                                    <a href="{{ path('app_space_show', {'id': space.id}) }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-700 dark:text-gray-300">No spaces available at the moment.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+{% endblock %}

@@ -10,8 +10,17 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1D4ED8', // This makes `bg-primary` work
-          600: '#1D4ED8',     // This makes `bg-primary-600` work
+          '50':  '#f0f5ff',
+          '100': '#e5edff',
+          '200': '#cddbfe',
+          '300': '#b4c6fc',
+          '400': '#8da2fb',
+          '500': '#6875f5',
+          '600': '#1e40af',
+          '700': '#1e3a8a',
+          '800': '#1e3a8a',
+          '900': '#1e3a8a',
+          '950': '#172554',
         }
       }
     },

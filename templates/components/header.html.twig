@@ -1,8 +1,8 @@
-<nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
-    <div class="flex flex-wrap justify-between items-center">
-        <div class="flex justify-start items-center">
+<nav class="header-container">
+    <div class="header-content">
+        <div class="header-left">
             <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation"
-                    class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    class="header-toggle-sidebar"
             >
                 <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -16,30 +16,28 @@
                 </svg>
                 <span class="sr-only">Toggle sidebar</span>
             </button>
-{#                <img#}
-{#                        src="https://files.oaiusercontent.com/file-DCqzYLgUfA9MkS9HEeYc5E?se=2025-02-07T22%3A50%3A07Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D51972113-5ac6-4a7e-8fd9-a17e8199fa0a.webp&sig=HFpETyIzQemCTmfSca8gwN%2BZDPQ3MPsiIIPOMJEhynQ%3D"#}
-{#                        class="mr-3 h-20"#}
-{#                        alt="Flowbite Logo"#}
-{#                />#}
-            <span class="self-center text-2xl font-semibold whitespace-nowrap w-56">FlexOffice</span>
-            <form action="#" method="GET" class="hidden md:block md:pl-2">
+            <span class="header-logo">FlexOffice</span>
+{#            <img#}
+{#                    src="{{ asset('flexOfficeLogoSmall.png') }}"#}
+{#                    class="mr-3 h-9 w-9"#}
+{#                    alt="Flowbite Logo"#}
+{#            />#}
+            <form action="#" method="GET" class="header-search-form">
                 <label for="topbar-search" class="sr-only">Search</label>
-                <div class="relative md:w-64 md:w-96">
-                    <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                <div class="header-search-container">
+                    <div class="header-search-icon">
                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
                         </svg>
                     </div>
-                    <input type="text" name="email" id="topbar-search" placeholder="Search"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    />
+                    <input type="text" name="email" id="topbar-search" placeholder="Search" class="header-search-input" />
                 </div>
             </form>
         </div>
-        <div class="flex items-center lg:order-2">
+        <div class="header-right">
             {% if currentUser %}
                 <button type="button" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation"
-                        class="p-2 mr-1 text-gray-500 rounded-lg md:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        class="header-toggle-search"
                 >
                     <span class="sr-only">Toggle search</span>
                     <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -50,7 +48,7 @@
                 <button type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown-profile"
                         class="flex mx-3 text-sm md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-full">
                     <span class="sr-only">Open user menu</span>
-                    <div class="relative w-8 h-8 overflow-hidden bg-primary rounded-full">  <!-- Using bg-primary -->
+                    <div class="relative w-8 h-8 overflow-hidden bg-primary-600 rounded-full">  <!-- Using bg-primary-600 -->
                         <div class="flex w-full h-full items-center justify-center text-white font-medium text-sm rounded-full">
                             {{ currentUser.firstname|slice(0,1)|upper }}{{ currentUser.lastname|slice(0,1)|upper }}
                         </div>
@@ -59,8 +57,8 @@
                 <!-- Dropdown menu -->
                 <div id="dropdown-profile" class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl">
                     <div class="py-3 px-4">
-                    <span class="block text-sm font-semibold text-gray-900 ">{{ currentUser.firstname }} {{ currentUser.lastname }}</span>
-                    <span class="block text-sm text-gray-900 truncate ">{{currentUser.email}}</span>
+                    <span class="block text-sm font-semibold text-gray-900 dark:text-white">{{ currentUser.firstname }} {{ currentUser.lastname }}</span>
+                    <span class="block text-sm text-gray-900 dark:text-gray-300 truncate">{{currentUser.email}}</span>
                     </div>
                     <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                         <li>
@@ -71,7 +69,7 @@
                             </button>
                         </li>
                         <li>
-                            <a href="#" class="block py-2 px-4 text-sm hover:bg hover:text dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</a>
+                            <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Account settings</a>
                         </li>
                     </ul>
                     <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">

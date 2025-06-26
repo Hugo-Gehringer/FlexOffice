@@ -16,20 +16,19 @@ class SpaceRepository extends ServiceEntityRepository
         parent::__construct($registry, Space::class);
     }
 
-    //    /**
-    //     * @return Space[] Returns an array of Space objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return Space[] Returns an array of Space objects hosted by a specific user
+     */
+    public function findByHost($host): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.host = :host')
+            ->setParameter('host', $host)
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Space
     //    {
