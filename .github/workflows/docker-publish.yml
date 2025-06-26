@@ -31,9 +31,6 @@ jobs:
         with:
           cosign-release: 'v2.2.4'
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Log in to Docker Hub
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
@@ -47,23 +44,22 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build image with Docker Compose
+      - name: Build with Docker Compose
         run: docker compose -f docker-compose.yml build
 
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Tag image
+        run: |
+          IMAGE_ID=$(docker compose -f docker-compose.yml images -q)
+          docker tag $IMAGE_ID ${{ steps.meta.outputs.tags }}
+
+      - name: Push Docker image
+        if: github.event_name != 'pull_request'
+        run: docker push ${{ steps.meta.outputs.tags }}
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        run: |
+          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ steps.meta.outputs.tags }} | cut -d'@' -f2)
+          echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${IMAGE_DIGEST}
