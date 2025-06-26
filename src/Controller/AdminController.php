@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Reservation;
 use App\Entity\Space;
 use App\Entity\User;
+use App\Form\UserEditFormType;
+use App\Form\ReservationEditFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,6 +97,58 @@ class AdminController extends AbstractController
 
         return $this->render('admin/reservations.html.twig', [
             'reservations' => $reservations,
+            'currentUser' => $this->getUser(),
+        ]);
+    }
+
+    #[Route('/users/{id}/delete', name: 'app_admin_user_delete', methods: ['POST', 'DELETE'])]
+    public function deleteUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        // Ensure user is authenticated and has ADMIN role
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
+
+        // Prevent admin from deleting themselves
+        if ($user === $this->getUser()) {
+            $this->addFlash('error', 'You cannot delete your own account.');
+            return $this->redirectToRoute('app_admin_users');
+        }
+
+        // Verify CSRF token
+        if ($this->isCsrfTokenValid('delete_user', $request->request->get('_token'))) {
+            try {
+                $entityManager->remove($user);
+                $entityManager->flush();
+
+                $this->addFlash('success', sprintf('User "%s %s" has been successfully deleted.', $user->getFirstname(), $user->getLastname()));
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'An error occurred while deleting the user. Please try again.');
+            }
+        } else {
+            $this->addFlash('error', 'Invalid CSRF token. Please try again.');
+        }
+
+        return $this->redirectToRoute('app_admin_users');
+    }
+
+    #[Route('/users/{id}/edit', name: 'app_admin_user_edit', methods: ['GET', 'POST'])]
+    public function editUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        // Ensure user is authenticated and has ADMIN role
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
+
+        $form = $this->createForm(UserEditFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', sprintf('User "%s %s" has been successfully updated.', $user->getFirstname(), $user->getLastname()));
+            return $this->redirectToRoute('app_admin_users');
+        }
+
+        return $this->render('admin/user_edit.html.twig', [
+            'user' => $user,
+            'user_form' => $form->createView(),
             'currentUser' => $this->getUser(),
         ]);
     }

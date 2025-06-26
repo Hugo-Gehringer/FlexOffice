@@ -33,6 +33,12 @@ test-admin-nav:
 test-flowbite-modals:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-flowbite-modals.sh
 
+test-admin-buttons:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-admin-buttons.sh
+
+test-routes-fix:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-routes-fix.sh
+
 # Cache commands
 cache-clear:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console cache:clear

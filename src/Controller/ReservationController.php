@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Desk;
 use App\Entity\Reservation;
 use App\Form\ReservationFormType;
+use App\Form\ReservationEditFormType;
+use App\Form\ReservationUserEditFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -230,5 +232,81 @@ class ReservationController extends AbstractController
         return $this->redirectToRoute('app_reservation_index', [
             'currentUser' => $user,
         ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        // Ensure user is authenticated
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        // Ensure the user can only edit their own reservations or is admin
+        if ($reservation->getGuest() !== $user && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('You cannot edit this reservation');
+        }
+
+        // Use different forms based on user role
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(ReservationEditFormType::class, $reservation);
+        } else {
+            $form = $this->createForm(ReservationUserEditFormType::class, $reservation);
+        }
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            flash()->success('Reservation updated successfully!');
+
+            // Redirect based on user role
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_admin_reservations');
+            } else {
+                return $this->redirectToRoute('app_reservation_index');
+            }
+        }
+
+        return $this->render('reservation/edit.html.twig', [
+            'reservation' => $reservation,
+            'reservation_form' => $form->createView(),
+            'currentUser' => $user,
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: 'app_reservation_delete', methods: ['POST', 'DELETE'])]
+    public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        // Ensure user is authenticated
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        // Ensure the user can only delete their own reservations or is admin
+        if ($reservation->getGuest() !== $user && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('You cannot delete this reservation');
+        }
+
+        // Verify CSRF token
+        if ($this->isCsrfTokenValid('delete_reservation', $request->request->get('_token'))) {
+            try {
+                $entityManager->remove($reservation);
+                $entityManager->flush();
+
+                flash()->success('Reservation deleted successfully!');
+            } catch (\Exception $e) {
+                flash()->error('An error occurred while deleting the reservation. Please try again.');
+            }
+        } else {
+            flash()->error('Invalid CSRF token. Please try again.');
+        }
+
+        // Redirect based on user role
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin_reservations');
+        } else {
+            return $this->redirectToRoute('app_reservation_index');
+        }
     }
 }

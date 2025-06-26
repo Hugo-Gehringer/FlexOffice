@@ -167,4 +167,39 @@ class SpaceController extends AbstractController
             'booked_dates' => json_encode($bookedDates),
         ]);
     }
+
+    #[Route('/{id}/delete', name: 'app_space_delete', methods: ['POST', 'DELETE'])]
+    public function delete(Request $request, Space $space, EntityManagerInterface $entityManager): Response
+    {
+        // Ensure user is authenticated
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        // Check if user is admin or the host of this space
+        if (!$this->isGranted('ROLE_ADMIN') && $space->getHost() !== $user) {
+            throw $this->createAccessDeniedException('You can only delete your own spaces.');
+        }
+
+        // Verify CSRF token
+        if ($this->isCsrfTokenValid('delete_space', $request->request->get('_token'))) {
+            try {
+                $entityManager->remove($space);
+                $entityManager->flush();
+
+                flash()->success('Space deleted successfully!');
+            } catch (\Exception $e) {
+                flash()->error('An error occurred while deleting the space. Please try again.');
+            }
+        } else {
+            flash()->error('Invalid CSRF token. Please try again.');
+        }
+
+        // Redirect based on user role
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin_spaces');
+        } else {
+            return $this->redirectToRoute('app_my_spaces');
+        }
+    }
 }
