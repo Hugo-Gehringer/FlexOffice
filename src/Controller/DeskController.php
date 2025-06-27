@@ -84,7 +84,7 @@ class DeskController extends AbstractController
 
         // If it's an AJAX request, return just the modal content
         if ($request->isXmlHttpRequest()) {
-            return $this->render('components/desk_modal.html.twig', [
+            return $this->render('shared/components/desk_modal.html.twig', [
                 'desk_form' => $form->createView(),
                 'space' => $space
             ]);

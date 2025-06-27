@@ -114,7 +114,7 @@ class ReservationController extends AbstractController
         }
 
         if ($isTurbo) {
-            return $this->render('components/reservation_modal.html.twig', [
+            return $this->render('shared/components/reservation_modal.html.twig', [
                 'desk' => $desk,
                 'bookedDates' => $bookedDates,
                 'reservation_form' => $form->createView(),
@@ -230,47 +230,6 @@ class ReservationController extends AbstractController
         flash()->success('Your reservation has been cancelled successfully!');
 
         return $this->redirectToRoute('app_reservation_index', [
-            'currentUser' => $user,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
-    {
-        // Ensure user is authenticated
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $user = $this->getUser();
-
-        // Ensure the user can only edit their own reservations or is admin
-        if ($reservation->getGuest() !== $user && !$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException('You cannot edit this reservation');
-        }
-
-        // Use different forms based on user role
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $form = $this->createForm(ReservationEditFormType::class, $reservation);
-        } else {
-            $form = $this->createForm(ReservationUserEditFormType::class, $reservation);
-        }
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            flash()->success('Reservation updated successfully!');
-
-            // Redirect based on user role
-            if ($this->isGranted('ROLE_ADMIN')) {
-                return $this->redirectToRoute('app_admin_reservations');
-            } else {
-                return $this->redirectToRoute('app_reservation_index');
-            }
-        }
-
-        return $this->render('reservation/edit.html.twig', [
-            'reservation' => $reservation,
-            'reservation_form' => $form->createView(),
             'currentUser' => $user,
         ]);
     }

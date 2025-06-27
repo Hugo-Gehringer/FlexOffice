@@ -6,7 +6,7 @@
 
 <turbo-stream action="prepend" target="flash-messages">
     <template>
-        {% include 'components/_flash_message.html.twig' with {
+        {% include 'shared/components/_flash_message.html.twig' with {
             message: 'Reservation created successfully!',
             type: 'success'
         } %}

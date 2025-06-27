@@ -52,14 +52,6 @@ class AddressFormType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Select a country',
                 'preferred_choices' => ['FR', 'DE', 'GB', 'US', 'CA'],
-            ])
-            ->add('latitude', TextType::class, [
-                'label' => 'Latitude (optional)',
-                'required' => false,
-            ])
-            ->add('longitude', TextType::class, [
-                'label' => 'Longitude (optional)',
-                'required' => false,
             ]);
     }
 

@@ -143,7 +143,7 @@
                     >
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="ml-3">All Users</span>
+                    <span class="ml-3">Utilisateurs</span>
                 </a>
             </li>
             <li>
@@ -160,7 +160,7 @@
                     >
                         <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="ml-3">All Spaces</span>
+                    <span class="ml-3">Espaces</span>
                 </a>
             </li>
             <li>
@@ -177,23 +177,10 @@
                     >
                         <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clip-rule="evenodd"></path>
                     </svg>
-                    <span class="ml-3">All Reservations</span>
+                    <span class="ml-3">Reservations</span>
                 </a>
             </li>
-
             {% endif %}
         </ul>
     </div>
 </aside>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mySpacesLink = document.getElementById('my-spaces-link');
-        if (mySpacesLink) {
-            mySpacesLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.location.href = '{{ path('app_my_spaces') }}';
-            });
-        }
-    });
-</script>

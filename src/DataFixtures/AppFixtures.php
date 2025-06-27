@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
 
         // Admin User
         $admin = new User();
-        $admin->setEmail('admin@flexoffice.com');
+        $admin->setEmail('admin@gmail.com');
         $admin->setFirstname('Admin');
         $admin->setLastname('FlexOffice');
         $admin->setRoles(['ROLE_ADMIN']);
@@ -62,7 +62,7 @@ class AppFixtures extends Fixture
 
         // Host User
         $host = new User();
-        $host->setEmail('host@flexoffice.com');
+        $host->setEmail('host@gmail.com');
         $host->setFirstname('Marie');
         $host->setLastname('Dupont');
         $host->setRoles(['ROLE_HOST']);
@@ -73,7 +73,7 @@ class AppFixtures extends Fixture
 
         // Additional Host
         $host2 = new User();
-        $host2->setEmail('host2@flexoffice.com');
+        $host2->setEmail('host2@gmail.com');
         $host2->setFirstname('Pierre');
         $host2->setLastname('Martin');
         $host2->setRoles(['ROLE_HOST']);
@@ -84,7 +84,7 @@ class AppFixtures extends Fixture
 
         // Guest User
         $guest = new User();
-        $guest->setEmail('guest@flexoffice.com');
+        $guest->setEmail('guest@gmail.com');
         $guest->setFirstname('Jean');
         $guest->setLastname('Durand');
         $guest->setRoles(['ROLE_GUEST']);
@@ -95,7 +95,7 @@ class AppFixtures extends Fixture
 
         // Additional Guests
         $guest2 = new User();
-        $guest2->setEmail('guest2@flexoffice.com');
+        $guest2->setEmail('guest2@gmail.com');
         $guest2->setFirstname('Sophie');
         $guest2->setLastname('Bernard');
         $guest2->setRoles(['ROLE_GUEST']);
@@ -105,7 +105,7 @@ class AppFixtures extends Fixture
         $users['guest2'] = $guest2;
 
         $guest3 = new User();
-        $guest3->setEmail('guest3@flexoffice.com');
+        $guest3->setEmail('guest3@gmail.com');
         $guest3->setFirstname('Thomas');
         $guest3->setLastname('Petit');
         $guest3->setRoles(['ROLE_GUEST']);
