@@ -1,43 +1,9 @@
-<div class="address-container">
-    <h2 class="address-title">Address Information</h2>
+<h2 class="form-title">Address Information</h2>
+<div class="form-grid">
+    {{ form_row(space_form.address.street) }}
+    {{ form_row(space_form.address.city) }}
 </div>
-
-<div class="address-grid">
-    <!-- Street field -->
-    <div class="address-form-group">
-        {{ form_label(address.street, null, {'label_attr': {'class': 'address-form-label'}}) }}
-        <div class="input-container">
-            {{ form_widget(address.street, {'attr': {'class': 'address-form-input'}}) }}
-        </div>
-        {{ form_errors(address.street, {'attr': {'class': 'address-form-error'}}) }}
-    </div>
-
-    <!-- City field -->
-    <div class="address-form-group">
-        {{ form_label(address.city, null, {'label_attr': {'class': 'address-form-label'}}) }}
-        <div class="input-container">
-            {{ form_widget(address.city, {'attr': {'class': 'address-form-input'}}) }}
-        </div>
-        {{ form_errors(address.city, {'attr': {'class': 'address-form-error'}}) }}
-    </div>
-</div>
-
-<div class="address-grid">
-    <!-- Postal Code field -->
-    <div class="address-form-group">
-        {{ form_label(address.postalCode, null, {'label_attr': {'class': 'address-form-label'}}) }}
-        <div class="input-container">
-            {{ form_widget(address.postalCode, {'attr': {'class': 'address-form-input'}}) }}
-        </div>
-        {{ form_errors(address.postalCode, {'attr': {'class': 'address-form-error'}}) }}
-    </div>
-
-    <!-- Country field -->
-    <div class="address-form-group">
-        {{ form_label(address.country, null, {'label_attr': {'class': 'address-form-label'}}) }}
-        <div class="input-container">
-            {{ form_widget(address.country, {'attr': {'class': 'address-form-input'}}) }}
-        </div>
-        {{ form_errors(address.country, {'attr': {'class': 'address-form-error'}}) }}
-    </div>
+<div class="form-grid">
+    {{ form_row(space_form.address.postalCode) }}
+    {{ form_row(space_form.address.country) }}
 </div>

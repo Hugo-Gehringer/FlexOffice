@@ -51,7 +51,6 @@ class AddressFormType extends AbstractType
                 'label' => 'Country',
                 'required' => true,
                 'placeholder' => 'Select a country',
-                'preferred_choices' => ['FR', 'DE', 'GB', 'US', 'CA'],
             ]);
     }
 

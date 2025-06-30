@@ -12,17 +12,8 @@
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Initialize Flowbite
-                    if (typeof window.initFlowbite === 'function') {
-                        window.initFlowbite();
-                    }
-                });
-            </script>
         {% endblock %}
     </head>
-    <body data-controller="flowbite">
         {% block body %}
             <div class="antialiased bg-gray-50 dark:bg-gray-900">
                 {% include 'components/header.html.twig' %}
@@ -32,5 +23,4 @@
                 </main>
             </div>
         {% endblock %}
-    </body>
 </html>

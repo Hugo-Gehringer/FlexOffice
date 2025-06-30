@@ -6,7 +6,7 @@
             <div class="container mx-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">My Spaces</h1>
-                    {% include 'elements/link_button.html.twig' with {
+                    {% include 'shared/elements/link_button.html.twig' with {
                         'text': 'Add New Space',
                         'href': path('app_space_new'),
                         'variant': 'success',
@@ -51,7 +51,7 @@
                         <div class="col-span-full text-center py-8">
                             <p class="text-gray-700 dark:text-gray-300">You haven't created any spaces yet.</p>
                             <div class="mt-4">
-                                {% include 'elements/link_button.html.twig' with {
+                                {% include 'shared/elements/link_button.html.twig' with {
                                     'text': 'Create Your First Space',
                                     'href': path('app_space_new'),
                                     'variant': 'success'

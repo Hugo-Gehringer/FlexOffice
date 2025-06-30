@@ -16,18 +16,15 @@
         <div class="mt-4">
             <div class="flex justify-end">
                {% if is_guest() and reserveButton is defined and reserveButton %}
-                   <button
-                       type="button"
-                       data-modal-target="reservationModal-{{ desk.id }}"
-                       data-modal-toggle="reservationModal-{{ desk.id }}"
-                       data-turbo-frame="reservationModal-{{ desk.id }}"
-                       class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                   <a
+                           href="{{ path('app_reservation_new', {'id': desk.id}) }}"
+                           class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                    >
                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                        </svg>
                        Reserve Now
-                   </button>
+                   </a>
                {% endif %}
             </div>
         </div>

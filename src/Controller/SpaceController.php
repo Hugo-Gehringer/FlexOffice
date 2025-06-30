@@ -115,7 +115,6 @@ class SpaceController extends AbstractController
     {
         // Ensure user is authenticated and has HOST role
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->denyAccessUnlessGranted('ROLE_HOST', null, 'You must be a host to view your spaces');
 
         $user = $this->getUser();
 

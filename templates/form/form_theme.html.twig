@@ -1,7 +1,5 @@
-<div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
-
 {%- block form_row -%}
-    <div class="mb-4">
+    <div class="form-group">
         {{- form_label(form) -}}
         <div class="input-container">
             {{- form_widget(form) -}}
@@ -12,38 +10,38 @@
 
 {%- block form_label -%}
     {% if label is not same as(false) -%}
-        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {{- label|trans(label_translation_parameters, translation_domain) -}}
+        <label class="form-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {{- label|trans(label_translation_parameters, translation_domain) -}}
         </label>
     {%- endif -%}
 {%- endblock form_label -%}
 
 {%- block text_widget -%}
-    <input type="{{ type|default('text') }}" {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+    <input type="{{ type|default('text') }}" {{ block('widget_attributes') }} class="form-input"/>
 {%- endblock text_widget -%}
 
 {%- block email_widget -%}
-    <input type="email" {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+    <input type="email" {{ block('widget_attributes') }} class="form-input"/>
 {%- endblock email_widget -%}
 
 {%- block url_widget -%}
-    <input type="url" {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+    <input type="url" {{ block('widget_attributes') }} class="form-input"/>
 {%- endblock url_widget -%}
 
 {%- block search_widget -%}
-    <input type="search" {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+    <input type="search" {{ block('widget_attributes') }} class="form-input"/>
 {%- endblock search_widget -%}
 
 {%- block password_widget -%}
-    <input type="password" {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+    <input type="password" {{ block('widget_attributes') }} class="form-input"/>
 {%- endblock password_widget -%}
 
 {%- block textarea_widget -%}
-    <textarea {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ value }}</textarea>
+    <textarea {{ block('widget_attributes') }} class="form-textarea">{{ value }}</textarea>
 {%- endblock textarea_widget -%}
 
 {%- block choice_widget_collapsed -%}
-    <select {{ block('widget_attributes') }} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <select {{ block('widget_attributes') }} class="form-select">
         {%- if placeholder is not empty -%}
             <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
         {%- endif -%}
@@ -60,19 +58,19 @@
 {%- endblock choice_widget_collapsed -%}
 
 {%- block radio_widget -%}
-    <input type="radio" {{ block('widget_attributes') }} class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    <input type="radio" {{ block('widget_attributes') }} class="form-radio-input"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {%- endblock radio_widget -%}
 
 {%- block checkbox_widget -%}
-    <input type="checkbox" {{ block('widget_attributes') }} class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    <input type="checkbox" {{ block('widget_attributes') }} class="form-radio-input"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {%- endblock checkbox_widget -%}
 
 {%- block choice_widget_expanded -%}
-    <div class="flex justify-center space-x-6 py-2" {{ block('widget_container_attributes') }}>
+    <div class="form-radio-container" {{ block('widget_container_attributes') }}>
         {%- for child in form %}
-            <div class="flex items-center">
+            <div class="form-radio-item">
                 {{- form_widget(child) -}}
-                <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}</label>
+                <label class="form-radio-label" for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}</label>
             </div>
         {% endfor -%}
     </div>
@@ -89,7 +87,7 @@
             {% set label = name|humanize %}
         {%- endif -%}
     {%- endif -%}
-    <button type="{{ type|default('button') }}" {{ block('button_attributes') }} class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{ label|trans({}, translation_domain) }}</button>
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }} class="form-btn-cancel">{{ label|trans({}, translation_domain) }}</button>
 {%- endblock button_widget -%}
 
 {%- block submit_widget -%}
@@ -103,16 +101,15 @@
             {% set label = name|humanize %}
         {%- endif -%}
     {%- endif -%}
-    <button type="{{ type|default('submit') }}" {{ block('button_attributes') }} class="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">{{ label|trans({}, translation_domain) }}</button>
+    <button type="{{ type|default('submit') }}" {{ block('button_attributes') }} class="form-btn-submit">{{ label|trans({}, translation_domain) }}</button>
 {%- endblock submit_widget -%}
 
 {%- block form_errors -%}
     {%- if errors|length > 0 -%}
-        <div class="text-red-500 text-sm mt-1">
+        <div class="form-error">
             {%- for error in errors -%}
                 <span>{{ error.message }}</span>
             {%- endfor -%}
         </div>
     {%- endif -%}
 {%- endblock form_errors -%}
-</div>

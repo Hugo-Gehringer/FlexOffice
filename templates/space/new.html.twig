@@ -21,17 +21,15 @@
                 </a>
             </div>
         </div>
-
         <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
             <div class="p-6">
                 {{ form_start(space_form, {'attr': {'class': 'space-y-6', 'data-turbo': true}, 'method': 'POST'}) }}
-
-                <div class="grid grid-cols-2 gap-6">
+                <div class="form-grid">
                     <div class="md:col-span-2">
-                        {{ form_row(space_form.name, {'label': 'Nom de l\'espace'}) }}
+                        {{ form_row(space_form.name) }}
                     </div>
                     <div class="md:col-span-2">
-                        {{ form_row(space_form.description, {'label': 'Description'}) }}
+                        {{ form_row(space_form.description) }}
                     </div>
                     <div class="md:col-span-2">
                         {% include 'address/address_form.html.twig' with {'address': space_form.address} %}
@@ -41,12 +39,9 @@
                     </div>
                 </div>
                 <div class="flex justify-end space-x-3">
-                    <a href="{{ path('app_space_index') }}" class="form-btn-secondary">
-                        Annuler
-                    </a>
+                    <a href="{{ path('app_space_index') }}" class="form-btn-cancel">Annuler</a>
                     {{ form_widget(space_form.save, {'label': 'Créer espace'}) }}
                 </div>
-
                 {{ form_errors(space_form) }}
                 {{ form_end(space_form, {'render_rest': false}) }}
             </div>

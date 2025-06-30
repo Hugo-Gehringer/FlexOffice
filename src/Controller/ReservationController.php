@@ -21,7 +21,6 @@ class ReservationController extends AbstractController
     {
         // Ensure user is authenticated and has GUEST role
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->denyAccessUnlessGranted('ROLE_GUEST', null, 'You must be a guest to view reservations');
 
         $user = $this->getUser();
 
@@ -35,7 +34,7 @@ class ReservationController extends AbstractController
     public function new(Request $request, Desk $desk, EntityManagerInterface $entityManager, ReservationRepository $reservationRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->denyAccessUnlessGranted('ROLE_GUEST', null, 'Vous devez être invité pour réserver.');
+
 
         if (!$desk->isAvailable()) {
             flash()->error('Ce bureau n\'est pas disponible.');
@@ -63,7 +62,13 @@ class ReservationController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        $bookedDates = array_map(fn($r) => $r['reservationDate'] instanceof \DateTimeInterface ? $r['reservationDate']->format('Y-m-d') : null, $existingReservations);
+        // Format the dates for JavaScript
+        $bookedDates = [];
+        foreach ($existingReservations as $existingReservation) {
+            if ($existingReservation['reservationDate'] instanceof \DateTimeInterface) {
+                $bookedDates[] = $existingReservation['reservationDate']->format('Y-m-d');
+            }
+        }
 
         $isTurbo = $request->headers->get('Accept') === 'text/vnd.turbo-stream.html' || $request->request->get('turbo') === '1';
 
