@@ -1,13 +1,4 @@
-{#
-   Composant Twig réutilisable pour le sélecteur de jours
 
-   Ce composant permet d'afficher un sélecteur de jours de la semaine
-   pour les formulaires de disponibilité.
-
-   Utilisation:
-   {% import 'components/day_selector.html.twig' as day_selector %}
-   {{ day_selector.render_day_selector(form.availability) }}
-#}
 
 {% macro render_day_availabilty_selector(form, title) %}
     <div class="availability-widget" id="availability-widget-{{ form.vars.id }}">
