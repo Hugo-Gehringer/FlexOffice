@@ -12,162 +12,60 @@
             </div>
             <div class="flex space-x-3">
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_admin_spaces') }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    <a href="{{ path('app_admin_spaces') }}"
+                       class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Retourner vers l'admin
+                        Retourner vers les espaces
                     </a>
                 {% else %}
-                    <a href="{{ path('app_space_show', {'id': space.id}) }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    <a href="{{ path('app_space_show', {'id': space.id}) }}"
+                       class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                         Retourner vers les espaces
                     </a>
                 {% endif %}
             </div>
         </div>
-
         <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Space Information</h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Update the space details and availability settings</p>
-            </div>
-            
             <div class="p-6">
                 {{ form_start(space_form, {'attr': {'class': 'space-y-6'}}) }}
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Space Name -->
-                    <div class="md:col-span-2">
-                        <label for="{{ space_form.name.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Space Name
-                        </label>
-                        {{ form_widget(space_form.name, {
-                            'attr': {
-                                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                                'placeholder': 'Enter space name'
-                            }
-                        }) }}
-                        {{ form_errors(space_form.name) }}
-                    </div>
-
-                    <!-- Space Description -->
-                    <div class="md:col-span-2">
-                        <label for="{{ space_form.description.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Description
-                        </label>
-                        {{ form_widget(space_form.description, {
-                            'attr': {
-                                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                                'rows': '4',
-                                'placeholder': 'Describe your space...'
-                            }
-                        }) }}
-                        {{ form_errors(space_form.description) }}
-                    </div>
-                </div>
-
-                <!-- Address Section -->
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Address Information</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Street -->
-                        <div class="md:col-span-2">
-                            <label for="{{ space_form.address.street.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Street Address
-                            </label>
-                            {{ form_widget(space_form.address.street, {
-                                'attr': {
-                                    'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                                    'placeholder': 'Enter street address'
-                                }
-                            }) }}
-                            {{ form_errors(space_form.address.street) }}
-                        </div>
-
-                        <!-- City and Postal Code -->
-                        <div>
-                            <label for="{{ space_form.address.city.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                City
-                            </label>
-                            {{ form_widget(space_form.address.city, {
-                                'attr': {
-                                    'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                                    'placeholder': 'Enter city'
-                                }
-                            }) }}
-                            {{ form_errors(space_form.address.city) }}
-                        </div>
-
-                        <div>
-                            <label for="{{ space_form.address.postalCode.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Postal Code
-                            </label>
-                            {{ form_widget(space_form.address.postalCode, {
-                                'attr': {
-                                    'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                                    'placeholder': 'Enter postal code'
-                                }
-                            }) }}
-                            {{ form_errors(space_form.address.postalCode) }}
-                        </div>
-
-                        <!-- Country -->
-                        <div class="md:col-span-2">
-                            <label for="{{ space_form.address.country.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Country
-                            </label>
-                            {{ form_widget(space_form.address.country, {
-                                'attr': {
-                                    'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white',
-                                    'placeholder': 'Enter country'
-                                }
-                            }) }}
-                            {{ form_errors(space_form.address.country) }}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Availability Section -->
+                {{ form_row(space_form.name) }}
+                {{ form_row(space_form.description) }}
+                {% include 'address/address_form.html.twig' with {'address': space_form.address} %}
                 {% if space_form.availability is defined %}
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Availability Settings</h3>
-                    
-                    <div class="space-y-4">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Select the days when your space is available for bookings:</p>
-                        
-                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                            <div class="space-form-full-width space-availability">
-                                {{ day_availabilty_selector.render_day_availabilty_selector(space_form.availability, 'Disponibilité de l\'espace') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {{ day_availabilty_selector.render_day_availabilty_selector(space_form.availability, 'Disponibilité de l\'espace') }}
                 {% endif %}
-
-                <!-- Form Actions -->
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <div class="flex justify-end space-x-3">
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('app_admin_spaces') }}" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
-                                Cancel
-                            </a>
-                        {% else %}
-                            <a href="{{ path('app_space_show', {'id': space.id}) }}" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
-                                Cancel
-                            </a>
-                        {% endif %}
-                        <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Update Space
-                        </button>
-                    </div>
-                </div>
-
-                {{ form_end(space_form) }}
             </div>
+            <!-- Form Actions -->
+            <div class="border-t border-gray-200 dark:border-gray-700 p-6">
+                <div class="flex justify-end space-x-3">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_admin_spaces') }}"
+                           class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+                            Cancel
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_space_show', {'id': space.id}) }}"
+                           class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+                            Cancel
+                        </a>
+                    {% endif %}
+                    <button type="submit"
+                            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Update Space
+                    </button>
+                </div>
+            </div>
+            {{ form_end(space_form, {'render_rest': false}) }}
         </div>
+    </div>
     </div>
 {% endblock %}
