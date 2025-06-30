@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Address;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,10 +48,13 @@ class AddressFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('country', CountryType::class, [
-                'label' => 'Country',
+            ->add('country', ChoiceType::class, [
+                'label' => 'Pays',
+                'choices' => [
+                    'France' => 'France',
+                ],
+                'placeholder' => 'Choisir un pays',
                 'required' => true,
-                'placeholder' => 'Select a country',
             ]);
     }
 

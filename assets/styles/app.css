@@ -184,3 +184,60 @@ body {
     animation: flasher-progress linear forwards;
 }
 
+/* Day Availability Selector Styles */
+.day-selector-checkbox {
+    @apply sr-only;
+}
+
+.day-selector-label {
+    @apply flex flex-col items-center w-full cursor-pointer transition-all duration-200;
+}
+
+.day-selector-circle {
+    @apply flex items-center justify-center w-12 h-12 mb-1 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800 hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-gray-300 transition-all duration-200 shadow-sm hover:shadow font-medium text-lg;
+}
+
+.day-selector-text {
+    @apply text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200;
+}
+
+/* Day Availability Selector Styles */
+.day-selector-checkbox {
+    @apply sr-only;
+}
+
+.day-selector-label {
+    @apply flex flex-col items-center w-full cursor-pointer transition-all duration-200;
+}
+
+.day-selector-circle {
+    @apply flex items-center justify-center w-12 h-12 mb-1 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800 hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:text-gray-300 transition-all duration-200 shadow-sm hover:shadow font-medium text-lg;
+}
+
+.day-selector-text {
+    @apply text-xs text-gray-500 dark:text-gray-400 transition-colors duration-200;
+}
+
+.day-selector-checkbox:checked + .day-selector-label > .day-selector-circle {
+    border-color: #2563eb;
+    background-color: #dbeafe;
+    color: #2563eb;
+    font-weight: bold;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.day-selector-checkbox:checked + .day-selector-label > .day-selector-text {
+    color: #2563eb;
+    font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+    .day-selector-checkbox:checked + .day-selector-label > .day-selector-circle {
+        background-color: #1e3a8a;
+        color: #93c5fd;
+        border-color: #3b82f6;
+    }
+    .day-selector-checkbox:checked + .day-selector-label > .day-selector-text {
+        color: #1e3a8a;
+    }
+}

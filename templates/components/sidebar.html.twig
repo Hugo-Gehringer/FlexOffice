@@ -33,10 +33,18 @@
             </div>
         </form>
         <ul class="space-y-2">
+            <!-- Admin Section -->
             {% if is_admin() %}
+                <li class="pt-2">
+                    <div class="flex items-center px-2 py-1">
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+                        <span class="px-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Administration</span>
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+                    </div>
+                </li>
                 <li>
                     <a
-                            href="{% if is_admin() %}{{ path('app_admin_dashboard') }}{% else %}{{ path('app_homepage') }}{% endif %}"
+                            href="{{ path('app_admin_dashboard') }}"
                             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_dashboard' %}bg-gray-100 dark:bg-gray-700{% endif %}"
                     >
                         <svg
@@ -52,12 +60,27 @@
                         <span class="ml-3">Dashboard</span>
                     </a>
                 </li>
-            {% endif %}
-            {% if is_guest() %}
                 <li>
                     <a
-                            href="{{ path('app_space_index') }}"
-                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            href="{{ path('app_admin_users') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_users' %}bg-gray-100 dark:bg-gray-700{% endif %}"
+                    >
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">Utilisateurs</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                            href="{{ path('app_admin_spaces') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_spaces' %}bg-gray-100 dark:bg-gray-700{% endif %}"
                     >
                         <svg
                                 aria-hidden="true"
@@ -68,11 +91,37 @@
                         >
                             <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="ml-3">Spaces</span>
+                        <span class="ml-3">Espaces</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                            href="{{ path('app_admin_reservations') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_reservations' %}bg-gray-100 dark:bg-gray-700{% endif %}"
+                    >
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">Reservations</span>
                     </a>
                 </li>
             {% endif %}
+
+            <!-- Host Section -->
             {% if is_host() %}
+                <li class="pt-4">
+                    <div class="flex items-center px-2 py-1">
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+                        <span class="px-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hôte</span>
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+                    </div>
+                </li>
                 <li>
                     <a
                             href="{{ path('app_my_spaces') }}"
@@ -109,77 +158,50 @@
                     </a>
                 </li>
             {% endif %}
+
+            <!-- Guest Section -->
             {% if is_guest() %}
-            <li>
-                <a
-                        href="{{ path('app_reservation_index') }}"
-                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                >
-                    <svg
-                            aria-hidden="true"
-                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
+                <li class="pt-4">
+                    <div class="flex items-center px-2 py-1">
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+                        <span class="px-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Invité</span>
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+                    </div>
+                </li>
+                <li>
+                    <a
+                            href="{{ path('app_space_index') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
-                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="ml-3">My Reservations</span>
-                </a>
-            </li>
-            {% endif %}
-            {% if is_admin() %}
-            <li>
-                <a
-                        href="{{ path('app_admin_users') }}"
-                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_users' %}bg-gray-100 dark:bg-gray-700{% endif %}"
-                >
-                    <svg
-                            aria-hidden="true"
-                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">Spaces</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                            href="{{ path('app_reservation_index') }}"
+                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="ml-3">Utilisateurs</span>
-                </a>
-            </li>
-            <li>
-                <a
-                        href="{{ path('app_admin_spaces') }}"
-                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_spaces' %}bg-gray-100 dark:bg-gray-700{% endif %}"
-                >
-                    <svg
-                            aria-hidden="true"
-                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="ml-3">Espaces</span>
-                </a>
-            </li>
-            <li>
-                <a
-                        href="{{ path('app_admin_reservations') }}"
-                        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group {% if app.request.get('_route') == 'app_admin_reservations' %}bg-gray-100 dark:bg-gray-700{% endif %}"
-                >
-                    <svg
-                            aria-hidden="true"
-                            class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="ml-3">Reservations</span>
-                </a>
-            </li>
+                        <svg
+                                aria-hidden="true"
+                                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-3">My Reservations</span>
+                    </a>
+                </li>
             {% endif %}
         </ul>
     </div>

@@ -24,14 +24,12 @@
                 </a>
             </div>
         </div>
-        <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
-            <div class="p-6">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800 p-6">
                 {{ form_start(space_form, {'attr': {'class': 'space-y-6', 'data-turbo': true}, 'method': 'POST'}) }}
                 {{ form_row(space_form.name) }}
                 {{ form_row(space_form.description) }}
                 {% include 'address/address_form.html.twig' with {'address': space_form.address} %}
                 {{ day_availabilty_selector.render_day_availabilty_selector(space_form.availability, 'Disponibilité de l\'espace') }}
-            </div>
             <div class="flex justify-end space-x-3">
                 <a href="{{ path('app_space_index') }}" class="form-btn-cancel">Annuler</a>
                 {{ form_widget(space_form.save, {'label': 'Créer espace'}) }}

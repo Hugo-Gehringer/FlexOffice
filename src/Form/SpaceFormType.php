@@ -21,7 +21,7 @@ class SpaceFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Space Name',
+                'label' => 'Nom de l\'espace',
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -48,7 +48,6 @@ class SpaceFormType extends AbstractType
                     ]),
                 ],
             ])
-
             ->add('address', AddressFormType::class, [
                 'label' => false,
                 'required' => true,

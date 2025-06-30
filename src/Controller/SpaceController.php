@@ -78,24 +78,18 @@ class SpaceController extends AbstractController
     #[Route('/{id}/edit', name: 'app_space_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Space $space, EntityManagerInterface $entityManager): Response
     {
-        // Ensure user is authenticated
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        // Check if user is admin or the host of this space
         $user = $this->getUser();
         if (!$this->isGranted('ROLE_ADMIN') && $space->getHost() !== $user) {
             throw $this->createAccessDeniedException('You can only edit your own spaces.');
         }
-
         $form = $this->createForm(SpaceFormType::class, $space);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             $this->addFlash('success', 'Space updated successfully!');
 
-            // Redirect based on user role
             if ($this->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('app_admin_spaces');
             } else {
