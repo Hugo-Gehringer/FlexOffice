@@ -219,25 +219,12 @@ body {
 }
 
 .day-selector-checkbox:checked + .day-selector-label > .day-selector-circle {
-    border-color: #2563eb;
-    background-color: #dbeafe;
-    color: #2563eb;
+    background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+    color: rgb(30 64 175);
     font-weight: bold;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .day-selector-checkbox:checked + .day-selector-label > .day-selector-text {
-    color: #2563eb;
+    color: rgb(30 64 175);
     font-weight: 500;
-}
-
-@media (prefers-color-scheme: dark) {
-    .day-selector-checkbox:checked + .day-selector-label > .day-selector-circle {
-        background-color: #1e3a8a;
-        color: #93c5fd;
-        border-color: #3b82f6;
-    }
-    .day-selector-checkbox:checked + .day-selector-label > .day-selector-text {
-        color: #1e3a8a;
-    }
 }
