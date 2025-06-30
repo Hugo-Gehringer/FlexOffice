@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'components/day_availabilty_selector.html.twig' as day_availabilty_selector %}
 
 {% block title %}Edit Space - {{ space.name }}{% endblock %}
 
@@ -15,14 +16,14 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Back to Admin
+                        Retourner vers l'admin
                     </a>
                 {% else %}
                     <a href="{{ path('app_space_show', {'id': space.id}) }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Back to Space
+                        Retourner vers les espaces
                     </a>
                 {% endif %}
             </div>
@@ -139,20 +140,9 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400">Select the days when your space is available for bookings:</p>
                         
                         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                            {% for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
-                                {% if space_form.availability[day] is defined %}
-                                <div class="flex items-center">
-                                    {{ form_widget(space_form.availability[day], {
-                                        'attr': {
-                                            'class': 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-                                        }
-                                    }) }}
-                                    <label for="{{ space_form.availability[day].vars.id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                        {{ day|title }}
-                                    </label>
-                                </div>
-                                {% endif %}
-                            {% endfor %}
+                            <div class="space-form-full-width space-availability">
+                                {{ day_availabilty_selector.render_day_availabilty_selector(space_form.availability, 'Disponibilité de l\'espace') }}
+                            </div>
                         </div>
                     </div>
                 </div>

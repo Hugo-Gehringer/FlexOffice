@@ -17,12 +17,12 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    Back to Dashboard
+                    Retourner au Dashboard
                 </a>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="grid grid-cols-4 md:grid-cols-1 gap-4 mb-6">
             <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
                 <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Total Spaces</h3>
                 <p class="text-3xl font-bold text-blue-600 dark:text-blue-500">{{ spaces|length }}</p>
@@ -120,13 +120,13 @@
                                 <td class="px-6 py-4">
                                     {% if space.availability %}
                                         <div class="flex flex-wrap gap-1">
-                                            {% if space.availability.isMonday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">M</span>{% endif %}
-                                            {% if space.availability.isTuesday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">T</span>{% endif %}
-                                            {% if space.availability.isWednesday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">W</span>{% endif %}
-                                            {% if space.availability.isThursday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">T</span>{% endif %}
-                                            {% if space.availability.isFriday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">F</span>{% endif %}
+                                            {% if space.availability.isMonday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">L</span>{% endif %}
+                                            {% if space.availability.isTuesday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">M</span>{% endif %}
+                                            {% if space.availability.isWednesday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">Me</span>{% endif %}
+                                            {% if space.availability.isThursday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">J</span>{% endif %}
+                                            {% if space.availability.isFriday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">V</span>{% endif %}
                                             {% if space.availability.isSaturday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">S</span>{% endif %}
-                                            {% if space.availability.isSunday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">S</span>{% endif %}
+                                            {% if space.availability.isSunday %}<span class="px-1 py-0.5 bg-green-100 text-green-800 text-xs rounded dark:bg-green-900 dark:text-green-300">D</span>{% endif %}
                                         </div>
                                     {% else %}
                                         <span class="text-red-500 dark:text-red-400">Not set</span>

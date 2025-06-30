@@ -146,7 +146,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_admin_users');
         }
 
-        return $this->render('admin/user_edit.html.twig', [
+        return $this->render('user/user_edit.html.twig', [
             'user' => $user,
             'user_form' => $form->createView(),
             'currentUser' => $this->getUser(),

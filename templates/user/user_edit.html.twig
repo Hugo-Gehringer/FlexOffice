@@ -1,0 +1,53 @@
+{% form_theme user_form 'form/form_theme.html.twig' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer Utilisateur - {{ user.firstname }} {{ user.lastname }}{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editer Utilisateur</h1>
+                <p class="text-gray-600 dark:text-gray-400">Modifier l'utilisateur {{ user.firstname }} {{ user.lastname }}</p>
+            </div>
+            <div class="flex space-x-3">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_admin_spaces') }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Retourner vers l'admin
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
+            <div class="p-6">
+                {{ form_start(user_form, {'attr': {'class': 'space-y-6'}}) }}
+                <div class="grid grid-cols-2  gap-6">
+                    <div class="md:col-span-2">
+                        {{ form_row(user_form.firstName, {'label': 'Prénom'}) }}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ form_row(user_form.lastName, {'label': 'Nom'}) }}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ form_row(user_form.email, {'label': 'Adresse email'}) }}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ form_row(user_form.roles, {'label': 'Rôle utilisateur'}) }}
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <a href="{{ path('app_admin_users') }}" class="form-btn-secondary">
+                        Cancel
+                    </a>
+                    {{ form_widget(user_form.save, {'label': 'Update User'}) }}
+                </div>
+                {{ form_end(user_form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

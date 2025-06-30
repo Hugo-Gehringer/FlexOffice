@@ -11,10 +11,10 @@
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">Space</th>
-                                    <th scope="col" class="px-6 py-3">Desk</th>
+                                    <th scope="col" class="px-6 py-3">Espace</th>
+                                    <th scope="col" class="px-6 py-3">Bureau</th>
                                     <th scope="col" class="px-6 py-3">Date</th>
-                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Statut</th>
                                     <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
                             </thead>
@@ -93,9 +93,9 @@
                         </h3>
                         <div class="modal-text modal-text-description">
                             <p class="mb-3">
-                                <strong>Desk:</strong> <span class="modal-text-highlight">{{ reservation.desk.name }}</span><br>
+                                <strong>Bureau:</strong> <span class="modal-text-highlight">{{ reservation.desk.name }}</span><br>
                                 <strong>Date:</strong> <span class="modal-text-highlight">{{ reservation.reservationDate|date('Y-m-d') }}</span><br>
-                                <strong>Space:</strong> <span class="modal-text-highlight">{{ reservation.desk.space.name }}</span>
+                                <strong>Espace:</strong> <span class="modal-text-highlight">{{ reservation.desk.space.name }}</span>
                             </p>
                             <p>This action cannot be undone.</p>
                         </div>

@@ -5,6 +5,19 @@ module.exports = {
     "./assets/**/*.js",
     "./templates/**/*.html.twig",
   ],
+  safelist: [
+    'form-group',
+    'form-label',
+    'form-error',
+    'form-radio-container',
+    'form-radio-item',
+    'form-radio-input',
+    'form-radio-label',
+    'form-btn-primary',
+    'form-btn-secondary',
+    'input-field',
+    'input-container'
+  ],
   darkMode: 'class',
   theme: {
     extend: {

@@ -1,9 +1,7 @@
 <nav class="header-container">
     <div class="header-content">
         <div class="header-left">
-            <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation"
-                    class="header-toggle-sidebar"
-            >
+            <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation" class="header-toggle-sidebar">
                 <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
@@ -17,11 +15,6 @@
                 <span class="sr-only">Toggle sidebar</span>
             </button>
             <span class="header-logo">FlexOffice</span>
-{#            <img#}
-{#                    src="{{ asset('flexOfficeLogoSmall.png') }}"#}
-{#                    class="mr-3 h-9 w-9"#}
-{#                    alt="Flowbite Logo"#}
-{#            />#}
             <form action="#" method="GET" class="header-search-form">
                 <label for="topbar-search" class="sr-only">Search</label>
                 <div class="header-search-container">
@@ -36,11 +29,9 @@
         </div>
         <div class="header-right">
             {% if currentUser %}
-                <button type="button" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation"
-                        class="header-toggle-search"
-                >
+                <button type="button" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation" class="header-toggle-search">
                     <span class="sr-only">Toggle search</span>
-                    <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <svg  class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
                     </svg>
                 </button>
@@ -48,7 +39,7 @@
                 <button type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown-profile"
                         class="flex mx-3 text-sm md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-full">
                     <span class="sr-only">Open user menu</span>
-                    <div class="relative w-8 h-8 overflow-hidden bg-primary-600 rounded-full">  <!-- Using bg-primary-600 -->
+                    <div class="relative w-8 h-8 overflow-hidden bg-primary-600 rounded-full">
                         <div class="flex w-full h-full items-center justify-center text-white font-medium text-sm rounded-full">
                             {{ currentUser.firstname|slice(0,1)|upper }}{{ currentUser.lastname|slice(0,1)|upper }}
                         </div>

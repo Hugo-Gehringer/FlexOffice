@@ -41,20 +41,3 @@
         {{ form_errors(address.country, {'attr': {'class': 'address-form-error'}}) }}
     </div>
 </div>
-
-<div class="address-grid address-coordinates-container">
-    <div class="address-form-group">
-        {{ form_label(address.latitude, null, {'label_attr': {'class': 'address-form-label'}}) }}
-        <div class="input-container">
-            {{ form_widget(address.latitude, {'attr': {'class': 'address-form-input'}}) }}
-        </div>
-        {{ form_errors(address.latitude, {'attr': {'class': 'address-form-error'}}) }}
-    </div>
-    <div class="address-form-group">
-        {{ form_label(address.longitude, null, {'label_attr': {'class': 'address-form-label'}}) }}
-        <div class="input-container">
-            {{ form_widget(address.longitude, {'attr': {'class': 'address-form-input'}}) }}
-        </div>
-        {{ form_errors(address.longitude, {'attr': {'class': 'address-form-error'}}) }}
-    </div>
-</div>
