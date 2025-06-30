@@ -51,12 +51,10 @@ class SpaceFormType extends AbstractType
             ->add('address', AddressFormType::class, [
                 'label' => false,
                 'required' => true,
-                'by_reference' => false,
             ])
             ->add('availability', AvailabilityFormType::class, [
                 'label' => ' ',
                 'required' => false,
-                'by_reference' => false,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Create Space',

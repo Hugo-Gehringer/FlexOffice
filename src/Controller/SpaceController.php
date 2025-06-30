@@ -49,10 +49,6 @@ class SpaceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Make sure the address is properly linked to the space
             $address = $space->getAddress();
-
-            // L'availability est maintenant gérée automatiquement par le formulaire
-            // grâce au by_reference = false
-
             // Persist the address first
             $entityManager->persist($address);
             // Then persist the space
@@ -60,12 +56,6 @@ class SpaceController extends AbstractController
             $entityManager->flush();
 
             flash()->success('Your space has been created successfully!');
-
-            if ($request->headers->get('Accept') === 'text/vnd.turbo-stream.html') {
-                // Handle Turbo Drive request
-                return new Response(null, 303, ['Location' => $this->generateUrl('app_space_show', ['id' => $space->getId()])]);
-            }
-
             return $this->redirectToRoute('app_space_show', ['id' => $space->getId()]);
         }
 
@@ -75,7 +65,7 @@ class SpaceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_space_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_space_edit', methods: ['GET', 'POST', 'PATCH'])]
     public function edit(Request $request, Space $space, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -87,6 +77,7 @@ class SpaceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->flush();
             $this->addFlash('success', 'Space updated successfully!');
 

@@ -17,6 +17,9 @@ class UserEditFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $user */
+        $user = $options['data'];
+
         $builder
             // Add more fields as needed based on your User entity
             // For example: first name, last name, etc.
@@ -38,6 +41,12 @@ class UserEditFormType extends AbstractType
                 ],
             ])
             ->add('roles', ChoiceType::class, [
+                'data' => $user->getRoles()[0],
+                'choices' => [
+                    'Guest' => 'ROLE_GUEST',
+                    'Host' => 'ROLE_HOST',
+                    'Admin' => 'ROLE_ADMIN',
+                ],
                 'mapped' => false
             ])
             ->add('save', SubmitType::class, [

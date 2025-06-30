@@ -46,16 +46,29 @@
             <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
         {%- endif -%}
         {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
         {%- endif -%}
         {%- set options = choices -%}
         {{- block('choice_widget_options') -}}
-        {% set options = preferred_choices %}
-        {{- block('choice_widget_options') -}}
-        {%- if choices|length > 0 and separator is not none -%}
-        {%- endif -%}
-        <option disabled="disabled">{{ separator }}</option>
     </select>
 {%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            <option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock choice_widget_options -%}
 
 {%- block radio_widget -%}
     <input type="radio" {{ block('widget_attributes') }}
@@ -87,8 +100,8 @@
                 '%id%': id,
             }) %}
         {%- else -%}
+            {% set label = name|humanize %}
         {%- endif -%}
-        {% set label = name|humanize %}
     {%- endif -%}
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}
             class="form-btn-cancel">{{ label|trans({}, translation_domain) }}</button>
@@ -102,8 +115,8 @@
                 '%id%': id,
             }) %}
         {%- else -%}
+            {% set label = name|humanize %}
         {%- endif -%}
-        {% set label = name|humanize %}
     {%- endif -%}
     <button type="{{ type|default('submit') }}" {{ block('button_attributes') }}
             class="form-btn-submit">{{ label|trans({}, translation_domain) }}</button>

@@ -26,7 +26,7 @@ class Space
     #[ORM\JoinColumn(nullable: false)]
     private ?User $host = null;
 
-    #[ORM\ManyToOne(inversedBy: 'spaces')]
+    #[ORM\ManyToOne(inversedBy: 'spaces', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Address $address = null;
 

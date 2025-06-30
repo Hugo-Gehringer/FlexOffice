@@ -3,7 +3,7 @@
         <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">{{ title|default('Disponibilité') }}</h4>
 
         {# Jours de la semaine #}
-        <div class="grid grid-cols-7 gap-3 mb-4">
+        <div class="grid grid-cols-7 gap-3">
             {% set days = {
                 'monday': 'Lun',
                 'tuesday': 'Mar',
@@ -15,17 +15,17 @@
             } %}
 
             {% for day_key, day_label in days %}
-                {% set field = attribute(form, day_key) %}
-                <div class="day-selector-item">
-                    <input type="checkbox" id="{{ field.vars.id }}" name="{{ field.vars.full_name }}"
-                           value="1" {% if field.vars.checked %}checked="checked"{% endif %} class="day-selector-checkbox">
-                    <label for="{{ field.vars.id }}" class="day-selector-label">
-                        <div class="day-selector-circle">
-                            {{ day_label|slice(0, 1) }}
-                        </div>
-                        <span class="day-selector-text">{{ day_label }}</span>
-                    </label>
-                </div>
+                {% if attribute(form, day_key) is defined %}
+                    {% set field = attribute(form, day_key) %}
+                    <div class="day-selector-item">
+                        {{ form_widget(field, {'attr': {'class': 'day-selector-checkbox'}}) }}
+                        <label for="{{ field.vars.id }}" class="day-selector-label">
+                            <div class="day-selector-circle">{{ day_label|slice(0, 1) }}
+                            </div>
+                            <span class="day-selector-text">{{ day_label }}</span>
+                        </label>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

@@ -45,7 +45,7 @@
                 {% endif %}
             </div>
             <!-- Form Actions -->
-            <div class="flex justify-end space-x-3 p-6">
+            <div class="flex justify-end space-x-3 m-5">
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_admin_spaces') }}" class="form-btn-cancel">Cancel</a>
                 {% else %}
@@ -53,8 +53,7 @@
                 {% endif %}
                 {{ form_widget(space_form.save, {'label': 'Update Space'}) }}
             </div>
-            {{ form_end(space_form, {'render_rest': false}) }}
+            {{ form_end(space_form) }}
         </div>
-    </div>
     </div>
 {% endblock %}
