@@ -112,28 +112,4 @@
             {% endfor %}
         </div>
     </div>
-    {{ component('desk_modal', { space: space }) }}
-
-    {# Add reservation modals for each desk #}
-    {% for desk in desks %}
-        {% if desk.isAvailable %}
-            {{ component('reservation_modal', { desk: desk }) }}
-        {% endif %}
-    {% endfor %}
-
-    <script>
-        // Set up booked dates for each desk
-        window.bookedDates = window.bookedDates || {};
-        {% for desk in desks %}
-            {% if desk.isAvailable %}
-                // Get booked dates for desk {{ desk.id }}
-                {% set existingReservations = desk.reservations|filter(r => r.status != 2) %}
-                {% set bookedDatesForDesk = [] %}
-                {% for reservation in existingReservations %}
-                    {% set bookedDatesForDesk = bookedDatesForDesk|merge([reservation.reservationDate|date('Y-m-d')]) %}
-                {% endfor %}
-                window.bookedDates[{{ desk.id }}] = {{ bookedDatesForDesk|json_encode|raw }};
-            {% endif %}
-        {% endfor %}
-    </script>
 {% endblock %}
