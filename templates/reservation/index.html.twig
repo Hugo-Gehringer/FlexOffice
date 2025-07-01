@@ -1,21 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Reservations{% endblock %}
+{% block title %}{{ 'My Reservations'|trans }}{% endblock %}
 
 {% block content %}
             <div class="container mx-auto">
-                <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">My Reservations</h1>
+                <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">{{ 'My Reservations'|trans }}</h1>
 
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">Espace</th>
-                                    <th scope="col" class="px-6 py-3">Bureau</th>
-                                    <th scope="col" class="px-6 py-3">Date</th>
-                                    <th scope="col" class="px-6 py-3">Statut</th>
-                                    <th scope="col" class="px-6 py-3">Actions</th>
+                                    <th scope="col" class="px-6 py-3">{{ 'Space'|trans }}</th>
+                                    <th scope="col" class="px-6 py-3">{{ 'Desk'|trans }}</th>
+                                    <th scope="col" class="px-6 py-3">{{ 'Date'|trans }}</th>
+                                    <th scope="col" class="px-6 py-3">{{ 'Status'|trans }}</th>
+                                    <th scope="col" class="px-6 py-3">{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -32,11 +32,11 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             {% if reservation.status == 0 %}
-                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ 'Pending'|trans }}</span>
                                             {% elseif reservation.status == 1 %}
-                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Confirmed</span>
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ 'Confirmed'|trans }}</span>
                                             {% elseif reservation.status == 2 %}
-                                                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Cancelled</span>
+                                                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{ 'Cancelled'|trans }}</span>
                                             {% endif %}
                                         </td>
                                         <td class="px-6 py-4">
@@ -48,7 +48,7 @@
                                                     </svg>
                                                 </a>
                                                 {% if reservation.status != 2 %}
-                                                    <a href="{{ path('app_reservation_cancel', {'id': reservation.id}) }}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Cancel</a>
+                                                    <a href="{{ path('app_reservation_cancel', {'id': reservation.id}) }}" class="font-medium text-red-600 dark:text-red-500 hover:underline">{{ 'Cancel'|trans }}</a>
                                                 {% endif %}
                                             </div>
                                         </td>
@@ -56,7 +56,7 @@
                                 {% else %}
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td colspan="5" class="px-6 py-4 text-center">
-                                            No reservations found. <a href="{{ path('app_space_index') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Browse spaces</a> to make a reservation.
+                                            {{ 'No reservations found'|trans }}. <a href="{{ path('app_space_index') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ 'Browse spaces'|trans }}</a> pour faire une réservation.
                                         </td>
                                     </tr>
                                 {% endfor %}

@@ -29,18 +29,18 @@ class ReservationFormType extends AbstractType
 
         $builder
             ->add('reservationDate', DateType::class, [
-                'label' => 'Reservation Date',
-                'widget' => 'single_text',        // Important : un seul input <input type="text">
-                'format' => 'yyyy-MM-dd',         // Doit correspondre au format Flatpickr (Y-m-d)
-                'input' => 'datetime',            // Retourne un objet \DateTime en PHP
+                'label' => 'Date de réservation',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'input' => 'datetime',
                 'required' => true,
                 'attr' => [
-                    'class' => 'datepicker',      // Permet de cibler le champ avec Flatpickr JS
-                    'autocomplete' => 'off',      // (Optionnel) désactive l’autocomplétion navigateur
+                    'class' => 'datepicker',
+                    'autocomplete' => 'off',
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Reserve',
+                'label' => 'Réserver',
             ]);
     }
 
@@ -49,7 +49,5 @@ class ReservationFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Reservation::class,
         ]);
-
-//        $resolver->setAllowedTypes('desk', ['null', Desk::class]);
     }
 }

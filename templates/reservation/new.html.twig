@@ -27,8 +27,9 @@
         </div>
         <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800 p-6">
             {{ form_start(reservation_form, {'method': 'POST'}) }}
+            {{ form_label(reservation_form.reservationDate) }}
             <div class="flex justify-center">
-                {{ form_row(reservation_form.reservationDate) }}
+                {{ form_widget(reservation_form.reservationDate) }}
             </div>
             <div class="flex justify-end space-x-3">
                 <a href="{{ path('app_space_show', {'id': desk.space.id}) }}" class="form-btn-cancel">Annuler</a>
@@ -45,16 +46,25 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const bookedDates = {{ booked_dates|raw }};
+            const daysDisabled = {{ days_disabled|raw }};
+
+            // Convertir les jours disponibles (1-7, dimanche=7) vers Flatpickr (0-6, dimanche=0)
+            const availableDays = daysDisabled.map(day => day === 7 ? 0 : day);
+
             document.querySelectorAll('.datepicker').forEach((el) => {
                 flatpickr(el, {
                     locale: "fr",
                     inline: true,
                     dateFormat: "Y-m-d",
-                    disable: bookedDates,
+                    disable: [
+                        ...bookedDates,
+                        function(date) {
+                            // Désactiver les jours qui ne sont PAS dans la liste des jours disponibles
+                            return !availableDays.includes(date.getDay());
+                        }
+                    ],
                     onChange: function (selectedDates, dateStr, instance) {
-                        // Met à jour la valeur du champ input
                         el.value = dateStr;
-                        // Déclenche un événement change pour Symfony
                         el.dispatchEvent(new Event('change', {bubbles: true}));
                     }
                 });

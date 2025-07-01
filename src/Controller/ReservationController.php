@@ -59,6 +59,7 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         $bookedDates = $this->getFormattedBookedDates($desk, $reservationRepository);
+        $daysDisabled = $desk->getSpace()->getAvailability()->getAvailableDays();
 
         if ($form->isSubmitted()) {
             return $this->processReservationForm($form, $desk, $reservation, $entityManager, $reservationRepository);
@@ -69,6 +70,7 @@ class ReservationController extends AbstractController
             'desk' => $desk,
             'currentUser' => $user,
             'booked_dates' => json_encode($bookedDates),
+            'days_disabled' => json_encode($daysDisabled),
         ]);
     }
 
@@ -91,7 +93,7 @@ class ReservationController extends AbstractController
         $reservation->setStatus(Reservation::STATUS_CANCELLED);
         $entityManager->flush();
 
-        flash()->success('Your reservation has been cancelled successfully!');
+        flash()->success('Votre réservation a été annulée avec succès !');
         return $this->redirect($request->headers->get('referer', $this->generateUrl('app_reservation_index')));
     }
 
@@ -102,16 +104,16 @@ class ReservationController extends AbstractController
         $this->ensureUserCanDeleteReservation($reservation);
 
         if (!$this->isCsrfTokenValid('delete_reservation', $request->request->get('_token'))) {
-            flash()->error('Invalid CSRF token. Please try again.');
+            flash()->error('Token CSRF invalide. Veuillez réessayer.');
             return $this->getDeleteRedirectRoute();
         }
 
         try {
             $entityManager->remove($reservation);
             $entityManager->flush();
-            flash()->success('Reservation deleted successfully!');
+            flash()->success('Réservation supprimée avec succès !');
         } catch (\Exception $e) {
-            flash()->error('An error occurred while deleting the reservation. Please try again.');
+            flash()->error('Une erreur s\'est produite lors de la suppression de la réservation. Veuillez réessayer.');
         }
 
         return $this->getDeleteRedirectRoute();
@@ -213,7 +215,7 @@ class ReservationController extends AbstractController
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
 
-        return $date < $today ? ['The reservation date must be in the future.'] : [];
+        return $date < $today ? ['La date de réservation doit être dans le futur.'] : [];
     }
 
     private function validateDeskAvailabilityForDay(Desk $desk, \DateTime $date): array
@@ -223,7 +225,7 @@ class ReservationController extends AbstractController
         $isAvailableMethod = 'is' . ucfirst($dayOfWeek);
 
         if (!method_exists($availability, $isAvailableMethod) || !$availability->$isAvailableMethod()) {
-            return ['The desk is not available on ' . ucfirst($dayOfWeek) . 's.'];
+            return ['Le bureau n\'est pas disponible le ' . $this->translateDayOfWeek($dayOfWeek) . '.'];
         }
 
         return [];
@@ -241,7 +243,7 @@ class ReservationController extends AbstractController
             ->getQuery()
             ->getOneOrNullResult();
 
-        return $existingReservation ? ['This desk is already booked for the selected date.'] : [];
+        return $existingReservation ? ['Ce bureau est déjà réservé pour la date sélectionnée.'] : [];
     }
 
     private function handleFormErrors($form, Desk $desk): Response
@@ -279,5 +281,20 @@ class ReservationController extends AbstractController
         return $this->isGranted('ROLE_ADMIN')
             ? $this->redirectToRoute('app_admin_reservations')
             : $this->redirectToRoute('app_reservation_index');
+    }
+
+    private function translateDayOfWeek(string $dayOfWeek): string
+    {
+        $translations = [
+            'monday' => 'lundi',
+            'tuesday' => 'mardi',
+            'wednesday' => 'mercredi',
+            'thursday' => 'jeudi',
+            'friday' => 'vendredi',
+            'saturday' => 'samedi',
+            'sunday' => 'dimanche'
+        ];
+
+        return $translations[strtolower($dayOfWeek)] ?? $dayOfWeek;
     }
 }

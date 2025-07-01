@@ -99,12 +99,12 @@ class AdminController extends AbstractController
                 $entityManager->remove($space);
                 $entityManager->flush();
 
-                $this->addFlash('success', sprintf('Space "%s" has been successfully deleted.', $space->getName()));
+                $this->addFlash('success', sprintf('L\'espace "%s" a été supprimé avec succès.', $space->getName()));
             } catch (\Exception $e) {
-                $this->addFlash('error', 'An error occurred while deleting the space. Please try again.');
+                $this->addFlash('error', 'Une erreur s\'est produite lors de la suppression de l\'espace. Veuillez réessayer.');
             }
         } else {
-            $this->addFlash('error', 'Invalid CSRF token. Please try again.');
+            $this->addFlash('error', 'Token CSRF invalide. Veuillez réessayer.');
         }
 
         return $this->redirectToRoute('app_admin_spaces');
@@ -171,7 +171,7 @@ class AdminController extends AbstractController
 
         // Prevent admin from deleting themselves
         if ($user === $this->getUser()) {
-            $this->addFlash('error', 'You cannot delete your own account.');
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer votre propre compte.');
             return $this->redirectToRoute('app_admin_users');
         }
 
@@ -181,12 +181,12 @@ class AdminController extends AbstractController
                 $entityManager->remove($user);
                 $entityManager->flush();
 
-                $this->addFlash('success', sprintf('User "%s %s" has been successfully deleted.', $user->getFirstname(), $user->getLastname()));
+                $this->addFlash('success', sprintf('L\'utilisateur "%s %s" a été supprimé avec succès.', $user->getFirstname(), $user->getLastname()));
             } catch (\Exception $e) {
-                $this->addFlash('error', 'An error occurred while deleting the user. Please try again.');
+                $this->addFlash('error', 'Une erreur s\'est produite lors de la suppression de l\'utilisateur. Veuillez réessayer.');
             }
         } else {
-            $this->addFlash('error', 'Invalid CSRF token. Please try again.');
+            $this->addFlash('error', 'Token CSRF invalide. Veuillez réessayer.');
         }
 
         return $this->redirectToRoute('app_admin_users');
@@ -204,7 +204,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', sprintf('User "%s %s" has been successfully updated.', $user->getFirstname(), $user->getLastname()));
+            $this->addFlash('success', sprintf('L\'utilisateur "%s %s" a été mis à jour avec succès.', $user->getFirstname(), $user->getLastname()));
             return $this->redirectToRoute('app_admin_users');
         }
 

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Spaces{% endblock %}
+{% block title %}{{ 'My Spaces'|trans }}{% endblock %}
 
 {% block content %}
             <div class="container mx-auto">
                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">My Spaces</h1>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ 'My Spaces'|trans }}</h1>
                     {% include 'shared/elements/link_button.html.twig' with {
-                        'text': 'Add New Space',
+                        'text': 'Ajouter un Nouvel Espace'|trans,
                         'href': path('app_space_new'),
                         'variant': 'success',
                         'icon_before': 'plus'
@@ -22,7 +22,7 @@
                                 <p class="text-gray-700 dark:text-gray-300 mb-4">{{ space.description|slice(0, 100) }}{% if space.description|length > 100 %}...{% endif %}</p>
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded dark:bg-blue-900 dark:text-blue-300">
-                                        {{ space.desks|length }} Desks
+                                        {{ space.desks|length }} {{ 'Desks'|trans }}
                                     </span>
                                     <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded dark:bg-gray-700 dark:text-gray-300">
                                         {{ space.address.city }}

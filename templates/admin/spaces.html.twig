@@ -28,7 +28,7 @@
                 <p class="text-3xl font-bold text-blue-600 dark:text-blue-500">{{ spaces|length }}</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
-                <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Total Desks</h3>
+                <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Total Bureaux</h3>
                 <p class="text-3xl font-bold text-green-600 dark:text-green-500">
                     {% set totalDesks = 0 %}
                     {% for space in spaces %}
@@ -38,7 +38,7 @@
                 </p>
             </div>
             <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
-                <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Cities</h3>
+                <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Villes</h3>
                 <p class="text-3xl font-bold text-purple-600 dark:text-purple-500">
                     {% set cities = [] %}
                     {% for space in spaces %}
@@ -50,7 +50,7 @@
                 </p>
             </div>
             <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
-                <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Hosts</h3>
+                <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Hôtes</h3>
                 <p class="text-3xl font-bold text-orange-600 dark:text-orange-500">
                     {% set hosts = [] %}
                     {% for space in spaces %}
@@ -69,14 +69,14 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">ID</th>
-                            <th scope="col" class="px-6 py-3">Nom</th>
-                            <th scope="col" class="px-6 py-3">Host</th>
-                            <th scope="col" class="px-6 py-3">Localisation</th>
-                            <th scope="col" class="px-6 py-3">Bureaux</th>
-                            <th scope="col" class="px-6 py-3">Disponibilité</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
-                            <th scope="col" class="px-6 py-3">Actions</th>
+                            <th scope="col" class="px-6 py-3">{{ 'ID'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Name'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Host'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Location'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Desks'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Availability'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Status'|trans }}</th>
+                            <th scope="col" class="px-6 py-3">{{ 'Actions'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,7 +113,7 @@
                                                     {% set availableDesks = availableDesks + 1 %}
                                                 {% endif %}
                                             {% endfor %}
-                                            {{ availableDesks }} available
+                                            {{ availableDesks }} {{ 'available'|trans }}
                                         </div>
                                     {% endif %}
                                 </td>
@@ -134,9 +134,9 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     {% if space.desks|length > 0 %}
-                                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Active</span>
+                                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ 'Active'|trans }}</span>
                                     {% else %}
-                                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">No Desks</span>
+                                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ 'No Desks'|trans }}</span>
                                     {% endif %}
                                 </td>
                                 <td class="px-6 py-4">
@@ -202,20 +202,20 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                         </svg>
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            Are you sure you want to delete the space "<span class="font-medium text-gray-900 dark:text-white">{{ space.name }}</span>"?
+                            Êtes-vous sûr de vouloir supprimer l'espace "<span class="font-medium text-gray-900 dark:text-white">{{ space.name }}</span>" ?
                         </h3>
                         <p class="mb-5 text-sm text-gray-500 dark:text-gray-400">
-                            This action cannot be undone and will also delete all associated desks and reservations.
+                            Cette action ne peut pas être annulée et supprimera également tous les bureaux et réservations associés.
                         </p>
                         <div class="items-center p-4 md:p-5 ">
                             <button data-modal-hide="deleteModal-{{ space.id }}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                No, cancel
+                                {{ 'No, cancel'|trans }}
                             </button>
                             <form method="POST" action="{{ path('app_admin_space_delete', {'id': space.id}) }}" class="inline">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete_space') }}">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
-                                    Yes, I'm sure
+                                    {{ "Yes, I'm sure"|trans }}
                                 </button>
                             </form>
                         </div>
