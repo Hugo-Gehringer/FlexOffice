@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\ProfileFormType;
+use App\Form\UserEditFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Flasher\Prime\FlasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,16 +35,13 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            if ($request->headers->get('Accept') === 'text/vnd.turbo-stream.html') {
-                return $this->render('profile/_success_turbo_stream.html.twig');
-            }
-
             flash()->success('Profile updated successfully!');
-            return $this->redirectToRoute('app_homepage');
+            $referer = $request->headers->get('referer');
         }
 
-        return $this->render('profile/edit.html.twig', [
-            'profileForm' => $form->createView(),
+        return $this->render('user/user_edit.html.twig', [
+            'user' => $user,
+            'user_form' => $form->createView(),
         ]);
     }
 }

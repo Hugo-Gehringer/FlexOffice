@@ -31,7 +31,7 @@
             <div class="flex justify-center">
                 {{ form_widget(reservation_form.reservationDate) }}
             </div>
-            <div class="flex justify-end space-x-3">
+            <div class="flex justify-end space-x-3 m-5">
                 <a href="{{ path('app_space_show', {'id': desk.space.id}) }}" class="form-btn-cancel">Annuler</a>
                 {{ form_widget(reservation_form.save, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors font-medium shadow-md'}, 'label': 'Confirmer la réservation'}) }}
             </div>
@@ -44,6 +44,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+
         document.addEventListener('DOMContentLoaded', () => {
             const bookedDates = {{ booked_dates|raw }};
             const daysDisabled = {{ days_disabled|raw }};
@@ -53,7 +54,7 @@
 
             document.querySelectorAll('.datepicker').forEach((el) => {
                 flatpickr(el, {
-                    locale: "fr",
+                    locale: flatpickr.l10ns.fr,
                     inline: true,
                     dateFormat: "Y-m-d",
                     disable: [

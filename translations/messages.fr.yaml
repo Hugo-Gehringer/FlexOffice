@@ -223,3 +223,9 @@ dimanche: "dimanche"
 "No Desks": "Aucun Bureau"
 "Not set": "Non défini"
 "Close modal": "Fermer la modale"
+
+# Authentification supplémentaire
+"Remember me": "Se souvenir de moi"
+"Forgot password?": "Mot de passe oublié ?"
+"You are logged in as": "Vous êtes connecté en tant que"
+"Don't have an account yet?": "Vous n'avez pas encore de compte ?"

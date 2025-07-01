@@ -8,7 +8,7 @@
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editer Utilisateur</h1>
                 <p class="text-gray-600 dark:text-gray-400">Modifier
-                    l'utilisateur {{ user.firstname }} {{ user.lastname }}</p>
+                    le profil {{ user.firstname }} {{ user.lastname }}</p>
             </div>
             <div class="flex space-x-3">
                 {% if is_granted('ROLE_ADMIN') %}
@@ -29,13 +29,16 @@
             <div class="grid grid-cols-2 gap-6">
                 {{ form_row(user_form.firstName, {'label': 'Prénom'}) }}
                 {{ form_row(user_form.lastName, {'label': 'Nom'}) }}
-                {{ form_row(user_form.email, {'label': 'Adresse email'}) }}
-                {{ form_row(user_form.roles, {'label': 'Rôle utilisateur'}) }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    {{ form_row(user_form.email, {'label': 'Adresse email'}) }}
+                    {{ form_row(user_form.roles, {'label': 'Rôle utilisateur'}) }}
+                {% endif %}
             </div>
             <div class="flex justify-end space-x-3">
                 <a href="{{ path('app_admin_users') }}" class="form-btn-cancel">Cancel</a>
                 {{ form_widget(user_form.save, {'label': 'Update User'}) }}
             </div>
+            {{ form_errors(user_form) }}
             {{ form_end(user_form) }}
         </div>
     </div>
