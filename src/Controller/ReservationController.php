@@ -76,7 +76,6 @@ class ReservationController extends AbstractController
     public function show(Reservation $reservation): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->ensureUserOwnsReservation($reservation);
 
         return $this->render('reservation/show.html.twig', [
             'reservation' => $reservation,
@@ -85,16 +84,15 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/{id}/cancel', name: 'app_reservation_cancel', methods: ['GET', 'POST'])]
-    public function cancel(Reservation $reservation, EntityManagerInterface $entityManager): Response
+    public function cancel(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->ensureUserOwnsReservation($reservation);
 
         $reservation->setStatus(Reservation::STATUS_CANCELLED);
         $entityManager->flush();
 
         flash()->success('Your reservation has been cancelled successfully!');
-        return $this->redirectToRoute('app_reservation_index');
+        return $this->redirect($request->headers->get('referer', $this->generateUrl('app_reservation_index')));
     }
 
     #[Route('/{id}/delete', name: 'app_reservation_delete', methods: ['POST', 'DELETE'])]
@@ -124,7 +122,7 @@ class ReservationController extends AbstractController
         $reservation = new Reservation();
         $reservation->setDesk($desk);
         $reservation->setGuest($user);
-        $reservation->setStatus(ReservationStatus::PENDING);
+        $reservation->setStatus(Reservation::STATUS_PENDING);
 
         return $reservation;
     }
@@ -136,7 +134,7 @@ class ReservationController extends AbstractController
             ->where('r.desk = :desk')
             ->andWhere('r.status != :cancelledStatus')
             ->setParameter('desk', $desk)
-            ->setParameter('cancelledStatus', ReservationStatus::CANCELLED)
+            ->setParameter('cancelledStatus', Reservation::STATUS_CANCELLED)
             ->getQuery()
             ->getResult();
 
@@ -239,7 +237,7 @@ class ReservationController extends AbstractController
             ->andWhere('r.status != :cancelledStatus')
             ->setParameter('desk', $desk)
             ->setParameter('date', $date)
-            ->setParameter('cancelledStatus', ReservationStatus::CANCELLED)
+            ->setParameter('cancelledStatus', Reservation::STATUS_CANCELLED)
             ->getQuery()
             ->getOneOrNullResult();
 
@@ -267,13 +265,6 @@ class ReservationController extends AbstractController
     private function redirectToSpaceShow(Desk $desk): Response
     {
         return $this->redirectToRoute('app_space_show', ['id' => $desk->getSpace()->getId()]);
-    }
-
-    private function ensureUserOwnsReservation(Reservation $reservation): void
-    {
-        if ($reservation->getGuest() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('You cannot access this reservation');
-        }
     }
 
     private function ensureUserCanDeleteReservation(Reservation $reservation): void
