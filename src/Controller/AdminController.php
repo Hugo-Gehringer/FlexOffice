@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Desk;
 use App\Entity\Reservation;
 use App\Entity\Space;
 use App\Entity\User;
 use App\Form\UserEditFormType;
 use App\Form\ReservationEditFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,29 +38,50 @@ class AdminController extends AbstractController
     }
 
     #[Route('/users', name: 'app_admin_users', methods: ['GET'])]
-    public function users(EntityManagerInterface $entityManager): Response
+    public function users(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         // Ensure user is authenticated and has ADMIN role
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
 
-        $users = $entityManager->getRepository(User::class)->findAll();
+        // Créer une requête pour récupérer tous les utilisateurs
+        $queryBuilder = $entityManager->getRepository(User::class)->createQueryBuilder('u')
+            ->orderBy('u.lastname', 'ASC')
+            ->addOrderBy('u.firstname', 'ASC');
+
+        // Paginer les résultats
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), // Numéro de page, par défaut 1
+            10 // Nombre d'éléments par page
+        );
 
         return $this->render('admin/users.html.twig', [
-            'users' => $users,
+            'users' => $pagination,
             'currentUser' => $this->getUser(),
         ]);
     }
 
     #[Route('/spaces', name: 'app_admin_spaces', methods: ['GET'])]
-    public function spaces(EntityManagerInterface $entityManager): Response
+    public function spaces(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         // Ensure user is authenticated and has ADMIN role
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
 
-        $spaces = $entityManager->getRepository(Space::class)->findAll();
+        // Créer une requête pour récupérer tous les espaces avec leurs hôtes
+        $queryBuilder = $entityManager->getRepository(Space::class)->createQueryBuilder('s')
+            ->leftJoin('s.host', 'h')
+            ->addSelect('h')
+            ->orderBy('s.name', 'ASC');
+
+        // Paginer les résultats
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), // Numéro de page, par défaut 1
+            10 // Nombre d'éléments par page
+        );
 
         return $this->render('admin/spaces.html.twig', [
-            'spaces' => $spaces,
+            'spaces' => $pagination,
             'currentUser' => $this->getUser(),
         ]);
     }
@@ -88,15 +111,54 @@ class AdminController extends AbstractController
     }
 
     #[Route('/reservations', name: 'app_admin_reservations', methods: ['GET'])]
-    public function reservations(EntityManagerInterface $entityManager): Response
+    public function reservations(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         // Ensure user is authenticated and has ADMIN role
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
 
-        $reservations = $entityManager->getRepository(Reservation::class)->findAll();
+        // Créer une requête pour récupérer toutes les réservations avec les relations
+        $queryBuilder = $entityManager->getRepository(Reservation::class)->createQueryBuilder('r')
+            ->leftJoin('r.guest', 'g')
+            ->leftJoin('r.desk', 'd')
+            ->leftJoin('d.space', 's')
+            ->addSelect('g', 'd', 's')
+            ->orderBy('r.reservationDate', 'DESC');
+
+        // Paginer les résultats
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), // Numéro de page, par défaut 1
+            10 // Nombre d'éléments par page
+        );
 
         return $this->render('admin/reservations.html.twig', [
-            'reservations' => $reservations,
+            'reservations' => $pagination,
+            'currentUser' => $this->getUser(),
+        ]);
+    }
+
+    #[Route('/desks', name: 'app_admin_desks', methods: ['GET'])]
+    public function desks(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    {
+        // Ensure user is authenticated and has ADMIN role
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
+
+        // Créer une requête pour récupérer tous les bureaux avec leurs espaces
+        $queryBuilder = $entityManager->getRepository(Desk::class)->createQueryBuilder('d')
+            ->leftJoin('d.space', 's')
+            ->addSelect('s')
+            ->orderBy('s.name', 'ASC')
+            ->addOrderBy('d.name', 'ASC');
+
+        // Paginer les résultats
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), // Numéro de page, par défaut 1
+            10 // Nombre d'éléments par page
+        );
+
+        return $this->render('admin/desks.html.twig', [
+            'desks' => $pagination,
             'currentUser' => $this->getUser(),
         ]);
     }

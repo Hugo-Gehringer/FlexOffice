@@ -373,9 +373,35 @@ class AppFixtures extends Fixture
 
     private function createReservations(ObjectManager $manager, array $users, array $desks): void
     {
-        // Create some sample reservations
-        $reservationData = [
-            // Future reservations
+        // Create many sample reservations for pagination testing
+        $reservationData = [];
+
+        // Create 25 reservations for guest user to test pagination
+        $guestUsers = [$users['guest'], $users['guest2'], $users['guest3']];
+        $statuses = [Reservation::STATUS_CONFIRMED, Reservation::STATUS_PENDING, Reservation::STATUS_CANCELLED];
+
+        // Future reservations (15 reservations)
+        for ($i = 1; $i <= 15; $i++) {
+            $reservationData[] = [
+                'guest' => $guestUsers[array_rand($guestUsers)],
+                'desk' => $desks[array_rand($desks)],
+                'date' => "+{$i} days",
+                'status' => $statuses[array_rand($statuses)]
+            ];
+        }
+
+        // Past reservations (15 reservations)
+        for ($i = 1; $i <= 15; $i++) {
+            $reservationData[] = [
+                'guest' => $guestUsers[array_rand($guestUsers)],
+                'desk' => $desks[array_rand($desks)],
+                'date' => "-{$i} days",
+                'status' => $statuses[array_rand($statuses)]
+            ];
+        }
+
+        // Add some specific reservations for the main guest user
+        $specificReservations = [
             [
                 'guest' => $users['guest'],
                 'desk' => $desks[0], // Tech Hub - Desk Dev-01
@@ -383,13 +409,13 @@ class AppFixtures extends Fixture
                 'status' => Reservation::STATUS_CONFIRMED
             ],
             [
-                'guest' => $users['guest2'],
+                'guest' => $users['guest'],
                 'desk' => $desks[1], // Tech Hub - Desk Dev-02
                 'date' => '+2 days',
                 'status' => Reservation::STATUS_CONFIRMED
             ],
             [
-                'guest' => $users['guest3'],
+                'guest' => $users['guest'],
                 'desk' => $desks[2], // Tech Hub - Private Office Alpha
                 'date' => '+3 days',
                 'status' => Reservation::STATUS_PENDING
@@ -401,43 +427,14 @@ class AppFixtures extends Fixture
                 'status' => Reservation::STATUS_CONFIRMED
             ],
             [
-                'guest' => $users['guest2'],
+                'guest' => $users['guest'],
                 'desk' => $desks[6], // Business Center - Private Suite
                 'date' => '+7 days',
                 'status' => Reservation::STATUS_PENDING
             ],
-            [
-                'guest' => $users['guest3'],
-                'desk' => $desks[8], // Creative Space - Creative Desk A
-                'date' => '+10 days',
-                'status' => Reservation::STATUS_CONFIRMED
-            ],
-            [
-                'guest' => $users['guest'],
-                'desk' => $desks[11], // Innovation Lab - Lab Station 01
-                'date' => '+14 days',
-                'status' => Reservation::STATUS_CONFIRMED
-            ],
-            // Past reservations
-            [
-                'guest' => $users['guest2'],
-                'desk' => $desks[0], // Tech Hub - Desk Dev-01
-                'date' => '-5 days',
-                'status' => Reservation::STATUS_CONFIRMED
-            ],
-            [
-                'guest' => $users['guest3'],
-                'desk' => $desks[4], // Business Center - Executive Desk 01
-                'date' => '-10 days',
-                'status' => Reservation::STATUS_CONFIRMED
-            ],
-            [
-                'guest' => $users['guest'],
-                'desk' => $desks[8], // Creative Space - Creative Desk A
-                'date' => '-15 days',
-                'status' => Reservation::STATUS_CANCELLED
-            ],
         ];
+
+        $reservationData = array_merge($reservationData, $specificReservations);
 
         foreach ($reservationData as $data) {
             $reservation = new Reservation();

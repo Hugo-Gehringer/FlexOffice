@@ -7,6 +7,7 @@ use App\Entity\Reservation;
 use App\Form\ReservationFormType;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,14 +17,27 @@ use Symfony\Component\Routing\Attribute\Route;
 class ReservationController extends AbstractController
 {
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
-    public function index(ReservationRepository $reservationRepository): Response
+    public function index(Request $request, ReservationRepository $reservationRepository, PaginatorInterface $paginator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->getUser();
 
+        // Créer une requête pour récupérer les réservations de l'utilisateur
+        $queryBuilder = $reservationRepository->createQueryBuilder('r')
+            ->where('r.guest = :user')
+            ->setParameter('user', $user)
+            ->orderBy('r.reservationDate', 'DESC');
+
+        // Paginer les résultats
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), // Numéro de page, par défaut 1
+            10 // Nombre d'éléments par page
+        );
+
         return $this->render('reservation/index.html.twig', [
-            'reservations' => $reservationRepository->findBy(['guest' => $user], ['reservationDate' => 'DESC']),
+            'reservations' => $pagination,
             'currentUser' => $user,
         ]);
     }
@@ -32,6 +46,7 @@ class ReservationController extends AbstractController
     public function new(Request $request, Desk $desk, EntityManagerInterface $entityManager, ReservationRepository $reservationRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 
         if (!$desk->isAvailable()) {
             flash()->error('Ce bureau n\'est pas disponible.');
@@ -75,7 +90,7 @@ class ReservationController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->ensureUserOwnsReservation($reservation);
 
-        $reservation->setStatus(ReservationStatus::CANCELLED);
+        $reservation->setStatus(Reservation::STATUS_CANCELLED);
         $entityManager->flush();
 
         flash()->success('Your reservation has been cancelled successfully!');
@@ -274,12 +289,4 @@ class ReservationController extends AbstractController
             ? $this->redirectToRoute('app_admin_reservations')
             : $this->redirectToRoute('app_reservation_index');
     }
-}
-
-// Classe de constantes pour les statuts de réservation
-class ReservationStatus
-{
-    public const PENDING = 0;
-    public const CONFIRMED = 1;
-    public const CANCELLED = 2;
 }
