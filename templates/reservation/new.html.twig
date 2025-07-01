@@ -1,53 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Reservation{% endblock %}
+{% block title %}Nouvelle Réservation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
-    <div id="reservationModal-{{ desk.id }}" tabindex="-1" aria-hidden="true" class=""  data-reservation-modal-booked-dates-value="{{ booked_dates|json_encode }}">
-        <div class="bg-white/50 dark:bg-gray-900/50 absolute inset-0"></div>
-        <div class="relative w-52 z-10 max-h-[90vh] overflow-y-auto">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Réserver {{ desk.name }}
-                    </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" data-modal-hide="reservationModal-{{ desk.id }}">
-                        <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                        </svg>
-                        <span class="sr-only">Fermer</span>
-                    </button>
-                </div>
-                <div class="p-4 space-y-4">
-                    <form action="{{ path('app_reservation_new', {'id': desk.id}) }}"
-                          method="post"
-                          id="reservation-form-{{ desk.id }}"
-                          data-turbo="false"
-                          target="_top">
-                        <input type="hidden" name="_token" value="{{ csrf_token('reservation_form') }}">
-                        <input type="hidden" name="reservation_form[_token]" value="{{ csrf_token('reservation_form') }}">
-                        <input type="hidden" name="desk_id" value="{{ desk.id }}">
-                        <input type="hidden" name="turbo" value="1">
-                        <div class="mb-4">
-                            <label for="reservation_date_{{ desk.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionnez une date</label>
-                            <div id="calendar-container-{{ desk.id }}" class="mb-4"></div>
-                            <input type="hidden" id="reservation_date_{{ desk.id }}" name="reservation_form[reservationDate]"
-                                   data-monday="{{ desk.space.availability.isMonday ? '1' : '0' }}"
-                                   data-tuesday="{{ desk.space.availability.isTuesday ? '1' : '0' }}"
-                                   data-wednesday="{{ desk.space.availability.isWednesday ? '1' : '0' }}"
-                                   data-thursday="{{ desk.space.availability.isThursday ? '1' : '0' }}"
-                                   data-friday="{{ desk.space.availability.isFriday ? '1' : '0' }}"
-                                   data-saturday="{{ desk.space.availability.isSaturday ? '1' : '0' }}"
-                                   data-sunday="{{ desk.space.availability.isSunday ? '1' : '0' }}"
-                                   required>
-                        </div>
-                        <div class="flex justify-end items-center pt-4 pb-3 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button type="button" class="text-gray-500 bg-white hover:bg-gray-100 rounded-lg border text-sm font-medium px-5 py-2.5" data-modal-hide="reservationModal-{{ desk.id }}">Annuler</button>
-                            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">Confirmer</button>
-                        </div>
-                    </form>
-                </div>
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Réserver {{ desk.name }}</h1>
+                <p class="text-gray-600 dark:text-gray-400">Nouvelle réservation</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{{ path('app_space_show', {'id': desk.space.id}) }}"
+                   class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
+                    <svg class="w-5 h-5 mr-2" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Retour au bureau
+                </a>
             </div>
         </div>
-    </div>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800 p-6">
+            {{ form_start(reservation_form, {'method': 'POST'}) }}
+            <div class="flex justify-center">
+                {{ form_row(reservation_form.reservationDate) }}
+            </div>
+            <div class="flex justify-end space-x-3">
+                <a href="{{ path('app_space_show', {'id': desk.space.id}) }}" class="form-btn-cancel">Annuler</a>
+                {{ form_widget(reservation_form.save, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors font-medium shadow-md'}, 'label': 'Confirmer la réservation'}) }}
+            </div>
+            {{ form_end(reservation_form) }}
+        </div>
     </div>
 {% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookedDates = {{ booked_dates|raw }};
+            document.querySelectorAll('.datepicker').forEach((el) => {
+                flatpickr(el, {
+                    locale: "fr",
+                    inline: true,
+                    dateFormat: "Y-m-d",
+                    disable: bookedDates,
+                    onChange: function (selectedDates, dateStr, instance) {
+                        // Met à jour la valeur du champ input
+                        el.value = dateStr;
+                        // Déclenche un événement change pour Symfony
+                        el.dispatchEvent(new Event('change', {bubbles: true}));
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
