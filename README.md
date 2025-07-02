@@ -1,5 +1,7 @@
 # FlexOffice - Documentation des Fonctionnalités
 
+[![codecov](https://codecov.io/gh/Hugo-Gehringer/FlexOffice/graph/badge.svg?token=GQMX4Q9DUU)](https://codecov.io/gh/Hugo-Gehringer/FlexOffice)
+
 ## Vue d'ensemble
 
 FlexOffice est une application de gestion d'espaces de travail flexibles permettant aux utilisateurs de réserver des bureaux dans différents espaces. L'application propose différentes fonctionnalités selon le rôle de l'utilisateur.
