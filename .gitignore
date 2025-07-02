@@ -29,3 +29,5 @@ app/phpunit.xml
 /node_modules
 /var
 /vendor
+/coverage/
+/clover.xml

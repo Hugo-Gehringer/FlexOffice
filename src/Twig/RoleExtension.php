@@ -26,12 +26,12 @@ class RoleExtension extends AbstractExtension
 
     public function isHost(): bool
     {
-        return $this->security->isGranted('ROLE_HOST');
+        return $this->security->isGranted('ROLE_HOST')|| $this->security->isGranted('ROLE_ADMIN');
     }
 
     public function isGuest(): bool
     {
-        return $this->security->isGranted('ROLE_GUEST');
+        return $this->security->isGranted('ROLE_GUEST') || $this->security->isGranted('ROLE_ADMIN');
     }
 
     public function isAdmin(): bool

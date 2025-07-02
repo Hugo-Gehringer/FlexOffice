@@ -21,6 +21,9 @@ db-diff:
 db-load-fixtures:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console doctrine:fixtures:load
 
+test-coverage:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/phpunit --coverage-html=coverage
+
 # Cache commands
 cache-clear:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console cache:clear

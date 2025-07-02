@@ -17,10 +17,10 @@ class Desk
     const DESK_TYPE_CONFERENCE_ROOM = 3;
 
     const DESK_TYPES = [
-        Desk::DESK_TYPE_STANDARD => 'Standard Desk',
-        Desk::DESK_TYPE_PRIVATE_OFFICE => 'Private Office',
-        Desk::DESK_TYPE_MEETING_ROOM => 'Meeting Room',
-        Desk::DESK_TYPE_CONFERENCE_ROOM => 'Conference Room',
+        Desk::DESK_TYPE_STANDARD => 'Bureau standard',
+        Desk::DESK_TYPE_PRIVATE_OFFICE => 'Bureau privé',
+        Desk::DESK_TYPE_MEETING_ROOM => 'Salle de réunion',
+        Desk::DESK_TYPE_CONFERENCE_ROOM => ' Salle de conférence',
     ];
 
     #[ORM\Id]

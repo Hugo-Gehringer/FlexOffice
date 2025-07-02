@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
+        "knplabs/knp-paginator-bundle": "^6.8",
         "php-flasher/flasher-symfony": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.6",
         "phpstan/phpdoc-parser": "^2.0",
@@ -39,10 +40,6 @@
         "symfony/string": "7.2.*",
         "symfony/translation": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
-        "symfony/ux-icons": "^2.22",
-        "symfony/ux-live-component": "^2.22",
-        "symfony/ux-turbo": "^2.23",
-        "symfony/ux-twig-component": "^2.23",
         "symfony/validator": "7.2.*",
         "symfony/web-link": "7.2.*",
         "symfony/yaml": "7.2.*",
@@ -104,6 +101,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.1",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "7.2.*",
         "symfony/css-selector": "7.2.*",

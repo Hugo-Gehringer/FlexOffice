@@ -1,0 +1,12 @@
+# Messages de sécurité
+"Invalid credentials.": "Identifiants invalides."
+"Account is locked.": "Le compte est verrouillé."
+"Account is disabled.": "Le compte est désactivé."
+"Account is not verified.": "Le compte n'est pas vérifié."
+"Too many failed login attempts.": "Trop de tentatives de connexion échouées."
+"Access denied.": "Accès refusé."
+"Authentication required.": "Authentification requise."
+"Invalid CSRF token.": "Token CSRF invalide."
+"Session expired.": "Session expirée."
+"Username could not be found.": "Nom d'utilisateur introuvable."
+"Bad credentials.": "Identifiants incorrects."

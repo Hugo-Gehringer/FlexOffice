@@ -127,6 +127,18 @@ docker-compose exec php php bin/console doctrine:migrations:diff
 make db-load-fixtures
 # ou
 docker-compose exec php php bin/console doctrine:fixtures:load
+
+# Vérifier les fixtures chargées
+make db-check-fixtures
+
+# Tester l'accès admin
+make test-admin
+
+# Tester la navigation admin
+make test-admin-nav
+
+# Tester les modales Flowbite
+make test-flowbite-modals
 ```
 
 #### Commandes de cache
@@ -305,7 +317,7 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
 - **Autres Fonctionnalités**
   - Système de notifications avec php-flasher/flasher-symfony
   - Composants réutilisables avec Twig Components
-  - Intégration de Flowbite pour les composants UI
+  - Intégration complète de Flowbite pour les composants UI (modales, boutons, formulaires)
 
 ## Entités Principales
 
@@ -314,6 +326,31 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
 3. **Desk** - Bureaux individuels dans les espaces
 4. **Address** - Adresses associées aux espaces
 5. **Reservation** - Réservations des bureaux par les utilisateurs
+
+## Administration
+
+L'application inclut un panneau d'administration complet accessible aux utilisateurs avec le rôle `ROLE_ADMIN`.
+
+### Fonctionnalités d'Administration
+
+- **Dashboard** : Vue d'ensemble avec statistiques
+- **Gestion des Utilisateurs** : CRUD complet des utilisateurs
+- **Gestion des Espaces** :
+  - Vue d'ensemble avec statistiques (total espaces, bureaux, villes, hosts)
+  - Création, modification et suppression d'espaces
+  - Gestion des disponibilités et des adresses
+  - Visualisation des détails (host, bureaux, réservations)
+- **Gestion des Réservations** : Suivi et gestion de toutes les réservations
+
+### Accès Administration
+
+- **URL** : `/admin`
+- **Compte de test** : `admin@flexoffice.com` / `12345678`
+- **Pages disponibles** :
+  - `/admin` - Dashboard principal
+  - `/admin/users` - Gestion des utilisateurs
+  - `/admin/spaces` - Gestion des espaces
+  - `/admin/reservations` - Gestion des réservations
 
 ## Conclusion
 

@@ -25,9 +25,6 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
-    '@symfony/ux-live-component' => [
-        'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
-    ],
     'flowbite' => [
         'version' => '3.1.2',
     ],
@@ -47,5 +44,15 @@ return [
     'bootstrap/dist/css/bootstrap.min.css' => [
         'version' => '5.3.3',
         'type' => 'css',
+    ],
+    'flatpickr' => [
+        'version' => '4.6.13',
+    ],
+    'flatpickr/dist/flatpickr.min.css' => [
+        'version' => '4.6.13',
+        'type' => 'css',
+    ],
+    'flatpickr/dist/l10n/fr.js' => [
+        'version' => '4.6.13',
     ],
 ];

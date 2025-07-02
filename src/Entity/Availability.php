@@ -38,17 +38,9 @@ class Availability
     #[ORM\Column]
     private ?bool $sunday = false;
 
-    #[ORM\Column(type: "time", nullable: true)]
-    private ?\DateTime $openingTime = null;
-
-    #[ORM\Column(type: "time", nullable: true)]
-    private ?\DateTime $closingTime = null;
 
     public function __construct()
     {
-        // Initialiser les heures par défaut
-        $this->openingTime = new \DateTime('09:00');
-        $this->closingTime = new \DateTime('18:00');
     }
 
     public function getId(): ?int
@@ -152,46 +144,6 @@ class Availability
         $this->sunday = $sunday;
 
         return $this;
-    }
-
-    public function getOpeningTime(): ?\DateTime
-    {
-        return $this->openingTime;
-    }
-
-    public function setOpeningTime(?\DateTime $openingTime): static
-    {
-        $this->openingTime = $openingTime;
-
-        return $this;
-    }
-
-    /**
-     * Get opening time formatted as a string (HH:MM)
-     */
-    public function getOpeningTimeFormatted(): string
-    {
-        return $this->openingTime ? $this->openingTime->format('H:i') : '09:00';
-    }
-
-    public function getClosingTime(): ?\DateTime
-    {
-        return $this->closingTime;
-    }
-
-    public function setClosingTime(?\DateTime $closingTime): static
-    {
-        $this->closingTime = $closingTime;
-
-        return $this;
-    }
-
-    /**
-     * Get closing time formatted as a string (HH:MM)
-     */
-    public function getClosingTimeFormatted(): string
-    {
-        return $this->closingTime ? $this->closingTime->format('H:i') : '18:00';
     }
 
     /**

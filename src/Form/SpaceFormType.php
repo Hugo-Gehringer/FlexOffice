@@ -2,17 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Address;
-use App\Entity\Availability;
 use App\Entity\Space;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SpaceFormType extends AbstractType
 {
@@ -20,43 +16,18 @@ class SpaceFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Space Name',
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a name for your space',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'max' => 60,
-                        'minMessage' => 'The name should be at least {{ limit }} characters',
-                        'maxMessage' => 'The name cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
+                'label' => 'Nom de l\'espace',
+                'attr' => ['class' => 'form-control']
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a description for your space',
-                    ]),
-                    new Length([
-                        'min' => 10,
-                        'minMessage' => 'The description should be at least {{ limit }} characters',
-                    ]),
-                ],
+                'attr' => ['class' => 'form-control', 'rows' => 4]
             ])
-
-            ->add('address', AddressFormType::class, [
-                'label' => false,
-                'required' => true,
-                'by_reference' => false,
-            ])
-            ->add('availability', AvailabilityFormType::class, [
-                'label' => 'Disponibilité de l\'espace',
-                'required' => false,
-                'by_reference' => false,
+            ->add('address', AddressFormType::class)
+            ->add('availability', AvailabilityFormType::class)
+            ->add('save', SubmitType::class, [
+                'label' => 'Create Space',
+                'attr' => ['class' => 'btn btn-primary']
             ]);
     }
 

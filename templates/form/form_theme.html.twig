@@ -1,0 +1,133 @@
+{%- block form_row -%}
+    <div class="form-group">
+        {{- form_label(form) -}}
+        <div class="input-container">
+            {{- form_widget(form) -}}
+        </div>
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        <label class="form-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {{- label|trans(label_translation_parameters, translation_domain) -}}
+        </label>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block text_widget -%}
+    <input type="{{ type|default('text') }}" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
+{%- endblock text_widget -%}
+
+{%- block email_widget -%}
+    <input type="email" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
+{%- endblock email_widget -%}
+
+{%- block url_widget -%}
+    <input type="url" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
+{%- endblock url_widget -%}
+
+{%- block search_widget -%}
+    <input type="search" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
+{%- endblock search_widget -%}
+
+{%- block password_widget -%}
+    <input type="password" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
+{%- endblock password_widget -%}
+
+{%- block textarea_widget -%}
+    <textarea {{ block('widget_attributes') }} class="form-textarea">{{ value|default('') }}</textarea>
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    <select {{ block('widget_attributes') }} class="form-select">
+        {%- if placeholder is not empty -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            <option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock choice_widget_options -%}
+
+{%- block radio_widget -%}
+    <input type="radio" {{ block('widget_attributes') }}
+           class="form-radio-input"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock radio_widget -%}
+
+{%- block checkbox_widget -%}
+    <input type="checkbox" {{ block('widget_attributes') }}
+           class="form-radio-input"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock checkbox_widget -%}
+
+{%- block choice_widget_expanded -%}
+    <div class="form-radio-container" {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <div class="form-radio-item">
+                {{- form_widget(child) -}}
+                <label class="form-radio-label"
+                       for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}</label>
+            </div>
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}
+            class="form-btn-cancel">{{ label|trans({}, translation_domain) }}</button>
+{%- endblock button_widget -%}
+
+{%- block submit_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('submit') }}" {{ block('button_attributes') }}
+            class="form-btn-submit">{{ label|trans({}, translation_domain) }}</button>
+{%- endblock submit_widget -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <div class="form-error">
+            {%- for error in errors -%}
+                <span>{{ error.message }}</span>
+            {%- endfor -%}
+        </div>
+    {%- endif -%}
+{%- endblock form_errors -%}

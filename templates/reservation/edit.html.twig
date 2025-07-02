@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Reservation{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Reservation</h1>
+                <p class="text-gray-600 dark:text-gray-400">Update your reservation for "{{ reservation.desk.name }}"</p>
+            </div>
+            <a href="{{ path('app_reservation_index') }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center font-medium shadow-md">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retourner aux reservations
+            </a>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Reservation Details</h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Update your reservation information</p>
+            </div>
+            
+            <div class="p-6">
+                <!-- Current Reservation Info -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Current Reservation</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Bureau :</span>
+                            <span class="text-gray-900 dark:text-white">{{ reservation.desk.name }}</span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Espace:</span>
+                            <span class="text-gray-900 dark:text-white">{{ reservation.desk.space.name }}</span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Localisation :</span>
+                            <span class="text-gray-900 dark:text-white">
+                                {% if reservation.desk.space.address %}
+                                    {{ reservation.desk.space.address.city }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">Current Status:</span>
+                            {% if reservation.status == 0 %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                    Pending
+                                </span>
+                            {% elseif reservation.status == 1 %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                    Confirmed
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+                                    Cancelled
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_start(reservation_form, {'attr': {'class': 'space-y-6'}}) }}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Reservation Date -->
+                    <div>
+                        <label for="{{ reservation_form.reservationDate.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Reservation Date
+                        </label>
+                        {{ form_widget(reservation_form.reservationDate, {
+                            'attr': {
+                                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+                            }
+                        }) }}
+                        {{ form_errors(reservation_form.reservationDate) }}
+                    </div>
+
+                    <!-- Status (only for admins) -->
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <div>
+                        <label for="{{ reservation_form.status.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Status
+                        </label>
+                        {{ form_widget(reservation_form.status, {
+                            'attr': {
+                                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+                            }
+                        }) }}
+                        {{ form_errors(reservation_form.status) }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Information Notice -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">Informations importante</h3>
+                                <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>You can only modify the reservation date</li>
+                                        <li>The new date must be available for this desk</li>
+                                        <li>Changes are subject to space availability</li>
+                                        {% if not is_granted('ROLE_ADMIN') %}
+                                        <li>Contact an administrator to change the status</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <div class="flex justify-end space-x-3">
+                        <a href="{{ path('app_reservation_index') }}" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+                            Cancel
+                        </a>
+                        <button type="submit" class="">
+                            Update Reservation
+                        </button>
+                    </div>
+                </div>
+
+                {{ form_end(reservation_form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

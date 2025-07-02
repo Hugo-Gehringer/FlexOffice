@@ -22,11 +22,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg \
     && docker-php-ext-install gd \
     && docker-php-ext-install exif \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
     && a2enmod rewrite ssl socache_shmcb \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Set working directory
+# Configure Xdebug pour le débogage et la couverture de code
+RUN echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+    # Set working directory
 WORKDIR /var/www
 
 # Install Composer

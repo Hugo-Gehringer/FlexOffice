@@ -26,7 +26,7 @@
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
-                Back to Spaces
+                Retourner vers les espaces
             </a>
         </div>
 
@@ -79,7 +79,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <p class="text-gray-700 dark:text-gray-300">Horaires: {{ availability.openingTime|date('H:i') }} - {{ availability.closingTime|date('H:i') }}</p>
                     </div>
                 {% endif %}
             </div>
@@ -88,17 +87,17 @@
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">Desks</h2>
             {% if is_host() and space.host == app.user %}
-                <button
-                        type="button"
-                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                        data-modal-target="deskModal"
-                        data-modal-toggle="deskModal"
-                >
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Add Desk
-                </button>
+{#                <button#}
+{#                        type="button"#}
+{#                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"#}
+{#                        data-modal-target="deskModal"#}
+{#                        data-modal-toggle="deskModal"#}
+{#                >#}
+{#                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">#}
+{#                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>#}
+{#                    </svg>#}
+{#                    Add Desk#}
+{#                </button>#}
             {% endif %}
         </div>
         <div id="desks-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,33 +107,9 @@
                 {% endif %}
             {% else %}
                 <div class="col-span-full text-center py-8">
-                    <p class="text-gray-700 dark:text-gray-300">No desks available in this space.</p>
+                    <p class="text-gray-700 dark:text-gray-300">Aucun bureau disponible dans cet espace.</p>
                 </div>
             {% endfor %}
         </div>
     </div>
-    {{ component('desk_modal', { space: space }) }}
-
-    {# Add reservation modals for each desk #}
-    {% for desk in desks %}
-        {% if desk.isAvailable %}
-            {{ component('reservation_modal', { desk: desk }) }}
-        {% endif %}
-    {% endfor %}
-
-    <script>
-        // Set up booked dates for each desk
-        window.bookedDates = window.bookedDates || {};
-        {% for desk in desks %}
-            {% if desk.isAvailable %}
-                // Get booked dates for desk {{ desk.id }}
-                {% set existingReservations = desk.reservations|filter(r => r.status != 2) %}
-                {% set bookedDatesForDesk = [] %}
-                {% for reservation in existingReservations %}
-                    {% set bookedDatesForDesk = bookedDatesForDesk|merge([reservation.reservationDate|date('Y-m-d')]) %}
-                {% endfor %}
-                window.bookedDates[{{ desk.id }}] = {{ bookedDatesForDesk|json_encode|raw }};
-            {% endif %}
-        {% endfor %}
-    </script>
 {% endblock %}
