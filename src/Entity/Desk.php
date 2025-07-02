@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DeskRepository::class)]
 class Desk
@@ -42,9 +43,13 @@ class Desk
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'Le prix par jour est obligatoire')]
+    #[Assert\Positive(message: 'Le prix par jour doit être supérieur à zéro')]
     private ?float $pricePerDay = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'La capacité est obligatoire')]
+    #[Assert\Positive(message: 'La capacité doit être supérieure à zéro')]
     private ?int $capacity = null;
 
     #[ORM\Column]
@@ -202,6 +207,7 @@ class Desk
     {
         if (!$this->equipments->contains($equipment)) {
             $this->equipments->add($equipment);
+            $equipment->addDesk($this); // Établir la relation bidirectionnelle
         }
 
         return $this;
@@ -209,7 +215,9 @@ class Desk
 
     public function removeEquipment(Equipment $equipment): static
     {
-        $this->equipments->removeElement($equipment);
+        if ($this->equipments->removeElement($equipment)) {
+            $equipment->removeDesk($this); // Enlever aussi de l'autre côté
+        }
 
         return $this;
     }
