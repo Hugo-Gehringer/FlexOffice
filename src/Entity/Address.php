@@ -6,6 +6,7 @@ use App\Repository\AddressRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
@@ -16,15 +17,20 @@ class Address
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Please enter a street address')]
     private ?string $street = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Please enter a city')]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
+    #[Assert\NotBlank(message: 'Please enter a postal code')]
+    #[Assert\Length(max: 5, maxMessage: 'The postal code cannot be longer than {{ limit }} characters')]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Please choose a country')]
     private ?string $country = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -32,7 +38,6 @@ class Address
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $longitude = null;
-
     /**
      * @var Collection<int, Space>
      */

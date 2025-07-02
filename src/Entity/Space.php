@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SpaceRepository::class)]
 class Space
@@ -17,9 +18,21 @@ class Space
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
+    #[Assert\NotBlank(message: 'Le nom de l\'espace est obligatoire')]
+    #[Assert\Length(
+        min: 3,
+        max: 60,
+        minMessage: 'Le nom doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'La description est obligatoire')]
+    #[Assert\Length(
+        min: 10,
+        minMessage: 'La description doit contenir au moins {{ limit }} caractères'
+    )]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'spacesHosted')]

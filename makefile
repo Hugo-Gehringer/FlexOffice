@@ -21,23 +21,8 @@ db-diff:
 db-load-fixtures:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console doctrine:fixtures:load
 
-db-check-fixtures:
-	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/check-fixtures.sh
-
-test-admin:
-	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-admin-access.sh
-
-test-admin-nav:
-	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-admin-navigation.sh
-
-test-flowbite-modals:
-	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-flowbite-modals.sh
-
-test-admin-buttons:
-	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-admin-buttons.sh
-
-test-routes-fix:
-	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) ./scripts/test-routes-fix.sh
+test-coverage:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/phpunit --coverage-html=coverage
 
 # Cache commands
 cache-clear:
