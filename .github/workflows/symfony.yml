@@ -43,7 +43,8 @@ jobs:
       - name: Run PHPUnit with coverage
         env:
           DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-          XDEBUG_MODE: coverage              # <--- Active Xdebug pour coverage
+          XDEBUG_MODE: coverage
+          SYMFONY_DEPRECATIONS_HELPER: "weak"
         run: vendor/bin/phpunit --coverage-clover=clover.xml
 
       # Optionnel : Upload coverage to Codecov (supprime si inutile)
