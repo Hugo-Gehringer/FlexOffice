@@ -10,8 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditFormType extends AbstractType
 {
@@ -21,24 +19,14 @@ class UserEditFormType extends AbstractType
         $user = $options['data'];
 
         $builder
-            // Add more fields as needed based on your User entity
-            // For example: first name, last name, etc.
-            ->add('firstName', TextType::class, [
+            ->add('firstname', TextType::class, [
                 'required' => true,
             ])
-            ->add('lastName', TextType::class, [
+            ->add('lastname', TextType::class, [
                 'required' => true,
             ])
             ->add('email', EmailType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter an email',
-                    ]),
-                    new Email([
-                        'message' => 'The email "{{ value }}" is not a valid email address',
-                    ]),
-                ],
             ])
             ->add('roles', ChoiceType::class, [
                 'data' => $user->getRoles()[0],

@@ -26,17 +26,6 @@ class DeskFormType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Desk Name',
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a name for the desk',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'max' => 60,
-                        'minMessage' => 'The name should be at least {{ limit }} characters',
-                        'maxMessage' => 'The name cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
             ])
             ->add('type', ChoiceType::class, [
                 'label' => 'Desk Type',
@@ -46,12 +35,6 @@ class DeskFormType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'required' => true,
-                'constraints' => [
-                    new Length([
-                        'min' => 1,
-                        'minMessage' => 'The description should be at least {{ limit }} character',
-                    ]),
-                ],
             ])
             ->add('pricePerDay', IntegerType::class, [
                 'label' => 'Price per Day (€)',
@@ -60,26 +43,10 @@ class DeskFormType extends AbstractType
                     'min' => 1,
                     'step' => 1,
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a price for the desk',
-                    ]),
-                    new Positive([
-                        'message' => 'The price must be positive',
-                    ]),
-                ],
             ])
             ->add('capacity', IntegerType::class, [
                 'label' => 'Capacity',
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter the capacity of the desk',
-                    ]),
-                    new Positive([
-                        'message' => 'The capacity must be positive',
-                    ]),
-                ],
             ])
             ->add('isAvailable', CheckboxType::class, [
                 'label' => 'Available for booking',

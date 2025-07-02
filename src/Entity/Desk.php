@@ -34,12 +34,23 @@ class Desk
     private ?Space $space = null;
 
     #[ORM\Column(length: 60)]
+    #[Assert\NotBlank(message: 'Please enter a name for the desk')]
+    #[Assert\Length(
+        min: 3,
+        max: 60,
+        minMessage: 'The name should be at least {{ limit }} characters',
+        maxMessage: 'The name cannot be longer than {{ limit }} characters'
+    )]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?int $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(
+        min: 1,
+        minMessage: 'The description should be at least {{ limit }} character'
+    )]
     private ?string $description = null;
 
     #[ORM\Column]
