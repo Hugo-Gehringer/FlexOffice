@@ -38,11 +38,11 @@ jobs:
       - name: Install NPM Dependencies
         run: npm install
 
-      - name: Compile Assets
-        run: php bin/console asset-map:compile
-
       - name: Build Tailwind CSS
         run: php bin/console tailwind:build
+
+      - name: Compile Assets
+        run: php bin/console asset-map:compile
 
       - name: Create Database
         run: |
