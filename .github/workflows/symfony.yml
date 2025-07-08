@@ -38,6 +38,9 @@ jobs:
       - name: Install NPM Dependencies
         run: npm install
 
+      - name: build importmap
+        run: php bin/console importmap:install
+
       - name: Build Tailwind CSS
         run: php bin/console tailwind:build
 
