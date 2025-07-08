@@ -24,6 +24,10 @@ db-load-fixtures:
 test-coverage:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/phpunit --coverage-html=coverage
 
+test-coverage-file:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/phpunit tests/Controller/SpaceControllerTest.php
+
+
 # Cache commands
 cache-clear:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console cache:clear

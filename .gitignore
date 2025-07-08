@@ -32,3 +32,4 @@ app/phpunit.xml
 /coverage/
 /clover.xml
 /.phpunit.result.cache
+/coverage-html/

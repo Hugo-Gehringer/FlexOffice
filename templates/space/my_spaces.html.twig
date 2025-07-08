@@ -49,14 +49,7 @@
                         </div>
                     {% else %}
                         <div class="col-span-full text-center py-8">
-                            <p class="text-gray-700 dark:text-gray-300">You haven't created any spaces yet.</p>
-                            <div class="mt-4">
-                                {% include 'shared/elements/link_button.html.twig' with {
-                                    'text': 'Create Your First Space',
-                                    'href': path('app_space_new'),
-                                    'variant': 'success'
-                                } %}
-                            </div>
+                            <p class="text-gray-700 dark:text-gray-300">Vous n'avez pas encore d'espaces.</p>
                         </div>
                     {% endfor %}
                 </div>

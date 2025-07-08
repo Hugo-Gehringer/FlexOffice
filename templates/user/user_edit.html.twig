@@ -27,15 +27,15 @@
         <div class="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-800 p-6">
             {{ form_start(user_form) }}
             <div class="grid grid-cols-2 gap-6">
-                {{ form_row(user_form.firstName, {'label': 'Prénom'}) }}
-                {{ form_row(user_form.lastName, {'label': 'Nom'}) }}
+                {{ form_row(user_form.firstname, {'label': 'Prénom'}) }}
+                {{ form_row(user_form.lastname, {'label': 'Nom'}) }}
                 {% if is_granted('ROLE_ADMIN') %}
                     {{ form_row(user_form.email, {'label': 'Adresse email'}) }}
                     {{ form_row(user_form.roles, {'label': 'Rôle utilisateur'}) }}
                 {% endif %}
             </div>
             <div class="flex justify-end space-x-3">
-                <a href="{{ path('app_admin_users') }}" class="form-btn-cancel">Cancel</a>
+                <a href="{{ path('app_admin_users') }}" class="form-btn-cancel">{{ 'Cancel'|trans }}</a>
                 {{ form_widget(user_form.save, {'label': 'Update User'}) }}
             </div>
             {{ form_errors(user_form) }}
