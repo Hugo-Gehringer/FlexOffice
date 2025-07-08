@@ -164,18 +164,13 @@ class SpaceController extends AbstractController
             throw $this->createAccessDeniedException('You can only delete your own spaces.');
         }
 
-        // Verify CSRF token
-        if ($this->isCsrfTokenValid('delete_space', $request->request->get('_token'))) {
-            try {
-                $entityManager->remove($space);
-                $entityManager->flush();
+        try {
+            $entityManager->remove($space);
+            $entityManager->flush();
 
-                flash()->success('Space deleted successfully!');
-            } catch (\Exception $e) {
-                flash()->error('An error occurred while deleting the space. Please try again.');
-            }
-        } else {
-            flash()->error('Invalid CSRF token. Please try again.');
+            flash()->success('Space deleted successfully!');
+        } catch (\Exception $e) {
+            flash()->error('An error occurred while deleting the space. Please try again.');
         }
 
         // Redirect based on user role

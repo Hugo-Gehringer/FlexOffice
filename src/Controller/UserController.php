@@ -29,7 +29,7 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException('User must be logged in');
         }
 
-        $form = $this->createForm(ProfileFormType::class, $user);
+        $form = $this->createForm(UserEditFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

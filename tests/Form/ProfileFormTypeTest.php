@@ -11,8 +11,8 @@ class ProfileFormTypeTest extends TypeTestCase
     public function testSubmitValidData(): void
     {
         $formData = [
-            'firstName' => 'John',
-            'lastName' => 'Doe',
+            'firstname' => 'John',
+            'lastname' => 'Doe',
         ];
 
         $user = new User();
@@ -22,7 +22,7 @@ class ProfileFormTypeTest extends TypeTestCase
 
         $this->assertTrue($form->isSynchronized());
 
-        $this->assertEquals('John', $user->getFirstName());
+        $this->assertEquals('John', $user->getFirstname());
         $this->assertEquals('Doe', $user->getLastName());
     }
 
@@ -30,8 +30,8 @@ class ProfileFormTypeTest extends TypeTestCase
     {
         $form = $this->factory->create(ProfileFormType::class);
 
-        $this->assertTrue($form->has('firstName'));
-        $this->assertTrue($form->has('lastName'));
+        $this->assertTrue($form->has('firstname'));
+        $this->assertTrue($form->has('lastname'));
         $this->assertTrue($form->has('save'));
     }
 
@@ -40,8 +40,8 @@ class ProfileFormTypeTest extends TypeTestCase
         $form = $this->factory->create(ProfileFormType::class);
         $view = $form->createView();
 
-        $this->assertTrue($view->children['firstName']->vars['required']);
-        $this->assertTrue($view->children['lastName']->vars['required']);
+        $this->assertTrue($view->children['firstname']->vars['required']);
+        $this->assertTrue($view->children['lastname']->vars['required']);
     }
 
     public function testSaveButtonLabel(): void
@@ -64,16 +64,16 @@ class ProfileFormTypeTest extends TypeTestCase
     {
         $form = $this->factory->create(ProfileFormType::class);
 
-        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('firstName')->getConfig()->getType()->getInnerType()));
-        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('lastName')->getConfig()->getType()->getInnerType()));
+        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('firstname')->getConfig()->getType()->getInnerType()));
+        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('lastname')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\SubmitType', get_class($form->get('save')->getConfig()->getType()->getInnerType()));
     }
 
     public function testEmptyFormData(): void
     {
         $formData = [
-            'firstName' => '',
-            'lastName' => '',
+            'firstname' => '',
+            'lastname' => '',
         ];
 
         $form = $this->factory->create(ProfileFormType::class);
@@ -86,8 +86,8 @@ class ProfileFormTypeTest extends TypeTestCase
     public function testSpecialCharactersInNames(): void
     {
         $formData = [
-            'firstName' => 'Jean-Marie',
-            'lastName' => "O'Connor",
+            'firstname' => 'Jean-Marie',
+            'lastname' => "O'Connor",
         ];
 
         $user = new User();
@@ -106,8 +106,8 @@ class ProfileFormTypeTest extends TypeTestCase
         $user->setLastName('OldLast');
 
         $formData = [
-            'firstName' => 'NewFirst',
-            'lastName' => 'NewLast',
+            'firstname' => 'NewFirst',
+            'lastname' => 'NewLast',
         ];
 
         $form = $this->factory->create(ProfileFormType::class, $user);

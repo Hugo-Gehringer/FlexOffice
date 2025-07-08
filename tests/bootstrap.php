@@ -9,8 +9,8 @@ if (file_exists(dirname(__DIR__) . '/.env.test')) {
     (new Dotenv())->usePutenv()->bootEnv(dirname(__DIR__) . '/.env.test');
 }
 
-// Crée le schéma si SQLite mémoire
-if ($_ENV['DATABASE_URL'] === 'sqlite:///:memory:') {
+// Vérification sécurisée de la variable DATABASE_URL
+if (isset($_ENV['DATABASE_URL']) && $_ENV['DATABASE_URL'] === 'sqlite:///:memory:') {
     $kernel = new \App\Kernel('test', true);
     $kernel->boot();
 

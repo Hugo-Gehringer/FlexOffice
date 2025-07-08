@@ -89,7 +89,9 @@
                         No, cancel
                     </button>
                     <form method="POST" action="{{ path('app_space_delete', {'id': space.id}) }}" class="inline">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete_space') }}">
+                        {% if csrf_token is defined %}
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_space') }}">
+                        {% endif %}
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="modal-btn modal-btn-danger">
                             Yes, I'm sure
