@@ -17,17 +17,14 @@ class SpaceFormType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom de l\'espace',
-                'attr' => ['class' => 'form-control']
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'attr' => ['class' => 'form-control', 'rows' => 4]
             ])
             ->add('address', AddressFormType::class)
             ->add('availability', AvailabilityFormType::class)
             ->add('save', SubmitType::class, [
                 'label' => 'Create Space',
-                'attr' => ['class' => 'btn btn-primary']
             ]);
     }
 

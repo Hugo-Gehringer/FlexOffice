@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,11 +25,11 @@ class DeskFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Desk Name',
+                'label' => 'Nom du bureau',
                 'required' => true,
             ])
             ->add('type', ChoiceType::class, [
-                'label' => 'Desk Type',
+                'label' => 'Type de bureau',
                 'required' => true,
                 'choices' => array_flip(Desk::DESK_TYPES),
             ])
@@ -37,7 +38,7 @@ class DeskFormType extends AbstractType
                 'required' => true,
             ])
             ->add('pricePerDay', IntegerType::class, [
-                'label' => 'Price per Day (€)',
+                'label' => 'Prix par jour (€)',
                 'required' => true,
                 'attr' => [
                     'min' => 1,
@@ -45,23 +46,22 @@ class DeskFormType extends AbstractType
                 ],
             ])
             ->add('capacity', IntegerType::class, [
-                'label' => 'Capacity',
+                'label' => 'Capacité',
                 'required' => true,
             ])
-            ->add('isAvailable', CheckboxType::class, [
-                'label' => 'Available for booking',
-                'required' => false,
-                'data' => true, // Default to available
-            ])
             ->add('equipments', EntityType::class, [
-                'label' => 'Equipment',
+                'label' => 'Equipement',
                 'class' => Equipment::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'required' => false,
-            ]);
-            // Removed availability field as desks now use their parent space's availability
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Créer Bureau',
+            ])
+        ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -12,6 +12,13 @@
             <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded dark:bg-gray-900 dark:text-gray-300">
                 {{ constant('App\\Entity\\Desk::DESK_TYPES')[desk.type] }}
             </span>
+            {% if desk.equipments|length > 0 %}
+                {% for equipment in desk.equipments %}
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded dark:bg-yellow-900 dark:text-yellow-300">
+                        {{ equipment.name }}
+                    </span>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="mt-4">
             <div class="flex justify-end">

@@ -84,6 +84,7 @@ class Desk
     {
         $this->reservations = new ArrayCollection();
         $this->equipments = new ArrayCollection();
+        $this->isAvailable = true;
 
     }
 

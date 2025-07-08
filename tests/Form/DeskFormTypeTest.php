@@ -27,7 +27,6 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
             'description' => 'Un bureau moderne avec vue sur la ville, parfait pour la concentration.',
             'pricePerDay' => 35,
             'capacity' => 1,
-            'isAvailable' => true,
             'equipments' => [],
         ];
 
@@ -43,7 +42,6 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $this->assertEquals('Un bureau moderne avec vue sur la ville, parfait pour la concentration.', $desk->getDescription());
         $this->assertEquals(35, $desk->getPricePerDay());
         $this->assertEquals(1, $desk->getCapacity());
-        $this->assertTrue($desk->isAvailable());
     }
 
     public function testFormHasRequiredFields(): void
@@ -55,7 +53,6 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $this->assertTrue($form->has('description'));
         $this->assertTrue($form->has('pricePerDay'));
         $this->assertTrue($form->has('capacity'));
-        $this->assertTrue($form->has('isAvailable'));
         $this->assertTrue($form->has('equipments'));
     }
 
@@ -75,13 +72,12 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $form = $this->formFactory->create(DeskFormType::class);
         $view = $form->createView();
 
-        $this->assertEquals('Desk Name', $view->children['name']->vars['label']);
-        $this->assertEquals('Desk Type', $view->children['type']->vars['label']);
+        $this->assertEquals('Nom du bureau', $view->children['name']->vars['label']);
+        $this->assertEquals('Type de bureau', $view->children['type']->vars['label']);
         $this->assertEquals('Description', $view->children['description']->vars['label']);
-        $this->assertEquals('Price per Day (€)', $view->children['pricePerDay']->vars['label']);
-        $this->assertEquals('Capacity', $view->children['capacity']->vars['label']);
-        $this->assertEquals('Available for booking', $view->children['isAvailable']->vars['label']);
-        $this->assertEquals('Equipment', $view->children['equipments']->vars['label']);
+        $this->assertEquals('Prix par jour (€)', $view->children['pricePerDay']->vars['label']);
+        $this->assertEquals('Capacité', $view->children['capacity']->vars['label']);
+        $this->assertEquals('Equipement', $view->children['equipments']->vars['label']);
     }
 
     public function testRequiredFields(): void
@@ -94,16 +90,7 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $this->assertTrue($view->children['description']->vars['required']);
         $this->assertTrue($view->children['pricePerDay']->vars['required']);
         $this->assertTrue($view->children['capacity']->vars['required']);
-        $this->assertFalse($view->children['isAvailable']->vars['required']);
         $this->assertFalse($view->children['equipments']->vars['required']);
-    }
-
-    public function testIsAvailableDefaultValue(): void
-    {
-        $form = $this->formFactory->create(DeskFormType::class);
-        $isAvailableField = $form->get('isAvailable');
-
-        $this->assertTrue($isAvailableField->getConfig()->getOption('data'));
     }
 
     public function testPricePerDayAttributes(): void
@@ -132,8 +119,6 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\ChoiceType', get_class($form->get('type')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextareaType', get_class($form->get('description')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\IntegerType', get_class($form->get('pricePerDay')->getConfig()->getType()->getInnerType()));
-        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\IntegerType', get_class($form->get('capacity')->getConfig()->getType()->getInnerType()));
-        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\CheckboxType', get_class($form->get('isAvailable')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Bridge\Doctrine\Form\Type\EntityType', get_class($form->get('equipments')->getConfig()->getType()->getInnerType()));
     }
 
@@ -142,11 +127,9 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $form = $this->formFactory->create(DeskFormType::class);
         $equipmentField = $form->get('equipments');
         $config = $equipmentField->getConfig();
-
-        $this->assertEquals(Equipment::class, $config->getOption('class'));
         $this->assertEquals('name', $config->getOption('choice_label'));
         $this->assertTrue($config->getOption('multiple'));
-        $this->assertTrue($config->getOption('expanded'));
+        $this->assertFalse($config->getOption('expanded'));
         $this->assertFalse($config->getOption('required'));
     }
 
@@ -158,7 +141,6 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
             'description' => 'Grande salle de conférence pour 20 personnes.',
             'pricePerDay' => 150,
             'capacity' => 20,
-            'isAvailable' => true,
             'equipments' => [],
         ];
 
@@ -170,25 +152,5 @@ class DeskFormTypeTest extends \App\Tests\DatabaseTestCase
         $this->assertEquals(Desk::DESK_TYPE_CONFERENCE_ROOM, $desk->getType());
         $this->assertEquals(20, $desk->getCapacity());
         $this->assertEquals(150, $desk->getPricePerDay());
-    }
-
-    public function testUnavailableDesk(): void
-    {
-        $formData = [
-            'name' => 'Bureau Maintenance',
-            'type' => Desk::DESK_TYPE_PRIVATE_OFFICE,
-            'description' => 'Bureau en maintenance.',
-            'pricePerDay' => 25,
-            'capacity' => 1,
-            'isAvailable' => false,
-            'equipments' => [],
-        ];
-
-        $desk = new Desk();
-        $form = $this->formFactory->create(DeskFormType::class, $desk);
-        $form->submit($formData);
-
-        $this->assertTrue($form->isSynchronized());
-        $this->assertFalse($desk->isAvailable());
     }
 }

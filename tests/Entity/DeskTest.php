@@ -180,7 +180,7 @@ class DeskTest extends KernelTestCase
         $this->assertNull($desk->getDescription());
         $this->assertNull($desk->getPricePerDay());
         $this->assertNull($desk->getCapacity());
-        $this->assertNull($desk->isAvailable());
+        $this->assertTrue($desk->isAvailable());
         $this->assertNull($desk->getSpace());
         $this->assertCount(0, $desk->getReservations());
         $this->assertCount(0, $desk->getEquipments());
