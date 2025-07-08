@@ -35,6 +35,12 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Compile Assets
+        run: php bin/console asset-map:compile
+
       - name: Build Tailwind CSS
         run: php bin/console tailwind:build
 
