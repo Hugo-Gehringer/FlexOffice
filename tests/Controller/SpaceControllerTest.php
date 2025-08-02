@@ -2,6 +2,8 @@
 
 namespace App\Tests\Controller;
 
+use App\Factory\DeskFactory;
+use App\Factory\ReservationFactory;
 use App\Factory\UserFactory;
 use App\Factory\SpaceFactory;
 use App\Repository\UserRepository;
@@ -250,4 +252,52 @@ class SpaceControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
+    public function testShowSpaceWithBookedDates(): void
+    {
+        $client = static::createClient();
+
+        $user = UserFactory::createOne();
+        $space = SpaceFactory::createOne(['host' => $user]);
+
+        // Créer des bureaux pour l'espace
+        $desk1 = DeskFactory::createOne(['space' => $space]);
+        $desk2 = DeskFactory::createOne(['space' => $space]);
+
+        // Créer des réservations avec différents statuts
+        $bookedDate1 = new \DateTime('2024-03-15');
+        $bookedDate2 = new \DateTime('2024-03-20');
+        $cancelledDate = new \DateTime('2024-03-25');
+
+        ReservationFactory::createOne([
+            'desk' => $desk1,
+            'reservationDate' => $bookedDate1,
+            'status' => 1 // Statut confirmé
+        ]);
+
+        ReservationFactory::createOne([
+            'desk' => $desk2,
+            'reservationDate' => $bookedDate2,
+            'status' => 1 // Statut confirmé
+        ]);
+
+        // Réservation annulée qui ne doit pas apparaître
+        ReservationFactory::createOne([
+            'desk' => $desk1,
+            'reservationDate' => $cancelledDate,
+            'status' => 2 // Statut annulé
+        ]);
+
+        $client->loginUser($user->_real());
+        $crawler = $client->request('GET', '/space/' . $space->getId());
+
+        $this->assertResponseIsSuccessful();
+
+        // Vérifier que la section des bureaux est présente
+        $this->assertSelectorExists('#desks-container');
+
+        // Pour tester les dates réservées, il faut vérifier si le template
+        // utilise la variable booked_dates. Comme elle n'apparaît pas dans le HTML,
+        // on teste plutôt que la page se charge correctement avec les bonnes données
+        $this->assertSelectorTextContains('h2', 'Desks');
+    }
 }

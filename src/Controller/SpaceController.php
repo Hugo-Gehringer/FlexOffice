@@ -118,36 +118,11 @@ class SpaceController extends AbstractController
         // Get availability for this space
         $availability = $space->getAvailability();
 
-        // Get booked dates for each desk
-        $bookedDates = [];
-        foreach ($space->getDesks() as $desk) {
-            // Get existing reservations for this desk (excluding cancelled ones)
-            $existingReservations = $reservationRepository->createQueryBuilder('r')
-                ->select('r.reservationDate')
-                ->where('r.desk = :desk')
-                ->andWhere('r.status != :cancelledStatus') // Exclude cancelled reservations
-                ->setParameter('desk', $desk)
-                ->setParameter('cancelledStatus', 2) // 2 = cancelled
-                ->getQuery()
-                ->getResult();
-
-            // Format the dates for JavaScript
-            $deskBookedDates = [];
-            foreach ($existingReservations as $existingReservation) {
-                if ($existingReservation['reservationDate'] instanceof \DateTimeInterface) {
-                    $deskBookedDates[] = $existingReservation['reservationDate']->format('Y-m-d');
-                }
-            }
-
-            $bookedDates[$desk->getId()] = $deskBookedDates;
-        }
-
         return $this->render('space/show.html.twig', [
             'space' => $space,
             'desks' => $space->getDesks(),
             'availability' => $availability,
             'currentUser' => $this->getUser(),
-            'booked_dates' => json_encode($bookedDates),
         ]);
     }
 
