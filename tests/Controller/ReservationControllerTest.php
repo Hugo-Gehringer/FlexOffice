@@ -10,7 +10,7 @@ use App\Factory\AvailabilityFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
-
+use App\Entity\Reservation;
 class ReservationControllerTest extends WebTestCase
 {
     use ResetDatabase, Factories;
@@ -654,4 +654,93 @@ class ReservationControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('form[name="reservation_form"]');
     }
+
+    public function testCancelReservationRequiresAuthentication(): void
+{
+    $client = static::createClient();
+
+    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+    $reservation = ReservationFactory::createOne(['guest' => $user]);
+
+    $client->request('GET', '/reservation/' . $reservation->getId() . '/cancel');
+    $this->assertResponseRedirects('/login');
+}
+
+public function testCancelReservationSuccess(): void
+{
+    $client = static::createClient();
+
+    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+    $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+    $space = SpaceFactory::createOne(['host' => $host]);
+    $desk = DeskFactory::createOne(['space' => $space]);
+    $reservation = ReservationFactory::createOne([
+        'guest' => $user,
+        'desk' => $desk,
+        'status' => Reservation::STATUS_CONFIRMED
+    ]);
+
+    $client->loginUser($user->_real());
+
+    $client->request('POST', '/reservation/' . $reservation->getId() . '/cancel');
+
+    // Should redirect back with success message
+    $this->assertResponseRedirects();
+}
+
+public function testDeleteReservationRequiresAuthentication(): void
+{
+    $client = static::createClient();
+
+    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+    $reservation = ReservationFactory::createOne(['guest' => $user]);
+
+    $client->request('POST', '/reservation/' . $reservation->getId() . '/delete');
+    $this->assertResponseRedirects('/login');
+}
+
+public function testDeleteReservationWithInvalidCsrfToken(): void
+{
+    $client = static::createClient();
+
+    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+    $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+    $space = SpaceFactory::createOne(['host' => $host]);
+    $desk = DeskFactory::createOne(['space' => $space]);
+    $reservation = ReservationFactory::createOne([
+        'guest' => $user,
+        'desk' => $desk
+    ]);
+
+    $client->loginUser($user->_real());
+
+    $client->request('POST', '/reservation/' . $reservation->getId() . '/delete', [
+        '_token' => 'invalid_token'
+    ]);
+
+    // Should redirect back with error message
+    $this->assertResponseRedirects();
+}
+
+
+
+public function testValidateDeskAvailabilityForDayWithNullAvailability(): void
+{
+    $client = static::createClient();
+
+    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+    $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+    $space = SpaceFactory::createOne(['host' => $host]);
+
+    // Don't create availability for the space (null case)
+    $desk = DeskFactory::createOne(['space' => $space, 'isAvailable' => true]);
+
+    $client->loginUser($user->_real());
+
+    $client->request('GET', '/reservation/new/' . $desk->getId());
+
+    $this->assertResponseIsSuccessful();
+    $this->assertSelectorExists('form[name="reservation_form"]');
+}
+
 }
