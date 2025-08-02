@@ -10,7 +10,8 @@
                 {{ desk.pricePerDay }}€ / day
             </span>
             <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded dark:bg-gray-900 dark:text-gray-300">
-                {{ constant('App\\Entity\\Desk::DESK_TYPES')[desk.type] }}
+                {% set deskTypes = constant('App\\Entity\\Desk::DESK_TYPES') %}
+                {{ deskTypes[desk.type] is defined ? deskTypes[desk.type] : desk.type }}
             </span>
             {% if desk.equipments|length > 0 %}
                 {% for equipment in desk.equipments %}
