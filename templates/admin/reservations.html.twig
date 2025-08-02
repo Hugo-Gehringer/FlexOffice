@@ -35,7 +35,13 @@
                     {% for reservation in reservations %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-6 py-4">{{ reservation.id }}</td>
-                            <td class="px-6 py-4">{{ reservation.guest.firstname }} {{ reservation.guest.lastname }}</td>
+                            <td class="px-6 py-4">
+                                {% if reservation.guest %}
+                                    {{ reservation.guest.firstname }} {{ reservation.guest.lastname }}
+                                {% else %}
+                                    <em>Utilisateur supprimé</em>
+                                {% endif %}
+                            </td>
                             <td class="px-6 py-4">{{ reservation.desk.name }}</td>
                             <td class="px-6 py-4">{{ reservation.desk.space.name }}</td>
                             <td class="px-6 py-4">{{ reservation.reservationDate|date('Y-m-d H:i') }}</td>

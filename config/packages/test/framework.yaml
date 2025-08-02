@@ -1,3 +1,6 @@
 framework:
-  csrf_protection: false
+  test: true
+  csrf_protection: true
   secret: 'test-secret-for-email-verification'
+  session:
+    storage_factory_id: session.storage.factory.mock_file
