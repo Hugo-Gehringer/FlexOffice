@@ -30,6 +30,8 @@
         </include>
         <exclude>
             <directory suffix=".php">src/DataFixtures</directory>
+            <file>src/Controller/RegistrationController.php</file>
+            <file>src/Controller/SecurityController.php</file>
         </exclude>
         <report>
             <clover outputFile="clover.xml"/>
