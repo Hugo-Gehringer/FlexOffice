@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Favoris{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Mes Favoris</h1>
+            <a href="{{ path('app_space_index') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors flex items-center font-medium shadow-md">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Retour aux espaces
+            </a>
+        </div>
+
+        {% if favorites.items|length > 0 %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {% for favorite in favorites %}
+                    {% set space = favorite.space %}
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">{{ space.name }}</h2>
+                                <button 
+                                    data-space-id="{{ space.id }}" 
+                                    data-favorited="true"
+                                    class="favorite-btn text-red-500 hover:text-red-600 transition-colors"
+                                    title="Retirer des favoris">
+                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4">
+                                {{ space.description|slice(0, 120) }}{% if space.description|length > 120 %}...{% endif %}
+                            </p>
+                            <div class="flex flex-col lg:justify-center sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
+                                <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                    Hôte : {{ space.host.firstname }} {{ space.host.lastname }}
+                                </span>
+                                <a href="{{ path('app_space_show', {'id': space.id}) }}"
+                                   class="lg:w-1/2 lg:mx-auto px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors shadow-sm text-center text-sm">
+                                    Détails
+                                </a>
+                            </div>
+                            <div class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                                Ajouté le {{ favorite.createdAt|date('d/m/Y à H:i') }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if favorites.pageCount > 1 %}
+                <div class="mt-8">
+                    {{ knp_pagination_render(favorites, 'pagination/pagination.html.twig') }}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Aucun favori</h3>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Vous n'avez pas encore ajouté d'espaces à vos favoris.
+                </p>
+                <div class="mt-6">
+                    <a href="{{ path('app_space_index') }}" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Découvrir les espaces
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/favorites.js') }}" defer></script>
+{% endblock %}

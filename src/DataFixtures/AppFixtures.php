@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\Availability;
 use App\Entity\Desk;
 use App\Entity\Equipment;
+use App\Entity\Favorite;
 use App\Entity\Reservation;
 use App\Entity\Space;
 use App\Entity\User;
@@ -41,6 +42,9 @@ class AppFixtures extends Fixture
 
         // Create Reservations
         $this->createReservations($manager, $users, $desks);
+
+        // Create Favorites
+        $this->createFavorites($manager, $users, $spaces);
 
         $manager->flush();
     }
@@ -443,6 +447,38 @@ class AppFixtures extends Fixture
             $reservation->setReservationDate(new \DateTime($data['date']));
             $reservation->setStatus($data['status']);
             $manager->persist($reservation);
+        }
+    }
+
+    private function createFavorites(ObjectManager $manager, array $users, array $spaces): void
+    {
+        // Get guest users (they can favorite spaces)
+        $guests = array_filter($users, fn($user) => in_array('ROLE_GUEST', $user->getRoles()));
+
+        // Create some favorite relationships
+        $favoriteData = [
+            // Guest 1 favorites
+            ['user' => $guests[0] ?? null, 'space' => $spaces[0] ?? null],
+            ['user' => $guests[0] ?? null, 'space' => $spaces[2] ?? null],
+            ['user' => $guests[0] ?? null, 'space' => $spaces[4] ?? null],
+
+            // Guest 2 favorites
+            ['user' => $guests[1] ?? null, 'space' => $spaces[1] ?? null],
+            ['user' => $guests[1] ?? null, 'space' => $spaces[3] ?? null],
+
+            // Guest 3 favorites
+            ['user' => $guests[2] ?? null, 'space' => $spaces[0] ?? null],
+            ['user' => $guests[2] ?? null, 'space' => $spaces[1] ?? null],
+            ['user' => $guests[2] ?? null, 'space' => $spaces[2] ?? null],
+        ];
+
+        foreach ($favoriteData as $data) {
+            if ($data['user'] && $data['space']) {
+                $favorite = new Favorite();
+                $favorite->setUser($data['user']);
+                $favorite->setSpace($data['space']);
+                $manager->persist($favorite);
+            }
         }
     }
 }

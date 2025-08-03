@@ -38,7 +38,20 @@
         {% for space in spaces %}
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                 <div class="p-4 sm:p-5">
-                    <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ space.name }}</h2>
+                    <div class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">{{ space.name }}</h2>
+                        {% if app.user %}
+                            <button
+                                data-space-id="{{ space.id }}"
+                                data-favorited="{{ is_favorited(space) ? 'true' : 'false' }}"
+                                class="favorite-btn {{ is_favorited(space) ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-500' }} transition-colors"
+                                title="{{ is_favorited(space) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+                                <svg class="w-6 h-6 {{ is_favorited(space) ? 'fill-current' : '' }}" viewBox="0 0 24 24" stroke="currentColor" fill="{{ is_favorited(space) ? 'currentColor' : 'none' }}" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </button>
+                        {% endif %}
+                    </div>
                     <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4">{{ space.description|slice(0, 120) }}{% if space.description|length > 120 %}...{% endif %}</p>
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
                         <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
@@ -74,4 +87,9 @@
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/favorites.js') }}" defer></script>
 {% endblock %}

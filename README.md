@@ -264,6 +264,21 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
   - Accéder aux journaux d'activité
   - Gérer les paramètres de l'application
 
+### Système de Favoris
+
+- **Gestion des favoris**
+  - Les utilisateurs connectés peuvent ajouter/retirer des espaces de leurs favoris
+  - Bouton cœur interactif sur les pages de listing et de détail des espaces
+  - Page dédiée `/mes-favoris` pour consulter tous les espaces favoris
+  - Pagination des favoris (10 éléments par page)
+  - Interface AJAX pour une expérience fluide sans rechargement de page
+
+- **Fonctionnalités techniques**
+  - Entité `Favorite` pour gérer les relations utilisateur-espace
+  - Service `FavoriteService` pour la logique métier
+  - Extension Twig pour vérifier l'état des favoris dans les templates
+  - Tests unitaires complets pour garantir la fiabilité
+
 ## Fonctionnalités Techniques
 
 ### Interface Utilisateur
@@ -328,6 +343,7 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
 3. **Desk** - Bureaux individuels dans les espaces
 4. **Address** - Adresses associées aux espaces
 5. **Reservation** - Réservations des bureaux par les utilisateurs
+6. **Favorite** - Relations de favoris entre utilisateurs et espaces
 
 ## Administration
 
