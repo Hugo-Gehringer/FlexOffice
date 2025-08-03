@@ -8,3 +8,6 @@ import { French } from 'flatpickr/dist/l10n/fr.js';
 flatpickr.localize(French);
 
 
+import './js/mobile-navigation.js';
+import './js/search.js';
+import './js/favorites.js';

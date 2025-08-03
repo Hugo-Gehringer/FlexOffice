@@ -7,6 +7,7 @@ use App\Entity\Space;
 use App\Form\SpaceFormType;
 use App\Repository\AvailabilityRepository;
 use App\Repository\SpaceRepository;
+use App\Service\FavoriteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use App\Repository\ReservationRepository;
 class SpaceController extends AbstractController
 {
     #[Route('/', name: 'app_space_index', methods: ['GET'])]
-    public function index(Request $request, SpaceRepository $spaceRepository): Response
+    public function index(Request $request, SpaceRepository $spaceRepository, FavoriteService $favoriteService): Response
     {
         // Ensure user is authenticated
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -35,6 +36,7 @@ class SpaceController extends AbstractController
             'spaces' => $spaces,
             'currentUser' => $this->getUser(),
             'searchQuery' => $searchQuery,
+            'favoriteService' => $favoriteService,
         ]);
     }
 
@@ -148,7 +150,7 @@ class SpaceController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_space_show', methods: ['GET'])]
-    public function show(Space $space, AvailabilityRepository $availabilityRepository, ReservationRepository $reservationRepository): Response
+    public function show(Space $space, AvailabilityRepository $availabilityRepository, ReservationRepository $reservationRepository, FavoriteService $favoriteService): Response
     {
         // Ensure user is authenticated
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -161,6 +163,7 @@ class SpaceController extends AbstractController
             'desks' => $space->getDesks(),
             'availability' => $availability,
             'currentUser' => $this->getUser(),
+            'favoriteService' => $favoriteService,
         ]);
     }
 

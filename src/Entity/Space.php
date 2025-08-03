@@ -55,10 +55,16 @@ class Space
     #[ORM\OneToOne(mappedBy: 'space', targetEntity: Availability::class, cascade: ['persist', 'remove'])]
     private ?Availability $availability = null;
 
+    /**
+     * @var Collection<int, Favorite>
+     */
+    #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'space', cascade: ['remove'])]
+    private Collection $favoritedBy;
+
     public function __construct()
     {
         $this->desks = new ArrayCollection();
-
+        $this->favoritedBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +168,36 @@ class Space
         }
 
         $this->availability = $availability;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favorite>
+     */
+    public function getFavoritedBy(): Collection
+    {
+        return $this->favoritedBy;
+    }
+
+    public function addFavoritedBy(Favorite $favoritedBy): static
+    {
+        if (!$this->favoritedBy->contains($favoritedBy)) {
+            $this->favoritedBy->add($favoritedBy);
+            $favoritedBy->setSpace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoritedBy(Favorite $favoritedBy): static
+    {
+        if ($this->favoritedBy->removeElement($favoritedBy)) {
+            // set the owning side to null (unless already changed)
+            if ($favoritedBy->getSpace() === $this) {
+                $favoritedBy->setSpace(null);
+            }
+        }
 
         return $this;
     }

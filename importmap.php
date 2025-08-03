@@ -55,4 +55,16 @@ return [
     'flatpickr/dist/l10n/fr.js' => [
         'version' => '4.6.13',
     ],
+    'mobile-navigation' => [
+        'path' => './assets/js/mobile-navigation.js',
+        'entrypoint' => true,
+    ],
+    'search' => [
+        'path' => './assets/js/search.js',
+        'entrypoint' => true,
+    ],
+    'favorites' => [
+        'path' => './assets/js/favorites.js',
+        'entrypoint' => true,
+    ],
 ];
