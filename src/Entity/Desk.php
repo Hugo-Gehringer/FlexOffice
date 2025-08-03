@@ -69,7 +69,7 @@ class Desk
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'desk')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'desk', orphanRemoval: true, cascade: ['remove'])]
     private Collection $reservations;
 
     /**

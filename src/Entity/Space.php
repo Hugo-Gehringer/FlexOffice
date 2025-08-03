@@ -46,7 +46,7 @@ class Space
     /**
      * @var Collection<int, Desk>
      */
-    #[ORM\OneToMany(targetEntity: Desk::class, mappedBy: 'space')]
+    #[ORM\OneToMany(targetEntity: Desk::class, mappedBy: 'space', orphanRemoval: true, cascade: ['remove'])]
     private Collection $desks;
 
     /**
