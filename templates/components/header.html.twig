@@ -17,8 +17,10 @@
                 <span class="sr-only">Toggle sidebar</span>
             </button>
             <span class="self-center text-xl sm:text-2xl font-semibold whitespace-nowrap">FlexOffice</span>
-            <form action="#" method="GET" class="hidden lg:block lg:pl-4">
-                <label for="topbar-search" class="sr-only">Search</label>
+        </div>
+        <div class="flex items-center lg:order-2">
+            <form action="{{ path('app_space_index') }}" method="GET" class="pl-2 lg:block lg:pl-4">
+                <label for="topbar-search" class="sr-only">Rechercher espaces</label>
                 <div class="relative lg:w-80">
                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
@@ -27,12 +29,15 @@
                                   d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path>
                         </svg>
                     </div>
-                    <input type="text" name="email" id="topbar-search" placeholder="Rechercher"
+                    <input type="text" name="search" id="topbar-search" placeholder="Rechercher des espaces..."
+                           value="{{ app.request.query.get('search', '') }}"
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"/>
+                    <!-- Search results dropdown -->
+                    <div id="search-results" class="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg mt-1 hidden z-50 max-h-96 overflow-y-auto">
+                        <!-- Results will be populated by JavaScript -->
+                    </div>
                 </div>
             </form>
-        </div>
-        <div class="flex items-center lg:order-2">
             {% if currentUser %}
                 <button type="button" id="user-menu-button" aria-expanded="false"
                         data-dropdown-toggle="dropdown-profile"

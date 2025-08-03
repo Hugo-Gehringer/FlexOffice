@@ -328,3 +328,70 @@ body {
 .responsive-margin {
     @apply m-2 sm:m-4 lg:m-6;
 }
+
+/* Search functionality styles */
+#search-results {
+    max-height: 400px;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+}
+
+#search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+#search-results::-webkit-scrollbar-track {
+    background: #f9fafb;
+    border-radius: 3px;
+}
+
+#search-results::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+#search-results::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+.dark #search-results {
+    scrollbar-color: #4b5563 #1f2937;
+}
+
+.dark #search-results::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+.dark #search-results::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+.dark #search-results::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Search input focus styles */
+#topbar-search:focus + #search-results,
+#sidebar-search:focus + #search-results {
+    display: block;
+}
+
+/* Search result item hover animation */
+#search-results a {
+    transition: all 0.2s ease-in-out;
+}
+
+#search-results a:hover {
+    transform: translateX(2px);
+}
+
+/* Search highlight animation */
+@keyframes searchHighlight {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(59, 130, 246, 0.1); }
+    100% { background-color: transparent; }
+}
+
+.search-highlight {
+    animation: searchHighlight 0.6s ease-in-out;
+}
