@@ -64,7 +64,6 @@ class HomepageControllerTest extends WebTestCase
 
         $client->request('GET', '/');
 
-        // Since all pages require authentication, guests are redirected to login
         $this->assertResponseRedirects('/login');
     }
 
@@ -78,7 +77,6 @@ class HomepageControllerTest extends WebTestCase
         $client->request('GET', '/');
 
         $this->assertResponseIsSuccessful();
-        // Just check that the page loads successfully for logged in users
         $this->assertSelectorExists('title');
     }
 }

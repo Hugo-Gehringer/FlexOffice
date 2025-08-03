@@ -138,9 +138,7 @@ class DeskTest extends KernelTestCase
         $desk = $this->makeValidDesk();
         $equipment = new Equipment();
         $equipment->setName('Écran');
-        $equipment->setDescription('Écran de bureau'); // Ajout description requise
-
-        // Utiliser la méthode addEquipment du desk qui gère la relation bidirectionnelle
+        $equipment->setDescription('Écran de bureau');
         $desk->addEquipment($equipment);
 
         $this->assertCount(1, $desk->getEquipments());

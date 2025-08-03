@@ -31,7 +31,6 @@ class ReservationRepositoryTest extends DatabaseTestCase
 
     private function createTestEntities(): void
     {
-        // Créer une adresse de test
         $this->testAddress = new Address();
         $this->testAddress->setStreet('123 Test Street');
         $this->testAddress->setCity('Test City');
@@ -39,7 +38,6 @@ class ReservationRepositoryTest extends DatabaseTestCase
         $this->testAddress->setCountry('France');
         $this->em->persist($this->testAddress);
 
-        // Créer un utilisateur de test (qui sera l'hôte)
         $this->testUser = new User();
         $this->testUser->setEmail('test@example.com');
         $this->testUser->setFirstName('Test');
@@ -48,7 +46,6 @@ class ReservationRepositoryTest extends DatabaseTestCase
         $this->testUser->setRoles(['ROLE_USER']);
         $this->em->persist($this->testUser);
 
-        // Créer un espace de test
         $this->testSpace = new Space();
         $this->testSpace->setName('Espace Test');
         $this->testSpace->setDescription('Espace de test pour les tests unitaires');
@@ -56,7 +53,6 @@ class ReservationRepositoryTest extends DatabaseTestCase
         $this->testSpace->setAddress($this->testAddress);
         $this->em->persist($this->testSpace);
 
-        // Créer un bureau de test
         $this->testDesk = new Desk();
         $this->testDesk->setName('Bureau Test');
         $this->testDesk->setDescription('Bureau pour les tests');
@@ -74,21 +70,17 @@ class ReservationRepositoryTest extends DatabaseTestCase
     {
         $testDate = new DateTime('2024-01-15');
 
-        // Créer des réservations pour différentes dates
         $reservationSameDay = $this->createReservation($this->testDesk, new DateTime('2024-01-15 10:00:00'), Reservation::STATUS_CONFIRMED);
         $reservationDifferentDay = $this->createReservation($this->testDesk, new DateTime('2024-01-16 10:00:00'), Reservation::STATUS_CONFIRMED);
         $reservationCancelled = $this->createReservation($this->testDesk, new DateTime('2024-01-15 14:00:00'), Reservation::STATUS_CANCELLED);
 
         $this->em->flush();
 
-        // Tester la méthode
         $reservations = $this->repository->findReservationsForDeskOnDate($this->testDesk, $testDate);
 
-        // Vérifications
         $this->assertCount(1, $reservations);
         $this->assertEquals($reservationSameDay->getId(), $reservations[0]->getId());
 
-        // Vérifier que les réservations annulées et d'autres jours ne sont pas incluses
         $reservationIds = array_map(fn($r) => $r->getId(), $reservations);
         $this->assertNotContains($reservationDifferentDay->getId(), $reservationIds);
         $this->assertNotContains($reservationCancelled->getId(), $reservationIds);
@@ -146,14 +138,12 @@ class ReservationRepositoryTest extends DatabaseTestCase
     {
         $testDate = new DateTime('2024-01-15');
 
-        // Créer uniquement des réservations annulées
         $this->createReservation($this->testDesk, new DateTime('2024-01-15 10:00:00'), Reservation::STATUS_CANCELLED);
         $this->createReservation($this->testDesk, new DateTime('2024-01-15 14:00:00'), Reservation::STATUS_CANCELLED);
         $this->em->flush();
 
         $isAvailable = $this->repository->isDeskAvailableOnDate($this->testDesk, $testDate);
 
-        // Le bureau devrait être disponible car les réservations sont annulées
         $this->assertTrue($isAvailable);
     }
 
@@ -178,7 +168,6 @@ class ReservationRepositoryTest extends DatabaseTestCase
 
         $this->em->flush();
 
-        // Vérifier que chaque bureau ne retourne que ses propres réservations
         $reservationsDesk1 = $this->repository->findReservationsForDeskOnDate($this->testDesk, $testDate);
         $reservationsDesk2 = $this->repository->findReservationsForDeskOnDate($otherDesk, $testDate);
 
@@ -192,7 +181,6 @@ class ReservationRepositoryTest extends DatabaseTestCase
     {
         $testDate = new DateTime('2024-01-15');
 
-        // Créer des réservations aux limites de la journée
         $reservationStartOfDay = $this->createReservation($this->testDesk, new DateTime('2024-01-15 00:00:00'), Reservation::STATUS_CONFIRMED);
         $reservationEndOfDay = $this->createReservation($this->testDesk, new DateTime('2024-01-15 23:59:59'), Reservation::STATUS_CONFIRMED);
         $reservationNextDayStart = $this->createReservation($this->testDesk, new DateTime('2024-01-16 00:00:00'), Reservation::STATUS_CONFIRMED);

@@ -77,8 +77,6 @@ class SpaceControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/space/new');
         $this->assertResponseIsSuccessful();
 
-        // Skip form submission test due to CSRF configuration issues
-        // Just test that the form is displayed correctly
         $this->assertSelectorExists('form[name="space_form"]');
         $this->assertSelectorExists('input[name="space_form[name]"]');
         $this->assertSelectorExists('textarea[name="space_form[description]"]');
@@ -295,9 +293,6 @@ class SpaceControllerTest extends WebTestCase
         // Vérifier que la section des bureaux est présente
         $this->assertSelectorExists('#desks-container');
 
-        // Pour tester les dates réservées, il faut vérifier si le template
-        // utilise la variable booked_dates. Comme elle n'apparaît pas dans le HTML,
-        // on teste plutôt que la page se charge correctement avec les bonnes données
         $this->assertSelectorTextContains('h2', 'Desks');
     }
 }
