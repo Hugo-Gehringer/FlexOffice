@@ -18,15 +18,53 @@ use App\Repository\ReservationRepository;
 class SpaceController extends AbstractController
 {
     #[Route('/', name: 'app_space_index', methods: ['GET'])]
-    public function index(SpaceRepository $spaceRepository): Response
+    public function index(Request $request, SpaceRepository $spaceRepository): Response
     {
         // Ensure user is authenticated
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $searchQuery = $request->query->get('search', '');
+
+        if (!empty($searchQuery)) {
+            $spaces = $spaceRepository->findBySearchQuery($searchQuery);
+        } else {
+            $spaces = $spaceRepository->findAll();
+        }
+
         return $this->render('space/index.html.twig', [
-            'spaces' => $spaceRepository->findAll(),
+            'spaces' => $spaces,
             'currentUser' => $this->getUser(),
+            'searchQuery' => $searchQuery,
         ]);
+    }
+
+    #[Route('/search', name: 'app_space_search', methods: ['GET'])]
+    public function search(Request $request, SpaceRepository $spaceRepository): Response
+    {
+        // Ensure user is authenticated
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $searchQuery = $request->query->get('q', '');
+
+        if (empty($searchQuery)) {
+            return $this->json([]);
+        }
+
+        $spaces = $spaceRepository->findBySearchQuery($searchQuery);
+
+        $results = [];
+        foreach ($spaces as $space) {
+            $results[] = [
+                'id' => $space->getId(),
+                'name' => $space->getName(),
+                'description' => substr($space->getDescription(), 0, 100) . (strlen($space->getDescription()) > 100 ? '...' : ''),
+                'host' => $space->getHost()->getFirstname() . ' ' . $space->getHost()->getLastname(),
+                'city' => $space->getAddress()->getCity(),
+                'url' => $this->generateUrl('app_space_show', ['id' => $space->getId()])
+            ];
+        }
+
+        return $this->json($results);
     }
 
     #[Route('/new', name: 'app_space_new', methods: ['GET', 'POST'])]

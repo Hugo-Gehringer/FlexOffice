@@ -30,6 +30,22 @@ class SpaceRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Space[] Returns an array of Space objects matching the search query
+     */
+    public function findBySearchQuery(string $query): array
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.host', 'h')
+            ->leftJoin('s.address', 'a')
+            ->andWhere('s.name LIKE :query OR s.description LIKE :query OR h.firstname LIKE :query OR h.lastname LIKE :query OR a.city LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    public function findOneBySomeField($value): ?Space
     //    {
     //        return $this->createQueryBuilder('s')
