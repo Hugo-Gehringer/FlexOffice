@@ -3,38 +3,36 @@
 {% block title %}{{ 'Admin Dashboard'|trans }}{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ 'Admin Dashboard'|trans }}</h1>
-        </div>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0">Tableau de bord administrateur</h1>
+    </div>
 
-        <div class="bg-white rounded-lg shadow p-6 mb-6 dark:bg-gray-800">
-            <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Bienvenue, {{ currentUser.firstname }} {{ currentUser.lastname }}</h2>
-            <p class="text-gray-700 dark:text-gray-300 mb-4">Vous avez un accès administrateur complet à la plateforme FlexOffice. Depuis ici, vous pouvez gérer tous les utilisateurs, espaces et réservations.</p>
-            <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                </svg>
-                <span>Dernière connexion : {{ 'now'|date('d/m/Y H:i') }}</span>
-            </div>
+    <div class="bg-white rounded-lg shadow p-4 sm:p-6 mb-6 dark:bg-gray-800">
+        <h2 class="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">Bienvenue, {{ currentUser.firstname }} {{ currentUser.lastname }}</h2>
+        <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4">Vous avez un accès administrateur complet à la plateforme FlexOffice. Depuis ici, vous pouvez gérer tous les utilisateurs, espaces et réservations.</p>
+        <div class="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+            <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Dernière connexion : {{ 'now'|date('d/m/Y H:i') }}</span>
         </div>
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
-                <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ 'Users'|trans }}</h2>
-                <p class="text-3xl font-bold text-blue-600 dark:text-blue-500">{{ userCount }}</p>
-                <a href="{{ path('app_admin_users') }}" class="text-blue-600 hover:underline dark:text-blue-500 mt-2 inline-block">{{ 'View all users'|trans }}</a>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
-                <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ 'Spaces'|trans }}</h2>
-                <p class="text-3xl font-bold text-green-600 dark:text-green-500">{{ spaceCount }}</p>
-                <a href="{{ path('app_admin_spaces') }}" class="text-green-600 hover:underline dark:text-green-500 mt-2 inline-block">{{ 'View all spaces'|trans }}</a>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6 dark:bg-gray-800">
-                <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ 'Reservations'|trans }}</h2>
-                <p class="text-3xl font-bold text-purple-600 dark:text-purple-500">{{ reservationCount }}</p>
-                <a href="{{ path('app_admin_reservations') }}" class="text-purple-600 hover:underline dark:text-purple-500 mt-2 inline-block">{{ 'View all reservations'|trans }}</a>
-            </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 dark:bg-gray-800">
+            <h2 class="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">Utilisateurs</h2>
+            <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-500">{{ userCount }}</p>
+            <a href="{{ path('app_admin_users') }}" class="text-sm sm:text-base text-blue-600 hover:underline dark:text-blue-500 mt-2 inline-block">Voir tous les utilisateurs</a>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 dark:bg-gray-800">
+            <h2 class="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">Espaces</h2>
+            <p class="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-500">{{ spaceCount }}</p>
+            <a href="{{ path('app_admin_spaces') }}" class="text-sm sm:text-base text-green-600 hover:underline dark:text-green-500 mt-2 inline-block">Voir tous les espaces</a>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 sm:p-6 dark:bg-gray-800 sm:col-span-2 lg:col-span-1">
+            <h2 class="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">Réservations</h2>
+            <p class="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-500">{{ reservationCount }}</p>
+            <a href="{{ path('app_admin_reservations') }}" class="text-sm sm:text-base text-purple-600 hover:underline dark:text-purple-500 mt-2 inline-block">Voir toutes les réservations</a>
         </div>
     </div>
 {% endblock %}

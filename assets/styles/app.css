@@ -228,3 +228,103 @@ body {
     color: rgb(30 64 175);
     font-weight: 500;
 }
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    /* Mobile sidebar overlay */
+    #drawer-navigation {
+        backdrop-filter: blur(4px);
+    }
+
+    /* Mobile header adjustments */
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    /* Mobile form adjustments */
+    .form-grid {
+        @apply grid-cols-1;
+    }
+
+    /* Mobile card adjustments */
+    .card-grid {
+        @apply grid-cols-1;
+    }
+
+    /* Mobile table responsive */
+    .table-responsive {
+        @apply overflow-x-auto;
+    }
+
+    .table-responsive table {
+        @apply min-w-full;
+    }
+
+    /* Mobile modal adjustments */
+    .modal-content {
+        @apply mx-2;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Extra small screens */
+    .text-responsive {
+        @apply text-sm;
+    }
+
+    .padding-responsive {
+        @apply p-3;
+    }
+
+    .margin-responsive {
+        @apply m-2;
+    }
+}
+
+/* Sidebar mobile backdrop */
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+    display: none;
+}
+
+.sidebar-backdrop.show {
+    display: block;
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 768px) {
+    .mobile-nav-item {
+        @apply block w-full text-left px-4 py-3 text-sm;
+    }
+
+    .mobile-nav-item:hover {
+        @apply bg-gray-100 dark:bg-gray-700;
+    }
+}
+
+/* Responsive utilities */
+.hide-mobile {
+    @apply hidden md:block;
+}
+
+.show-mobile {
+    @apply block md:hidden;
+}
+
+.responsive-text {
+    @apply text-sm sm:text-base lg:text-lg;
+}
+
+.responsive-padding {
+    @apply p-2 sm:p-4 lg:p-6;
+}
+
+.responsive-margin {
+    @apply m-2 sm:m-4 lg:m-6;
+}
