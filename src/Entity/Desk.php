@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DeskRepository::class)]
 class Desk
@@ -33,18 +34,33 @@ class Desk
     private ?Space $space = null;
 
     #[ORM\Column(length: 60)]
+    #[Assert\NotBlank(message: 'Please enter a name for the desk')]
+    #[Assert\Length(
+        min: 3,
+        max: 60,
+        minMessage: 'The name should be at least {{ limit }} characters',
+        maxMessage: 'The name cannot be longer than {{ limit }} characters'
+    )]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?int $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(
+        min: 1,
+        minMessage: 'The description should be at least {{ limit }} character'
+    )]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'Le prix par jour est obligatoire')]
+    #[Assert\Positive(message: 'Le prix par jour doit être supérieur à zéro')]
     private ?float $pricePerDay = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'La capacité est obligatoire')]
+    #[Assert\Positive(message: 'La capacité doit être supérieure à zéro')]
     private ?int $capacity = null;
 
     #[ORM\Column]
@@ -53,7 +69,7 @@ class Desk
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'desk')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'desk', orphanRemoval: true, cascade: ['remove'])]
     private Collection $reservations;
 
     /**
@@ -68,6 +84,7 @@ class Desk
     {
         $this->reservations = new ArrayCollection();
         $this->equipments = new ArrayCollection();
+        $this->isAvailable = true;
 
     }
 
@@ -202,6 +219,7 @@ class Desk
     {
         if (!$this->equipments->contains($equipment)) {
             $this->equipments->add($equipment);
+            $equipment->addDesk($this); // Établir la relation bidirectionnelle
         }
 
         return $this;
@@ -209,7 +227,9 @@ class Desk
 
     public function removeEquipment(Equipment $equipment): static
     {
-        $this->equipments->removeElement($equipment);
+        if ($this->equipments->removeElement($equipment)) {
+            $equipment->removeDesk($this); // Enlever aussi de l'autre côté
+        }
 
         return $this;
     }

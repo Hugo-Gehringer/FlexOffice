@@ -31,3 +31,5 @@ app/phpunit.xml
 /vendor
 /coverage/
 /clover.xml
+/.phpunit.result.cache
+/coverage-html/

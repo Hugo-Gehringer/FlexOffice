@@ -59,7 +59,8 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         $bookedDates = $this->getFormattedBookedDates($desk, $reservationRepository);
-        $daysDisabled = $desk->getSpace()->getAvailability()->getAvailableDays();
+        $availability = $desk->getSpace()->getAvailability();
+        $daysDisabled = $availability ? $availability->getAvailableDays() : [];
 
         if ($form->isSubmitted()) {
             return $this->processReservationForm($form, $desk, $reservation, $entityManager, $reservationRepository);

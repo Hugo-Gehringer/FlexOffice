@@ -48,7 +48,6 @@ class SpaceFormTypeTest extends TypeTestCase
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
-        // Note: La validation des contraintes se fait au niveau de l'entité, pas du formulaire dans les tests
     }
 
     public function testMinimumValidData(): void

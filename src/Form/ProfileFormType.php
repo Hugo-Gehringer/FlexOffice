@@ -17,10 +17,10 @@ class ProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName', TextType::class, [
+            ->add('firstname', TextType::class, [
                 'required' => true,
             ])
-            ->add('lastName', TextType::class, [
+            ->add('lastname', TextType::class, [
                 'required' => true,
             ])
             ->add('save', SubmitType::class, [

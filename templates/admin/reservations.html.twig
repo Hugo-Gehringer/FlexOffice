@@ -35,7 +35,13 @@
                     {% for reservation in reservations %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-6 py-4">{{ reservation.id }}</td>
-                            <td class="px-6 py-4">{{ reservation.guest.firstname }} {{ reservation.guest.lastname }}</td>
+                            <td class="px-6 py-4">
+                                {% if reservation.guest %}
+                                    {{ reservation.guest.firstname }} {{ reservation.guest.lastname }}
+                                {% else %}
+                                    <em>Utilisateur supprimé</em>
+                                {% endif %}
+                            </td>
                             <td class="px-6 py-4">{{ reservation.desk.name }}</td>
                             <td class="px-6 py-4">{{ reservation.desk.space.name }}</td>
                             <td class="px-6 py-4">{{ reservation.reservationDate|date('Y-m-d H:i') }}</td>
@@ -45,7 +51,7 @@
                                 {% elseif reservation.status == 1 %}
                                     <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Confirmed</span>
                                 {% elseif reservation.status == 2 %}
-                                    <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Cancelled</span>
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{ 'Cancelled'|trans }}</span>
                                 {% endif %}
                             </td>
                             <td class="px-6 py-4">

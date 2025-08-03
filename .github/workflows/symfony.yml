@@ -2,7 +2,7 @@ name: Symfony
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "feature/unittest" ]
   pull_request:
     branches: [ "main" ]
 
@@ -35,6 +35,18 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: build importmap
+        run: php bin/console importmap:install
+
+      - name: Build Tailwind CSS
+        run: php bin/console tailwind:build
+
+      - name: Compile Assets
+        run: php bin/console asset-map:compile
+
       - name: Create Database
         run: |
           mkdir -p data
@@ -47,10 +59,9 @@ jobs:
           SYMFONY_DEPRECATIONS_HELPER: "weak"
         run: vendor/bin/phpunit --coverage-clover=clover.xml
 
-      # Optionnel : Upload coverage to Codecov (supprime si inutile)
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           files: clover.xml
           fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}   # Met le secret si repo privé (inutile pour un repo public)
+          token: ${{ secrets.CODECOV_TOKEN }}

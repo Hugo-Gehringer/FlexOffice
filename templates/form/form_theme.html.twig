@@ -27,6 +27,9 @@
 {%- block url_widget -%}
     <input type="url" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
 {%- endblock url_widget -%}
+{%- block integer_widget -%}
+    <input type="number" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
+{%- endblock integer_widget -%}
 
 {%- block search_widget -%}
     <input type="search" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} class="form-input"/>
@@ -41,7 +44,7 @@
 {%- endblock textarea_widget -%}
 
 {%- block choice_widget_collapsed -%}
-    <select {{ block('widget_attributes') }} class="form-select">
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} class="form-select">
         {%- if placeholder is not empty -%}
             <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
         {%- endif -%}

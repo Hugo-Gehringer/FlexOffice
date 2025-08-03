@@ -6,12 +6,12 @@
             <div class="container mx-auto">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ 'My Spaces'|trans }}</h1>
-                    {% include 'shared/elements/link_button.html.twig' with {
-                        'text': 'Ajouter un Nouvel Espace'|trans,
-                        'href': path('app_space_new'),
-                        'variant': 'success',
-                        'icon_before': 'plus'
-                    } %}
+                    <a href="{{ path('app_space_new') }}" class="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors flex items-center font-medium shadow-md">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        {{ 'Add New Space'|trans }}
+                    </a>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -49,14 +49,7 @@
                         </div>
                     {% else %}
                         <div class="col-span-full text-center py-8">
-                            <p class="text-gray-700 dark:text-gray-300">You haven't created any spaces yet.</p>
-                            <div class="mt-4">
-                                {% include 'shared/elements/link_button.html.twig' with {
-                                    'text': 'Create Your First Space',
-                                    'href': path('app_space_new'),
-                                    'variant': 'success'
-                                } %}
-                            </div>
+                            <p class="text-gray-700 dark:text-gray-300">Vous n'avez pas encore d'espaces.</p>
                         </div>
                     {% endfor %}
                 </div>
@@ -96,7 +89,9 @@
                         No, cancel
                     </button>
                     <form method="POST" action="{{ path('app_space_delete', {'id': space.id}) }}" class="inline">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete_space') }}">
+                        {% if csrf_token is defined %}
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_space') }}">
+                        {% endif %}
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="modal-btn modal-btn-danger">
                             Yes, I'm sure

@@ -31,6 +31,11 @@ class AvailabilityChecker
         $space = $desk->getSpace();
         $availability = $space->getAvailability();
 
+        // If no availability schedule is defined, consider the space unavailable
+        if ($availability === null) {
+            return false;
+        }
+
         if (!$this->isDayAvailable($availability, $date)) {
             return false;
         }

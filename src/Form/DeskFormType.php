@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,77 +25,43 @@ class DeskFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Desk Name',
+                'label' => 'Nom du bureau',
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a name for the desk',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'max' => 60,
-                        'minMessage' => 'The name should be at least {{ limit }} characters',
-                        'maxMessage' => 'The name cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
             ])
             ->add('type', ChoiceType::class, [
-                'label' => 'Desk Type',
+                'label' => 'Type de bureau',
                 'required' => true,
                 'choices' => array_flip(Desk::DESK_TYPES),
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'required' => true,
-                'constraints' => [
-                    new Length([
-                        'min' => 1,
-                        'minMessage' => 'The description should be at least {{ limit }} character',
-                    ]),
-                ],
             ])
             ->add('pricePerDay', IntegerType::class, [
-                'label' => 'Price per Day (€)',
+                'label' => 'Prix par jour (€)',
                 'required' => true,
                 'attr' => [
                     'min' => 1,
                     'step' => 1,
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a price for the desk',
-                    ]),
-                    new Positive([
-                        'message' => 'The price must be positive',
-                    ]),
-                ],
             ])
             ->add('capacity', IntegerType::class, [
-                'label' => 'Capacity',
+                'label' => 'Capacité',
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter the capacity of the desk',
-                    ]),
-                    new Positive([
-                        'message' => 'The capacity must be positive',
-                    ]),
-                ],
-            ])
-            ->add('isAvailable', CheckboxType::class, [
-                'label' => 'Available for booking',
-                'required' => false,
-                'data' => true, // Default to available
             ])
             ->add('equipments', EntityType::class, [
-                'label' => 'Equipment',
+                'label' => 'Equipement',
                 'class' => Equipment::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'required' => false,
-            ]);
-            // Removed availability field as desks now use their parent space's availability
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Créer Bureau',
+            ])
+        ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
