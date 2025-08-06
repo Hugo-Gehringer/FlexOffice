@@ -64,7 +64,7 @@ class ReservationController extends AbstractController
             10 // Nombre d'éléments par page
         );
 
-        return $this->render('reservation/index.html.twig', [
+        return $this->render('reservation/host.html.twig', [
             'reservations' => $pagination,
             'currentUser' => $user,
         ]);
