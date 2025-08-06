@@ -793,7 +793,7 @@ class ReservationControllerTest extends WebTestCase
         $client->request('GET', '/reservation/host');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Mes réservations');
+        $this->assertSelectorTextContains('h1', 'Reservations');
         // Le host devrait voir les réservations de ses espaces
     }
 
@@ -820,7 +820,7 @@ class ReservationControllerTest extends WebTestCase
         $client->request('GET', '/reservation/host');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Mes réservations');
+        $this->assertSelectorTextContains('h1', 'Reservations');
         // Vérifier que la pagination est présente si plus de 10 éléments
     }
 
