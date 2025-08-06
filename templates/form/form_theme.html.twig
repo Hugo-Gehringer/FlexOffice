@@ -10,7 +10,7 @@
 
 {%- block form_label -%}
     {% if label is not same as(false) -%}
-        <label class="form-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        <label class="form-label" for="{{ id }}"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
         {{- label|trans(label_translation_parameters, translation_domain) -}}
         </label>
     {%- endif -%}

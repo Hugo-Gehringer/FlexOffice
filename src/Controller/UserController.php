@@ -21,7 +21,7 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig');
     }
 
-    #[Route('/profile/edit', name: 'app_profile_edit', methods: ['GET', 'POST'])]
+    #[Route('/profile/edit', name: 'app_profile_edit', methods: ['GET', 'PATCH'])]
     public function profileEdit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
