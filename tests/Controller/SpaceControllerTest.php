@@ -293,6 +293,6 @@ class SpaceControllerTest extends WebTestCase
         // Vérifier que la section des bureaux est présente
         $this->assertSelectorExists('#desks-container');
 
-        $this->assertSelectorTextContains('h2', 'Desks');
+        $this->assertSelectorTextContains('h2', 'Bureaux');
     }
 }
