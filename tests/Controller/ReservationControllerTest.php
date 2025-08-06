@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 use App\Entity\Reservation;
+
 class ReservationControllerTest extends WebTestCase
 {
     use ResetDatabase, Factories;
@@ -656,91 +657,201 @@ class ReservationControllerTest extends WebTestCase
     }
 
     public function testCancelReservationRequiresAuthentication(): void
-{
-    $client = static::createClient();
+    {
+        $client = static::createClient();
 
-    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
-    $reservation = ReservationFactory::createOne(['guest' => $user]);
+        $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $reservation = ReservationFactory::createOne(['guest' => $user]);
 
-    $client->request('GET', '/reservation/' . $reservation->getId() . '/cancel');
-    $this->assertResponseRedirects('/login');
-}
+        $client->request('GET', '/reservation/' . $reservation->getId() . '/cancel');
+        $this->assertResponseRedirects('/login');
+    }
 
-public function testCancelReservationSuccess(): void
-{
-    $client = static::createClient();
+    public function testCancelReservationSuccess(): void
+    {
+        $client = static::createClient();
 
-    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
-    $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
-    $space = SpaceFactory::createOne(['host' => $host]);
-    $desk = DeskFactory::createOne(['space' => $space]);
-    $reservation = ReservationFactory::createOne([
-        'guest' => $user,
-        'desk' => $desk,
-        'status' => Reservation::STATUS_CONFIRMED
-    ]);
+        $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+        $space = SpaceFactory::createOne(['host' => $host]);
+        $desk = DeskFactory::createOne(['space' => $space]);
+        $reservation = ReservationFactory::createOne([
+            'guest' => $user,
+            'desk' => $desk,
+            'status' => Reservation::STATUS_CONFIRMED
+        ]);
 
-    $client->loginUser($user->_real());
+        $client->loginUser($user->_real());
 
-    $client->request('POST', '/reservation/' . $reservation->getId() . '/cancel');
+        $client->request('POST', '/reservation/' . $reservation->getId() . '/cancel');
 
-    // Should redirect back with success message
-    $this->assertResponseRedirects();
-}
+        // Should redirect back with success message
+        $this->assertResponseRedirects();
+    }
 
-public function testDeleteReservationRequiresAuthentication(): void
-{
-    $client = static::createClient();
+    public function testDeleteReservationRequiresAuthentication(): void
+    {
+        $client = static::createClient();
 
-    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
-    $reservation = ReservationFactory::createOne(['guest' => $user]);
+        $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $reservation = ReservationFactory::createOne(['guest' => $user]);
 
-    $client->request('POST', '/reservation/' . $reservation->getId() . '/delete');
-    $this->assertResponseRedirects('/login');
-}
+        $client->request('POST', '/reservation/' . $reservation->getId() . '/delete');
+        $this->assertResponseRedirects('/login');
+    }
 
-public function testDeleteReservationWithInvalidCsrfToken(): void
-{
-    $client = static::createClient();
+    public function testDeleteReservationWithInvalidCsrfToken(): void
+    {
+        $client = static::createClient();
 
-    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
-    $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
-    $space = SpaceFactory::createOne(['host' => $host]);
-    $desk = DeskFactory::createOne(['space' => $space]);
-    $reservation = ReservationFactory::createOne([
-        'guest' => $user,
-        'desk' => $desk
-    ]);
+        $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+        $space = SpaceFactory::createOne(['host' => $host]);
+        $desk = DeskFactory::createOne(['space' => $space]);
+        $reservation = ReservationFactory::createOne([
+            'guest' => $user,
+            'desk' => $desk
+        ]);
 
-    $client->loginUser($user->_real());
+        $client->loginUser($user->_real());
 
-    $client->request('POST', '/reservation/' . $reservation->getId() . '/delete', [
-        '_token' => 'invalid_token'
-    ]);
+        $client->request('POST', '/reservation/' . $reservation->getId() . '/delete', [
+            '_token' => 'invalid_token'
+        ]);
 
-    // Should redirect back with error message
-    $this->assertResponseRedirects();
-}
+        // Should redirect back with error message
+        $this->assertResponseRedirects();
+    }
 
 
+    public function testValidateDeskAvailabilityForDayWithNullAvailability(): void
+    {
+        $client = static::createClient();
 
-public function testValidateDeskAvailabilityForDayWithNullAvailability(): void
-{
-    $client = static::createClient();
+        $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+        $space = SpaceFactory::createOne(['host' => $host]);
 
-    $user = UserFactory::createOne(['roles' => ['ROLE_USER']]);
-    $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
-    $space = SpaceFactory::createOne(['host' => $host]);
+        // Don't create availability for the space (null case)
+        $desk = DeskFactory::createOne(['space' => $space, 'isAvailable' => true]);
 
-    // Don't create availability for the space (null case)
-    $desk = DeskFactory::createOne(['space' => $space, 'isAvailable' => true]);
+        $client->loginUser($user->_real());
 
-    $client->loginUser($user->_real());
+        $client->request('GET', '/reservation/new/' . $desk->getId());
 
-    $client->request('GET', '/reservation/new/' . $desk->getId());
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('form[name="reservation_form"]');
+    }
 
-    $this->assertResponseIsSuccessful();
-    $this->assertSelectorExists('form[name="reservation_form"]');
-}
+    public function testReservationHostRequiresAuthentication(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/reservation/host');
+        $this->assertResponseRedirects('/login');
+    }
+
+    public function testReservationHostDisplaysHostReservations(): void
+    {
+        $client = static::createClient();
+
+        // Créer un host et un guest
+        $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+        $guest = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $otherHost = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+
+        // Créer des espaces pour les deux hosts
+        $hostSpace = SpaceFactory::createOne(['host' => $host]);
+        $otherHostSpace = SpaceFactory::createOne(['host' => $otherHost]);
+
+        // Créer des bureaux
+        $hostDesk = DeskFactory::createOne(['space' => $hostSpace]);
+        $otherHostDesk = DeskFactory::createOne(['space' => $otherHostSpace]);
+
+        // Créer des réservations
+        ReservationFactory::createOne([
+            'guest' => $guest,
+            'desk' => $hostDesk,
+            'reservationDate' => new \DateTime('+1 day')
+        ]);
+
+        ReservationFactory::createOne([
+            'guest' => $guest,
+            'desk' => $hostDesk,
+            'reservationDate' => new \DateTime('+2 days')
+        ]);
+
+        // Créer une réservation pour l'autre host (ne devrait pas apparaître)
+        ReservationFactory::createOne([
+            'guest' => $guest,
+            'desk' => $otherHostDesk,
+            'reservationDate' => new \DateTime('+3 days')
+        ]);
+
+        $client->loginUser($host->_real());
+
+        $client->request('GET', '/reservation/host');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Mes réservations');
+        // Le host devrait voir les réservations de ses espaces
+    }
+
+    public function testReservationHostPaginationWorks(): void
+    {
+        $client = static::createClient();
+
+        $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+        $guest = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $space = SpaceFactory::createOne(['host' => $host]);
+        $desk = DeskFactory::createOne(['space' => $space]);
+
+        // Créer plus de 10 réservations pour tester la pagination
+        for ($i = 0; $i < 15; $i++) {
+            ReservationFactory::createOne([
+                'guest' => $guest,
+                'desk' => $desk,
+                'reservationDate' => new \DateTime('+' . ($i + 1) . ' days')
+            ]);
+        }
+
+        $client->loginUser($host->_real());
+
+        $client->request('GET', '/reservation/host');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Mes réservations');
+        // Vérifier que la pagination est présente si plus de 10 éléments
+    }
+
+    public function testReservationHostOrdersByDateDesc(): void
+    {
+        $client = static::createClient();
+
+        $host = UserFactory::createOne(['roles' => ['ROLE_HOST']]);
+        $guest = UserFactory::createOne(['roles' => ['ROLE_USER']]);
+        $space = SpaceFactory::createOne(['host' => $host]);
+        $desk = DeskFactory::createOne(['space' => $space]);
+
+        // Créer des réservations avec des dates différentes
+        ReservationFactory::createOne([
+            'guest' => $guest,
+            'desk' => $desk,
+            'reservationDate' => new \DateTime('+1 day')
+        ]);
+
+        ReservationFactory::createOne([
+            'guest' => $guest,
+            'desk' => $desk,
+            'reservationDate' => new \DateTime('+3 days')
+        ]);
+
+        $client->loginUser($host->_real());
+
+        $client->request('GET', '/reservation/host');
+
+        $this->assertResponseIsSuccessful();
+        // Les réservations devraient être triées par date décroissante
+    }
 
 }
