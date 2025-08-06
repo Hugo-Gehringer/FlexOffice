@@ -72,7 +72,7 @@ class AddressFormTypeTest extends TypeTestCase
         $form = $this->factory->create(AddressFormType::class);
         $view = $form->createView();
 
-        $this->assertEquals('Street Address', $view->children['street']->vars['label']);
+        $this->assertEquals('Adresse', $view->children['street']->vars['label']);
         $this->assertEquals('City', $view->children['city']->vars['label']);
         $this->assertEquals('Postal Code', $view->children['postalCode']->vars['label']);
         $this->assertEquals('Pays', $view->children['country']->vars['label']);
