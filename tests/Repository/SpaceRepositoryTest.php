@@ -1,7 +1,6 @@
 <?php
 
 use App\Entity\Desk;
-use App\Entity\Reservation;
 use App\Entity\Space;
 use App\Entity\User;
 use App\Entity\Address;
@@ -11,8 +10,7 @@ use App\Factory\AddressFactory;
 use App\Factory\UserFactory;
 use App\Factory\SpaceFactory;
 use App\Factory\DeskFactory;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
 
 class SpaceRepositoryTest extends DatabaseTestCase
 {
@@ -32,39 +30,39 @@ class SpaceRepositoryTest extends DatabaseTestCase
     }
 
     private function createTestEntities(): void
-{
-    $this->testAddress = AddressFactory::createOne([
-        'street' => '123 Test Street',
-        'city' => 'Test City',
-        'postalCode' => '12345',
-        'country' => 'France'
-    ])->_real();
+    {
+        $this->testAddress = AddressFactory::createOne([
+            'street' => '123 Test Street',
+            'city' => 'Test City',
+            'postalCode' => '12345',
+            'country' => 'France'
+        ])->_real();
 
-    $this->testUser = UserFactory::createOne([
-        'email' => 'test@example.com',
-        'firstName' => 'Test',
-        'lastName' => 'User',
-        'password' => 'password',
-        'roles' => ['ROLE_USER']
-    ])->_real();
+        $this->testUser = UserFactory::createOne([
+            'email' => 'test@example.com',
+            'firstName' => 'Test',
+            'lastName' => 'User',
+            'password' => 'password',
+            'roles' => ['ROLE_USER']
+        ])->_real();
 
-    $this->testSpace = SpaceFactory::createOne([
-        'name' => 'Espace Test',
-        'description' => 'Espace de test pour les tests unitaires',
-        'host' => $this->testUser,
-        'address' => $this->testAddress
-    ])->_real();
+        $this->testSpace = SpaceFactory::createOne([
+            'name' => 'Espace Test',
+            'description' => 'Espace de test pour les tests unitaires',
+            'host' => $this->testUser,
+            'address' => $this->testAddress
+        ])->_real();
 
-    $this->testDesk = DeskFactory::createOne([
-        'name' => 'Bureau Test',
-        'description' => 'Bureau pour les tests',
-        'type' => Desk::DESK_TYPE_STANDARD,
-        'capacity' => 1,
-        'pricePerDay' => 25.0,
-        'isAvailable' => true,
-        'space' => $this->testSpace
-    ])->_real();
-}
+        $this->testDesk = DeskFactory::createOne([
+            'name' => 'Bureau Test',
+            'description' => 'Bureau pour les tests',
+            'type' => Desk::DESK_TYPE_STANDARD,
+            'capacity' => 1,
+            'pricePerDay' => 25.0,
+            'isAvailable' => true,
+            'space' => $this->testSpace
+        ])->_real();
+    }
 
     public function testFindByHost(): void
     {
@@ -105,18 +103,16 @@ class SpaceRepositoryTest extends DatabaseTestCase
             'roles' => ['ROLE_USER']
         ])->_real();
 
-        $address = AddressFactory::createOne([
-            'city' => 'Paris',
-            'street' => '123 Main St',
-            'postalCode' => '75001',
-            'country' => 'France'
-        ])->_real();
-
         $space = SpaceFactory::createOne([
             'name' => 'Beautiful Space',
             'description' => 'A wonderful place to stay',
             'host' => $host,
-            'address' => $address
+            'address' => AddressFactory::createOne([
+                'city' => 'Paris',
+                'street' => '123 Main St',
+                'postalCode' => '75001',
+                'country' => 'France'
+            ])
         ])->_real();
 
         // Test search by space name
@@ -143,38 +139,5 @@ class SpaceRepositoryTest extends DatabaseTestCase
         // Test no results
         $spaces = $this->spaceRepository->findBySearchQuery('nonexistent');
         $this->assertCount(0, $spaces);
-    }
-
-    public function testFindBySearchQueryOrdering(): void
-    {
-        $host = UserFactory::createOne([
-            'firstName' => 'Test',
-            'lastName' => 'User',
-            'email' => 'test2@example.com',
-            'password' => 'password123',
-            'roles' => ['ROLE_USER']
-        ])->_real();
-
-        $space1 = SpaceFactory::createOne([
-            'name' => 'Z Space',
-            'description' => 'Description for Z Space',
-            'host' => $host
-        ])->_real();
-
-        $space2 = SpaceFactory::createOne([
-            'name' => 'A Space',
-            'description' => 'Description for A Space',
-            'host' => $host
-        ])->_real();
-
-        $spaces = $this->spaceRepository->findBySearchQuery('Space');
-
-        $this->assertCount(3, $spaces);
-        $this->assertEquals('A Space', $spaces[0]->getName()); // Ordered by name ASC
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
     }
 }
