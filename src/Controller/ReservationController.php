@@ -42,6 +42,34 @@ class ReservationController extends AbstractController
         ]);
     }
 
+    #[Route('/host', name: 'app_reservation_host', methods: ['GET'])]
+    public function reservationHost(Request $request, ReservationRepository $reservationRepository, PaginatorInterface $paginator): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        // Créer une requête pour récupérer les réservations de l'utilisateur
+        $queryBuilder = $reservationRepository->createQueryBuilder('r')
+            ->join('r.desk', 'd')
+            ->join('d.space', 's')
+            ->where('s.host = :user')
+            ->setParameter('user', $user)
+            ->orderBy('r.reservationDate', 'DESC');
+
+        // Paginer les résultats
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), // Numéro de page, par défaut 1
+            10 // Nombre d'éléments par page
+        );
+
+        return $this->render('reservation/index.html.twig', [
+            'reservations' => $pagination,
+            'currentUser' => $user,
+        ]);
+    }
+
     #[Route('/new/{id}', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Desk $desk, EntityManagerInterface $entityManager, ReservationRepository $reservationRepository): Response
     {

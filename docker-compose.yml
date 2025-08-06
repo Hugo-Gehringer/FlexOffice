@@ -46,18 +46,6 @@ services:
     networks:
       - app-network
 
-  mailhog:
-    build:
-      context: .docker/mailhog
-    image: ${DOCKERHUB_USERNAME}/flexoffice-mailhog:latest
-    container_name: mailhog
-    restart: unless-stopped
-    ports:
-      - "1025:1025"
-      - "8025:8025"
-    networks:
-      - app-network
-
 networks:
   app-network:
     driver: bridge
