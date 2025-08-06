@@ -10,7 +10,7 @@
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Créer un nouvel espace</h1>
-                <p class="text-gray-600 dark:text-gray-400">Ajouter un nouveau bureau de travail</p>
+                <p class="text-gray-600 dark:text-gray-400">Ajouter un nouvel espace de travail</p>
             </div>
             <div class="flex space-x-3">
                 <a href="{{ path('app_space_index') }}"
@@ -35,7 +35,7 @@
                 {{ form_widget(space_form.save, {'label': 'Créer espace'}) }}
             </div>
             {{ form_errors(space_form) }}
-            {{ form_end(space_form, {'render_rest': false}) }}
+            {{ form_end(space_form) }}
         </div>
     </div>
     </div>

@@ -106,9 +106,9 @@ class ReservationTest extends KernelTestCase
         $this->assertEquals(2, Reservation::STATUS_CANCELLED);
 
         $expectedStatuses = [
-            0 => ' Pending',
-            1 => ' Confirmed',
-            2 => ' Canceled',
+            0 => ' En attente',
+            1 => ' Confirmé',
+            2 => ' Annulé',
         ];
 
         $this->assertEquals($expectedStatuses, Reservation::RESERVATION_STATUSES);

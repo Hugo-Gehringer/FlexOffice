@@ -40,7 +40,7 @@
                                         <p class="text-sm text-gray-500 dark:text-gray-400">Reservation Date</p>
                                         <p class="font-medium text-gray-900 dark:text-white">
                                             {% if reservation.reservationDate %}
-                                                {{ reservation.reservationDate|date('l, F j, Y') }}
+                                                {{ reservation.reservationDate|format_datetime('full', 'none', locale='fr') }}
                                                 <span class="block text-sm text-gray-500 dark:text-gray-400">{{ reservation.reservationDate|date('') }}</span>
                                             {% else %}
                                                 N/A
@@ -51,11 +51,11 @@
                                         <p class="text-sm text-gray-500 dark:text-gray-400">Status</p>
                                         <div>
                                             {% if reservation.status == 0 %}
-                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">En attente</span>
                                             {% elseif reservation.status == 1 %}
-                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Confirmed</span>
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Confirmé</span>
                                             {% elseif reservation.status == 2 %}
-                                                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Cancelled</span>
+                                                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Annulé</span>
                                             {% endif %}
                                         </div>
                                     </div>

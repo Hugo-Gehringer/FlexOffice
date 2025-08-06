@@ -90,7 +90,7 @@
         </div>
 
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Desks</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Bureaux</h2>
             {% if is_host() and space.host == app.user %}
                 <a href="{{ path('app_desk_new', {'id': space.id}) }}" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition-colors flex items-center font-medium shadow-md">
                     Ajouter un bureau

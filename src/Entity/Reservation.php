@@ -15,9 +15,9 @@ class Reservation
     const STATUS_CANCELLED = 2;
 
     const RESERVATION_STATUSES = [
-        Reservation::STATUS_PENDING => ' Pending',
-        Reservation::STATUS_CONFIRMED => ' Confirmed',
-        Reservation::STATUS_CANCELLED => ' Canceled',
+        Reservation::STATUS_PENDING => ' En attente',
+        Reservation::STATUS_CONFIRMED => ' Confirmé',
+        Reservation::STATUS_CANCELLED => ' Annulé',
     ];
 
     #[ORM\Id]
