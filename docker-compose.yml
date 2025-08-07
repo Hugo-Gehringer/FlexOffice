@@ -18,7 +18,7 @@ services:
     container_name: app
     build:
       context: .docker/php
-    image: ${DOCKERHUB_USERNAME}/flexoffice-app:latest:${TAG:-latest}
+    image: ${DOCKERHUB_USERNAME}/flexoffice-app:${TAG:-latest}
     ports:
       - "8080:80"
       - "8443:443"
