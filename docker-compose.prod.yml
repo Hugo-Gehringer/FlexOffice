@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  php:
+    image: hugogehringer/flexoffice-php
+    container_name: flexoffice_php
+    environment:
+      - APP_ENV=prod
+    volumes:
+      - .env.prod:/var/www/html/.env.local
+      - ./var/log:/var/www/html/var/log
+      - ./var/storage:/var/www/html/var/storage
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - database
+    networks:
+      - flexoffice_network
+    restart: unless-stopped
+
+  database:
+    container_name: flexoffice_database
+    image: yobasystems/alpine-mariadb:10.11.2-aarch64
+    environment:
+      MYSQL_ROOT_PASSWORD: ...
+      MYSQL_DATABASE: flexoffice
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: ...
+    ports:
+      - '4306:3306'
+    networks:
+      - flexoffice_network  # Corrigé le nom du réseau
+    restart: unless-stopped
+
+networks:
+  flexoffice_network:
+    driver: bridge
+
+volumes:
+  database_data:
+    driver: local
