@@ -133,14 +133,6 @@ docker-compose exec php php bin/console doctrine:fixtures:load
 # Vérifier les fixtures chargées
 make db-check-fixtures
 
-# Tester l'accès admin
-make test-admin
-
-# Tester la navigation admin
-make test-admin-nav
-
-# Tester les modales Flowbite
-make test-flowbite-modals
 ```
 
 #### Commandes de cache
@@ -287,9 +279,6 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
   - Interface adaptée aux mobiles, tablettes et ordinateurs
   - Utilisation de Flowbite comme bibliothèque de composants
 
-- **Thème Sombre/Clair**
-  - Support du mode sombre pour une meilleure expérience utilisateur
-
 - **Notifications**
   - Système de notifications flash pour informer l'utilisateur
   - Messages de succès, d'erreur, d'avertissement et d'information
@@ -323,9 +312,8 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
 
 - **Frontend**
   - Twig pour les templates
-  - Stimulus pour les interactions JavaScript
-  - Turbo pour les mises à jour partielles de page
   - Tailwind CSS pour le style
+  - Flowbite pour les composants UI
 
 - **Base de Données**
   - Doctrine ORM
