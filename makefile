@@ -27,6 +27,8 @@ test-coverage:
 test-coverage-file:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/phpunit tests/Controller/SpaceControllerTest.php
 
+asset-compile:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php php bin/console asset-map:compile
 
 # Cache commands
 cache-clear:

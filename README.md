@@ -6,6 +6,25 @@
 
 FlexOffice est une application de gestion d'espaces de travail flexibles permettant aux utilisateurs de réserver des bureaux dans différents espaces. L'application propose différentes fonctionnalités selon le rôle de l'utilisateur.
 
+## Architecture Technique
+
+- **Framework**
+  - Symfony 7.2
+  - PHP 8.2+
+
+- **Frontend**
+  - Twig pour les templates
+  - Tailwind CSS pour le style
+  - Flowbite pour les composants UI
+
+- **Base de Données**
+  - Doctrine ORM
+  - Migrations pour la gestion des schémas
+
+- **Autres Fonctionnalités**
+  - Système de notifications avec php-flasher/flasher-symfony
+
+
 ## Installation et Commandes
 
 ### Prérequis
@@ -57,12 +76,12 @@ docker-compose exec php php bin/console doctrine:fixtures:load --no-interaction
 
 ```bash
 # Avec Make
-make npm-build
+make asset-compile
 
 # Sans Make
-docker-compose exec php npm run build
 docker-compose exec php php bin/console asset-map:compile
 ```
+
 
 ### Accès à l'application
 
@@ -70,7 +89,6 @@ Après l'installation, l'application sera disponible aux adresses suivantes :
 
 - Application web : http://localhost:8080
 - PHPMyAdmin : http://localhost:8899 (Utilisateur : root, Mot de passe : pwd)
-- MailHog (pour tester les emails) : http://localhost:8025
 
 ### Commandes de développement
 
@@ -156,20 +174,6 @@ docker-compose exec php composer install
 make composer-update
 # ou
 docker-compose exec php composer update
-```
-
-#### Commandes NPM
-
-```bash
-# Installer les dépendances NPM
-make npm-install
-# ou
-docker-compose exec php npm install
-
-# Compiler les assets
-make npm-build
-# ou
-docker-compose exec php npm run build
 ```
 
 #### Commandes d'assets
@@ -271,59 +275,6 @@ Les utilisateurs avec le rôle "Admin" ont accès à toutes les fonctionnalités
   - Extension Twig pour vérifier l'état des favoris dans les templates
   - Tests unitaires complets pour garantir la fiabilité
 
-## Fonctionnalités Techniques
-
-### Interface Utilisateur
-
-- **Design Responsive**
-  - Interface adaptée aux mobiles, tablettes et ordinateurs
-  - Utilisation de Flowbite comme bibliothèque de composants
-
-- **Notifications**
-  - Système de notifications flash pour informer l'utilisateur
-  - Messages de succès, d'erreur, d'avertissement et d'information
-
-### Formulaires et Modales
-
-- **Formulaires Interactifs**
-  - Validation côté client et serveur
-  - Feedback instantané sur les erreurs
-
-- **Modales Turbo**
-  - Utilisation de modales pour les formulaires (création d'espace, ajout de bureau)
-  - Expérience utilisateur fluide sans rechargement de page
-
-### Sécurité
-
-- **Authentification**
-  - Système de connexion sécurisé
-  - Vérification d'email
-  - Protection CSRF
-
-- **Contrôle d'Accès**
-  - Restrictions basées sur les rôles
-  - Protection des routes sensibles
-
-## Architecture Technique
-
-- **Framework**
-  - Symfony 7.2
-  - PHP 8.2+
-
-- **Frontend**
-  - Twig pour les templates
-  - Tailwind CSS pour le style
-  - Flowbite pour les composants UI
-
-- **Base de Données**
-  - Doctrine ORM
-  - Migrations pour la gestion des schémas
-
-- **Autres Fonctionnalités**
-  - Système de notifications avec php-flasher/flasher-symfony
-  - Composants réutilisables avec Twig Components
-  - Intégration complète de Flowbite pour les composants UI (modales, boutons, formulaires)
-
 ## Entités Principales
 
 1. **User** - Informations sur les utilisateurs et leurs rôles
@@ -357,7 +308,3 @@ L'application inclut un panneau d'administration complet accessible aux utilisat
   - `/admin/users` - Gestion des utilisateurs
   - `/admin/spaces` - Gestion des espaces
   - `/admin/reservations` - Gestion des réservations
-
-## Conclusion
-
-FlexOffice offre une solution complète pour la gestion d'espaces de travail flexibles, avec des fonctionnalités adaptées à chaque type d'utilisateur. L'architecture technique moderne permet une expérience utilisateur fluide et réactive, tout en maintenant un haut niveau de sécurité et de performance.
