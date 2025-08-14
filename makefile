@@ -41,7 +41,7 @@ composer-install:
 composer-update:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) composer update
 
-tailwi nd-build:
+tailwind-build:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console tailwind:build
 
 # NPM commands

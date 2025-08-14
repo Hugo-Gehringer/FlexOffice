@@ -20,7 +20,9 @@ class UserEditFormTypeTest extends TypeTestCase
             'roles' => 'ROLE_HOST',
         ];
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
@@ -38,7 +40,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
 
         $this->assertTrue($form->has('firstname'));
         $this->assertTrue($form->has('lastname'));
@@ -47,12 +51,30 @@ class UserEditFormTypeTest extends TypeTestCase
         $this->assertTrue($form->has('save'));
     }
 
+    public function testFormWithoutAdminRole(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);
+
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_USER']
+        ]);
+
+        $this->assertTrue($form->has('firstname'));
+        $this->assertTrue($form->has('lastname'));
+        $this->assertFalse($form->has('email'));
+        $this->assertFalse($form->has('roles'));
+        $this->assertTrue($form->has('save'));
+    }
+
     public function testRoleChoices(): void
     {
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $rolesField = $form->get('roles');
 
         $choices = $rolesField->getConfig()->getOption('choices');
@@ -70,7 +92,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_ADMIN']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $rolesField = $form->get('roles');
 
         $this->assertEquals('ROLE_ADMIN', $rolesField->getData());
@@ -81,7 +105,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_HOST', 'ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $rolesField = $form->get('roles');
 
         // Le formulaire prend le premier rôle de la liste.
@@ -93,7 +119,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $view = $form->createView();
 
         $this->assertTrue($view->children['firstname']->vars['required']);
@@ -106,7 +134,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $view = $form->createView();
 
         $this->assertEquals('Update User', $view->children['save']->vars['label']);
@@ -117,7 +147,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $config = $form->getConfig();
 
         $this->assertEquals(User::class, $config->getDataClass());
@@ -128,7 +160,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
 
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('firstname')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('lastname')->getConfig()->getType()->getInnerType()));
@@ -142,7 +176,9 @@ class UserEditFormTypeTest extends TypeTestCase
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $rolesField = $form->get('roles');
 
         $this->assertFalse($rolesField->getConfig()->getOption('mapped'));
@@ -163,7 +199,9 @@ class UserEditFormTypeTest extends TypeTestCase
             'roles' => 'ROLE_ADMIN',
         ];
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
@@ -185,14 +223,16 @@ class UserEditFormTypeTest extends TypeTestCase
             'roles' => 'ROLE_GUEST',
         ];
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
         // La validation de l'email se fait au niveau de l'entité
     }
 
-    public function testEmptyFormData(): void
+    public function testEmptyFormDataAsAdmin(): void
     {
         $user = new User();
         $user->setRoles(['ROLE_USER']);
@@ -204,7 +244,28 @@ class UserEditFormTypeTest extends TypeTestCase
             'roles' => '',
         ];
 
-        $form = $this->factory->create(UserEditFormType::class, $user);
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_ADMIN']
+        ]);
+        $form->submit($formData);
+
+        $this->assertTrue($form->isSynchronized());
+        // La validation des champs requis se fait au niveau de l'entité
+    }
+
+    public function testEmptyFormDataAsNonAdmin(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);
+
+        $formData = [
+            'firstname' => '',
+            'lastname' => '',
+        ];
+
+        $form = $this->factory->create(UserEditFormType::class, $user, [
+            'current_user_roles' => ['ROLE_USER']
+        ]);
         $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
