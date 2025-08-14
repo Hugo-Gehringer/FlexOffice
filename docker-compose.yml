@@ -24,7 +24,7 @@ services:
       - "8443:443"
     volumes:
       - ./.docker/php/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./.docker/etc/ssl:/etc/ssl
+      - ./.docker/etc/ssl:/app/certs
       - ./assets:/app/assets
       - ./:/var/www
     depends_on:

@@ -1,5 +1,9 @@
 FROM tobi312/php:8.2-apache-slim
 
+# Install Node.js and npm first
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
+
 # Install dependencies and clean up
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -14,6 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev \
     libwebp-dev \
     libfreetype6-dev \
+    ca-certificates \
+    && update-ca-certificates \
     && docker-php-ext-install intl opcache pdo pdo_mysql \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
@@ -28,14 +34,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Configure Xdebug pour le débogage et la couverture de code
+# Configure cURL for SSL
+RUN echo "curl.cainfo=/etc/ssl/certs/ca-certificates.crt" >> /usr/local/etc/php/php.ini \
+    && echo "openssl.cafile=/etc/ssl/certs/ca-certificates.crt" >> /usr/local/etc/php/php.ini \
+    && echo "openssl.capath=/etc/ssl/certs/" >> /usr/local/etc/php/php.ini
+
+# Configure Xdebug
 RUN echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-    # Set working directory
 WORKDIR /var/www
 
 # Install Composer
@@ -44,7 +53,3 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
-
-# Configure Git
-RUN git config --global user.email "gehringer.hugo@gmail.com" \
-    && git config --global user.name "Hugo Gehringer"

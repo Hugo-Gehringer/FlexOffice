@@ -2,7 +2,7 @@
 
 # Variables
 DOCKER_COMPOSE = docker-compose
-PHP_CONTAINER = php
+PHP_CONTAINER = app
 
 # Symfony commands
 sf:
@@ -40,6 +40,9 @@ composer-install:
 
 composer-update:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) composer update
+
+tailwi nd-build:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php bin/console tailwind:build
 
 # NPM commands
 npm-install:

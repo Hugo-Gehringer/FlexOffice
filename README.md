@@ -54,10 +54,12 @@ docker-compose up -d
 # Avec Make
 make composer-install
 make npm-install
+make tailwind-build
 
 # Sans Make
-docker-compose exec php composer install
-docker-compose exec php npm install
+docker-compose exec app composer install
+docker-compose exec app npm install
+docker-compose exec app php bin/console tailwind:build
 ```
 
 4. **Configurer la base de données**
@@ -68,8 +70,8 @@ make db-migrate
 make db-load-fixtures
 
 # Sans Make
-docker-compose exec php php bin/console doctrine:migrations:migrate --no-interaction
-docker-compose exec php php bin/console doctrine:fixtures:load --no-interaction
+docker-compose exec app php bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec app php bin/console doctrine:fixtures:load --no-interaction
 ```
 
 5. **Compiler les assets**
@@ -79,7 +81,7 @@ docker-compose exec php php bin/console doctrine:fixtures:load --no-interaction
 make asset-compile
 
 # Sans Make
-docker-compose exec php php bin/console asset-map:compile
+docker-compose exec app php bin/console asset-map:compile
 ```
 
 
@@ -117,12 +119,12 @@ make sf cmd="make:migration"
 make sf cmd="make:form"
 
 # Sans Make
-docker-compose exec php php bin/console cache:clear
-docker-compose exec php php bin/console debug:router
-docker-compose exec php php bin/console make:entity
-docker-compose exec php php bin/console make:controller
-docker-compose exec php php bin/console make:migration
-docker-compose exec php php bin/console make:form
+docker-compose exec app php bin/console cache:clear
+docker-compose exec app php bin/console debug:router
+docker-compose exec app php bin/console make:entity
+docker-compose exec app php bin/console make:controller
+docker-compose exec app php bin/console make:migration
+docker-compose exec app php bin/console make:form
 ```
 
 #### Commandes de base de données
@@ -131,22 +133,22 @@ docker-compose exec php php bin/console make:form
 # Créer une migration
 make db-make-migration
 # ou
-docker-compose exec php php bin/console make:migration
+docker-compose exec app php bin/console make:migration
 
 # Exécuter les migrations
 make db-migrate
 # ou
-docker-compose exec php php bin/console doctrine:migrations:migrate
+docker-compose exec app php bin/console doctrine:migrations:migrate
 
 # Générer un diff de migration
 make db-diff
 # ou
-docker-compose exec php php bin/console doctrine:migrations:diff
+docker-compose exec app php bin/console doctrine:migrations:diff
 
 # Charger les fixtures
 make db-load-fixtures
 # ou
-docker-compose exec php php bin/console doctrine:fixtures:load
+docker-compose exec app php bin/console doctrine:fixtures:load
 
 # Vérifier les fixtures chargées
 make db-check-fixtures
@@ -159,7 +161,7 @@ make db-check-fixtures
 # Vider le cache
 make cache-clear
 # ou
-docker-compose exec php php bin/console cache:clear
+docker-compose exec app php bin/console cache:clear
 ```
 
 #### Commandes Composer
@@ -168,22 +170,22 @@ docker-compose exec php php bin/console cache:clear
 # Installer les dépendances
 make composer-install
 # ou
-docker-compose exec php composer install
+docker-compose exec app composer install
 
 # Mettre à jour les dépendances
 make composer-update
 # ou
-docker-compose exec php composer update
+docker-compose exec app composer update
 ```
 
 #### Commandes d'assets
 
 ```bash
 # Compiler les assets
-docker-compose exec php php bin/console asset-map:compile
+docker-compose exec app php bin/console asset-map:compile
 
 # Supprimer les assets compilés et recompiler
-docker-compose exec php rm -rf public/assets && php bin/console asset-map:compile
+docker-compose exec app rm -rf public/assets && php bin/console asset-map:compile
 ```
 
 ## Rôles Utilisateurs
