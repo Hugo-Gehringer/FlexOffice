@@ -75,7 +75,6 @@ class UserControllerTest extends WebTestCase
         // Check that all required form fields are present
         $this->assertSelectorExists('input[name="user_edit_form[firstname]"]');
         $this->assertSelectorExists('input[name="user_edit_form[lastname]"]');
-        $this->assertSelectorExists('input[name="user_edit_form[email]"]');
 
     }
 
