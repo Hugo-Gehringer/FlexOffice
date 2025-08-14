@@ -25,28 +25,32 @@ class UserEditFormType extends AbstractType
             ->add('lastname', TextType::class, [
                 'required' => true,
             ])
-            ->add('email', EmailType::class, [
-                'required' => true,
-            ])
-            ->add('roles', ChoiceType::class, [
-                'data' => $user->getRoles()[0],
-                'choices' => [
-                    'Guest' => 'ROLE_GUEST',
-                    'Host' => 'ROLE_HOST',
-                    'Admin' => 'ROLE_ADMIN',
-                ],
-                'mapped' => false
-            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Update User',
-            ])
-        ;
+            ]);
+
+        if (in_array('ROLE_ADMIN', $options['current_user_roles'] ?? [])) {
+            $builder
+                ->add('email', EmailType::class, [
+                    'required' => true,
+                ])
+                ->add('roles', ChoiceType::class, [
+                    'data' => $user->getRoles()[0],
+                    'choices' => [
+                        'Guest' => 'ROLE_GUEST',
+                        'Host' => 'ROLE_HOST',
+                        'Admin' => 'ROLE_ADMIN',
+                    ],
+                    'mapped' => false
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'current_user_roles' => [],
         ]);
     }
 }

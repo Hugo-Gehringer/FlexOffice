@@ -198,7 +198,9 @@ class AdminController extends AbstractController
         // Ensure user is authenticated and has ADMIN role
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You must be an admin to access this page');
 
-        $form = $this->createForm(UserEditFormType::class, $user);
+        $form = $this->createForm(UserEditFormType::class, $user, [
+            'current_user_roles' => $this->getUser()->getRoles()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

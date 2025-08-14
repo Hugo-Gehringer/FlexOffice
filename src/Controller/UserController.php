@@ -21,7 +21,7 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig');
     }
 
-    #[Route('/profile/edit', name: 'app_profile_edit', methods: ['GET', 'PATCH'])]
+    #[Route('/profile/edit', name: 'app_profile_edit', methods: ['GET', 'POST'])]
     public function profileEdit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -29,7 +29,9 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException('User must be logged in');
         }
 
-        $form = $this->createForm(UserEditFormType::class, $user);
+        $form = $this->createForm(UserEditFormType::class, $user, [
+            'current_user_roles' => $user->getRoles()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
