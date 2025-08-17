@@ -133,30 +133,51 @@ docker-compose exec app php bin/console make:form
 
 #### Commandes de base de données
 
+Voici le code divisé en blocs bash séparés :
+
 ```bash
 # Créer une migration
 make db-make-migration
+```
+
+```bash
 # ou
 docker-compose exec app php bin/console make:migration
+```
 
+```bash
 # Exécuter les migrations
 make db-migrate
+```
+
+```bash
 # ou
 docker-compose exec app php bin/console doctrine:migrations:migrate
+```
 
+```bash
 # Générer un diff de migration
 make db-diff
+```
+
+```bash
 # ou
 docker-compose exec app php bin/console doctrine:migrations:diff
+```
 
+```bash
 # Charger les fixtures
 make db-load-fixtures
+```
+
+```bash
 # ou
 docker-compose exec app php bin/console doctrine:fixtures:load
+```
 
+```bash
 # Vérifier les fixtures chargées
 make db-check-fixtures
-
 ```
 
 #### Commandes de cache
