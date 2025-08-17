@@ -15,7 +15,6 @@ class RegistrationFormTypeTest extends TypeTestCase
             'firstname' => 'John',
             'lastname' => 'Doe',
             'userRole' => 'ROLE_GUEST',
-            'agreeTerms' => true,
             'plainPassword' => 'password123',
         ];
 
@@ -41,7 +40,6 @@ class RegistrationFormTypeTest extends TypeTestCase
         $this->assertTrue($form->has('firstname'));
         $this->assertTrue($form->has('lastname'));
         $this->assertTrue($form->has('userRole'));
-        $this->assertTrue($form->has('agreeTerms'));
         $this->assertTrue($form->has('plainPassword'));
     }
 
@@ -111,7 +109,6 @@ class RegistrationFormTypeTest extends TypeTestCase
         $form = $this->factory->create(RegistrationFormType::class);
 
         $this->assertFalse($form->get('userRole')->getConfig()->getOption('mapped'));
-        $this->assertFalse($form->get('agreeTerms')->getConfig()->getOption('mapped'));
         $this->assertFalse($form->get('plainPassword')->getConfig()->getOption('mapped'));
     }
 
@@ -131,7 +128,6 @@ class RegistrationFormTypeTest extends TypeTestCase
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('firstname')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', get_class($form->get('lastname')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\ChoiceType', get_class($form->get('userRole')->getConfig()->getType()->getInnerType()));
-        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\CheckboxType', get_class($form->get('agreeTerms')->getConfig()->getType()->getInnerType()));
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\PasswordType', get_class($form->get('plainPassword')->getConfig()->getType()->getInnerType()));
     }
 
