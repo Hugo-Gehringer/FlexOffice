@@ -55,7 +55,8 @@ docker-compose up -d
 make composer-install
 make npm-install
 make tailwind-build
-
+```
+```bash
 # Sans Make
 docker-compose exec app composer install
 docker-compose exec app npm install
@@ -68,7 +69,8 @@ docker-compose exec app php bin/console tailwind:build
 # Avec Make
 make db-migrate
 make db-load-fixtures
-
+```
+```bash
 # Sans Make
 docker-compose exec app php bin/console doctrine:migrations:migrate --no-interaction
 docker-compose exec app php bin/console doctrine:fixtures:load --no-interaction
@@ -79,7 +81,8 @@ docker-compose exec app php bin/console doctrine:fixtures:load --no-interaction
 ```bash
 # Avec Make
 make asset-compile
-
+```
+```bash
 # Sans Make
 docker-compose exec app php bin/console asset-map:compile
 ```
@@ -117,7 +120,8 @@ make sf cmd="make:entity"
 make sf cmd="make:controller"
 make sf cmd="make:migration"
 make sf cmd="make:form"
-
+```
+```bash
 # Sans Make
 docker-compose exec app php bin/console cache:clear
 docker-compose exec app php bin/console debug:router
@@ -160,6 +164,8 @@ make db-check-fixtures
 ```bash
 # Vider le cache
 make cache-clear
+```
+```bash
 # ou
 docker-compose exec app php bin/console cache:clear
 ```
@@ -169,11 +175,16 @@ docker-compose exec app php bin/console cache:clear
 ```bash
 # Installer les dépendances
 make composer-install
+```
+```bash
 # ou
 docker-compose exec app composer install
-
+```
+```bash
 # Mettre à jour les dépendances
 make composer-update
+```
+```bash
 # ou
 docker-compose exec app composer update
 ```
@@ -183,7 +194,8 @@ docker-compose exec app composer update
 ```bash
 # Compiler les assets
 docker-compose exec app php bin/console asset-map:compile
-
+```
+```bash
 # Supprimer les assets compilés et recompiler
 docker-compose exec app rm -rf public/assets && php bin/console asset-map:compile
 ```
