@@ -139,7 +139,7 @@ class UserEditFormTypeTest extends TypeTestCase
         ]);
         $view = $form->createView();
 
-        $this->assertEquals('Update User', $view->children['save']->vars['label']);
+        $this->assertEquals('Modifier', $view->children['save']->vars['label']);
     }
 
     public function testFormDataClass(): void

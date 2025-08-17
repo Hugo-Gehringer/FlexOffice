@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
                     ->from(new Address('gehringer.hugo@gmail.com', 'Hugo Gehringer'))
                     ->to((string) $user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('user/registration/confirmation_email.html.twig')
             );
 
             return $userAuthenticator->authenticateUser(
@@ -67,7 +67,7 @@ class RegistrationController extends AbstractController
             );
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('user/registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
     }

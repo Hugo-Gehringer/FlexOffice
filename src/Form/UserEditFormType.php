@@ -26,7 +26,7 @@ class UserEditFormType extends AbstractType
                 'required' => true,
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Update User',
+                'label' => 'Modifier',
             ]);
 
         if (in_array('ROLE_ADMIN', $options['current_user_roles'] ?? [])) {

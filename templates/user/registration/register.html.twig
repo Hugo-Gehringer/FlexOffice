@@ -1,5 +1,4 @@
-{% extends '../../base.html.twig' %}
-
+{% extends 'base.html.twig' %}
 {% block title %}{{ 'Register'|trans }}{% endblock %}
 
 {% block body %}
@@ -15,30 +14,27 @@
                     </h1>
                     {{ form_start(registrationForm, {'attr': {'class': 'space-y-4 md:space-y-6'}}) }}
                     <div>
-                        {% include 'elements/form/input.html.twig' with { 'element': registrationForm.email, 'label': 'Email'|trans } %}
+                        {% include 'shared/elements/form/input.html.twig' with { 'element': registrationForm.email, 'label': 'Email'|trans } %}
                     </div>
                     <div class="flex space-x-4">
                         <div class="w-1/2">
-                            {% include 'elements/form/input.html.twig' with { 'element': registrationForm.firstname, 'label': 'Firstname'|trans } %}
+                            {% include 'shared/elements/form/input.html.twig' with { 'element': registrationForm.firstname, 'label': 'Firstname'|trans } %}
                         </div>
                         <div class="w-1/2">
-                            {% include 'elements/form/input.html.twig' with { 'element': registrationForm.lastname, 'label': 'Lastname'|trans } %}
+                            {% include 'shared/elements/form/input.html.twig' with { 'element': registrationForm.lastname, 'label': 'Lastname'|trans } %}
                         </div>
                     </div>
                     <div>
-                        {% include 'elements/form/input.html.twig' with {'element': registrationForm.plainPassword, 'label': 'Password'|trans } %}
+                        {% include 'shared/elements/form/input.html.twig' with {'element': registrationForm.plainPassword, 'label': 'Password'|trans } %}
                     </div>
                     <div>
                         <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ 'Confirm password'|trans }}</label>
                         <input type="password" name="confirm-password" id="confirm-password" placeholder="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
                     </div>
                     <div class="mt-4 form-group">
-                        {% include 'elements/form/radio.html.twig' with {'element': registrationForm.userRole, 'label': 'Role'|trans } %}
+                        {% include 'shared/elements/form/radio.html.twig' with {'element': registrationForm.userRole, 'label': 'Role'|trans } %}
                     </div>
-                    <div class="flex items-start">
-                        {% include 'elements/form/checkbox.html.twig' with { 'element': registrationForm.agreeTerms } %}
-                    </div>
-                    {% include 'elements/form/submit.html.twig' with {'text': 'Create Account'|trans } %}
+                    {% include 'shared/elements/form/submit.html.twig' with {'text': 'Create Account'|trans } %}
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         {{ 'Already have an account?'|trans }} <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">{{ 'Login here'|trans }}</a>
                     </p>

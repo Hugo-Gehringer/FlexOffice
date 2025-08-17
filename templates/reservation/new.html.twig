@@ -32,7 +32,7 @@
                 {{ form_widget(reservation_form.reservationDate) }}
             </div>
             <div class="flex justify-end space-x-3 m-5">
-                <a href="{{ path('app_space_show', {'id': desk.space.id}) }}" class="form-btn-cancel">{{ 'Cancelled'|trans }}</a>
+                <a href="{{ path('app_space_show', {'id': desk.space.id}) }}" class="form-btn-cancel">Annuler</a>
                 {{ form_widget(reservation_form.save, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 transition-colors font-medium shadow-md'}, 'label': 'Confirmer la réservation'}) }}
             </div>
             {{ form_end(reservation_form) }}
@@ -54,20 +54,26 @@
 
             document.querySelectorAll('.datepicker').forEach((el) => {
                 flatpickr(el, {
-                    locale: flatpickr.l10ns.fr,
-                    inline: true,
-                    dateFormat: "Y-m-d",
-                    disable: [
-                        ...bookedDates,
-                        function(date) {
-                            // Désactiver les jours qui ne sont PAS dans la liste des jours disponibles
-                            return !availableDays.includes(date.getDay());
-                        }
-                    ],
-                    onChange: function (selectedDates, dateStr, instance) {
-                        el.value = dateStr;
-                        el.dispatchEvent(new Event('change', {bubbles: true}));
+            locale: flatpickr.l10ns.fr,
+            inline: true,
+            dateFormat: "Y-m-d",
+            disable: [
+                ...bookedDates,
+                function(date) {
+                    // Désactiver les dates passées
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (date < today) {
+                        return true;
                     }
+                    // Désactiver les jours qui ne sont PAS dans la liste des jours disponibles
+                    return !availableDays.includes(date.getDay());
+                }
+            ],
+            onChange: function (selectedDates, dateStr, instance) {
+                el.value = dateStr;
+                el.dispatchEvent(new Event('change', {bubbles: true}));
+            }
                 });
             });
         });

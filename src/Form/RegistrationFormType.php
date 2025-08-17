@@ -40,9 +40,6 @@ class RegistrationFormType extends AbstractType
                 ],
                 'data' => 'ROLE_GUEST',
             ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-            ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
